@@ -69,7 +69,6 @@ synchroedu/
 ├── LICENSE                        # Giấy phép nguồn mở MIT
 ├── package.json                   # Cấu hình gói dự án Node.js
 ├── README.md                      # Tài liệu tổng quan dự án
-├── vercel.json                    # Cấu hình triển khai Vercel không cần build
 ├── index.html                     # Giao diện SPA / PWA đầy đủ 10 phân hệ
 ├── manifest.json                  # Cấu hình cài đặt App di động (PWA Manifest)
 ├── sw.js                          # Service Worker đệm offline & Web Push
@@ -124,7 +123,7 @@ Hệ thống được thiết kế với tiêu chí **Zero Cost Stack** (Không 
 ### 2. Triển khai Web miễn phí qua Vercel
 1. Đăng nhập [Vercel.com](https://vercel.com) bằng tài khoản GitHub.
 2. Bấm **Add New... > Project** và chọn kho lưu trữ `synchroedu`.
-3. Bấm **Deploy** (Vercel tự động nhận diện `vercel.json` và `index.html` không cần cấu hình).
+3. Bấm **Deploy** (Vercel tự động nhận diện `index.html` tĩnh và triển khai trực tiếp từ CDN toàn cầu).
 
 ### 3. Thiết lập Cơ sở dữ liệu qua Supabase
 1. Tạo dự án miễn phí tại [Supabase.com](https://supabase.com).

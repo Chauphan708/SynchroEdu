@@ -2,7 +2,6 @@
   "name": "synchroedu",
   "version": "5.0.0",
   "description": "SynchroEdu - Nền tảng Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo Công văn 4069/BGDĐT-GDPT & Thông tư 27/2020/TT-BGDĐT",
-  "main": "server.mjs",
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
