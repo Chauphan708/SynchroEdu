@@ -58,8 +58,8 @@ expectedTables.forEach(tbl => {
 });
 assert(sqlContent.includes('calc_late_submission()'), 'Trigger calc_late_submission() tự động tính số phút trễ hạn');
 assert(sqlContent.includes('populate_notification_reads()'), 'Trigger populate_notification_reads() tự động phân phối thông báo');
-assert(sqlContent.includes('BRANCH_CENTER') && sqlContent.includes('BRANCH_4'), 'Seed data 5 phân hiệu trường học');
-assert(sqlContent.includes('Phan Kim Oanh') && sqlContent.includes('Trần Đình Trọng'), 'Seed data Tổ trưởng & Tổ phó Khối 2');
+assert(sqlContent.includes('CƠ SỞ DỮ LIỆU SẠCH'), 'Cơ sở dữ liệu sạch không chứa dữ liệu mẫu');
+assert(sqlContent.includes('ALTER TABLE') && sqlContent.includes('ENABLE ROW LEVEL SECURITY'), 'Bảo mật RLS trên toàn bộ các bảng');
 
 // 4. Kiểm tra tính năng trong index.html
 console.log('\n4. Kiểm tra các module chức năng trong index.html:');

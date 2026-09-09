@@ -119,9 +119,7 @@
         <div class="flex items-center gap-1.5 text-xs text-slate-400">
           <i data-lucide="building" class="w-3.5 h-3.5 text-brand-400"></i>
           <select id="schoolSelector" onchange="changeSchool(this.value)" class="bg-transparent text-slate-300 border-0 focus:ring-0 cursor-pointer font-medium hover:text-white transition-colors p-0 text-xs">
-            <option value="1" selected>Trường Tiểu Học Phú Thạnh (5 Phân Hiệu)</option>
-            <option value="2">Trường Tiểu Học Vạn Thắng (3 Phân Hiệu)</option>
-            <option value="3">Trường Tiểu Học Vạn Khánh (4 Phân Hiệu)</option>
+            <option value="1" selected>Trường Tiểu Học (Điểm Trung Tâm & Điểm Lẻ)</option>
             <option value="new">+ Khởi tạo Trường Mới Trong Cụm...</option>
           </select>
         </div>
@@ -134,11 +132,11 @@
       <div class="flex items-center gap-1.5 bg-slate-800/90 rounded-lg px-2 py-1.5 border border-slate-700 text-xs">
         <i data-lucide="user-check" class="w-3.5 h-3.5 text-brand-400 hidden sm:inline-block"></i>
         <select id="roleSelector" onchange="switchRole(this.value)" class="bg-transparent text-slate-200 font-medium border-0 focus:ring-0 cursor-pointer p-0 text-xs pr-4">
-          <option value="principal">Hiệu Trưởng (Thầy Nguyễn Văn An)</option>
-          <option value="vp_branch">Phó Hiệu Trưởng Điểm 3, 4 (Thầy Lê Hoàng Đức)</option>
-          <option value="head_dept" selected>Tổ Trưởng Khối 2 (Cô Phan Kim Oanh)</option>
-          <option value="deputy_head">Tổ Phó Khối 2 (Thầy Trần Đình Trọng)</option>
-          <option value="teacher">Giáo Viên Lớp 2A (Cô Nguyễn Thị Mai)</option>
+          <option value="principal">Hiệu Trưởng</option>
+          <option value="vp_branch">Phó Hiệu Trưởng (Phụ trách Điểm trường)</option>
+          <option value="head_dept" selected>Tổ Trưởng Chuyên Môn</option>
+          <option value="deputy_head">Tổ Phó Chuyên Môn</option>
+          <option value="teacher">Giáo Viên (Chủ Nhiệm / Bộ Môn)</option>
           <option value="guest">Khách Mời Cụm Chuyên Môn (Dự giờ liên trường)</option>
         </select>
       </div>
@@ -155,7 +153,7 @@
       <!-- Instant Notification Bell -->
       <button onclick="toggleNotificationDrawer()" class="relative p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors" title="Thông báo khẩn tức thì">
         <i data-lucide="bell" class="w-4 h-4"></i>
-        <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">2</span>
+        <span id="notificationBadge" class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">0</span>
       </button>
 
       <!-- Full Backup 0-Cost Button -->
@@ -269,32 +267,32 @@
               <span>Tỷ lệ nộp đúng hạn</span>
               <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
             </div>
-            <div class="text-2xl sm:text-3xl font-bold text-white">94%</div>
-            <div class="text-[11px] text-emerald-400 mt-1 font-medium">30/32 lớp đã gửi báo cáo</div>
+            <div class="text-2xl sm:text-3xl font-bold text-white">0%</div>
+            <div class="text-[11px] text-slate-400 mt-1 font-medium">0/32 lớp đã gửi báo cáo</div>
           </div>
           <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
             <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
               <span>Nộp trễ có giải trình</span>
               <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
             </div>
-            <div class="text-2xl sm:text-3xl font-bold text-amber-300">2</div>
-            <div class="text-[11px] text-amber-400/90 mt-1 font-medium">Trễ 12 phút & 25 phút</div>
+            <div class="text-2xl sm:text-3xl font-bold text-slate-400">0</div>
+            <div class="text-[11px] text-slate-500 mt-1 font-medium">Không có nộp trễ</div>
           </div>
           <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
             <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
               <span>Sự cố CSVC khẩn cấp</span>
-              <i data-lucide="alert-triangle" class="w-4 h-4 text-red-400"></i>
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-slate-500"></i>
             </div>
-            <div class="text-2xl sm:text-3xl font-bold text-red-400">1</div>
-            <div class="text-[11px] text-red-300 mt-1 font-medium">Điểm 3: Quạt rơi hỏng</div>
+            <div class="text-2xl sm:text-3xl font-bold text-emerald-400">0</div>
+            <div class="text-[11px] text-emerald-400/90 mt-1 font-medium">Toàn trường an toàn</div>
           </div>
           <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
             <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
               <span>Học liệu số mới</span>
               <i data-lucide="file-check" class="w-4 h-4 text-brand-400"></i>
             </div>
-            <div class="text-2xl sm:text-3xl font-bold text-brand-300">18</div>
-            <div class="text-[11px] text-brand-400 mt-1 font-medium">Đã thẩm định dùng chung</div>
+            <div class="text-2xl sm:text-3xl font-bold text-slate-400">0</div>
+            <div class="text-[11px] text-slate-500 mt-1 font-medium">Chưa có học liệu mới</div>
           </div>
         </div>
 
@@ -364,12 +362,12 @@
                   <i data-lucide="zap" class="w-4 h-4"></i>
                 </span>
                 <div>
-                  <h3 class="font-bold text-sm text-white">Thu Thập Đột Xuất: REQ-2026-001</h3>
-                  <p class="text-xs text-slate-400">Rà soát học sinh diện khó khăn nhận học bổng xã hội</p>
+                  <h3 class="font-bold text-sm text-white">Thu Thập Dữ Liệu Đột Xuất</h3>
+                  <p class="text-xs text-slate-400">Theo dõi tiến độ phản hồi từ các lớp</p>
                 </div>
               </div>
-              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
-                28/32 Lớp hoàn thành (87%)
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                0/32 Lớp hoàn thành (0%)
               </span>
             </div>
             
@@ -379,12 +377,14 @@
                   <tr>
                     <th class="py-2 px-2.5">Lớp</th>
                     <th class="py-2 px-2.5">Giáo Viên</th>
-                    <th class="py-2 px-2.5">Đối Tượng</th>
+                    <th class="py-2 px-2.5">Nội Dung Phản Hồi</th>
                     <th class="py-2 px-2.5">Thời Gian</th>
                   </tr>
                 </thead>
                 <tbody id="liveAggregationList" class="divide-y divide-slate-800/60">
-                  <!-- Injected via JS -->
+                  <tr>
+                    <td colspan="4" class="py-6 text-center text-slate-500 italic">Chưa có phản hồi nào từ các lớp.</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -399,39 +399,23 @@
           <div class="bg-slate-900 rounded-xl border border-slate-800 p-4 space-y-3">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
               <div class="flex items-center gap-2">
-                <span class="p-1.5 rounded-lg bg-red-950 border border-red-700 text-red-400">
-                  <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                <span class="p-1.5 rounded-lg bg-emerald-950 border border-emerald-700 text-emerald-400">
+                  <i data-lucide="shield-check" class="w-4 h-4"></i>
                 </span>
                 <div>
-                  <h3 class="font-bold text-sm text-white">Cảnh Báo CSVC Khẩn Cấp Tại Điểm Trường</h3>
-                  <p class="text-xs text-slate-400">Ảnh chụp trực tiếp từ giáo viên phân hiệu chuyển về</p>
+                  <h3 class="font-bold text-sm text-white">Tình Trạng Cơ Sở Vật Chất Điểm Trường</h3>
+                  <p class="text-xs text-slate-400">Giám sát an toàn phòng học tại 5 phân hiệu</p>
                 </div>
               </div>
-              <span class="text-xs px-2 py-0.5 rounded bg-red-900/80 text-red-200 border border-red-700 font-bold">
-                1 Cần xử lý gấp
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-900/80 text-emerald-200 border border-emerald-700 font-medium">
+                0 sự cố
               </span>
             </div>
 
-            <div class="p-3 rounded-lg bg-red-950/20 border border-red-800/40 flex items-start gap-3">
-              <div class="w-20 h-20 rounded bg-slate-800 border border-slate-700 overflow-hidden shrink-0 flex items-center justify-center">
-                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=200&q=80" alt="Ảnh hiện trường CSVC" class="w-full h-full object-cover" />
-              </div>
-              <div class="space-y-1 text-xs">
-                <div class="flex items-center gap-2">
-                  <span class="font-bold text-white">Điểm 3 (Thôn Tân Dân) - Lớp 2D</span>
-                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-red-900 text-red-200 font-semibold">RẤT KHẨN CẤP</span>
-                </div>
-                <p class="text-slate-300">Quạt trần phòng học kêu to, có dấu hiệu lỏng ốc treo rung lắc nguy hiểm.</p>
-                <div class="text-slate-400 text-[11px]">Báo cáo bởi: Cô Đặng Thùy Trang • 07:15 sáng nay</div>
-                <div class="pt-1.5 flex gap-2">
-                  <button onclick="resolveFacilityIssue(this)" class="px-2.5 py-1 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-medium text-xs transition-colors">
-                    Đã chuyển thợ sửa chữa
-                  </button>
-                  <button onclick="callBranchLeader('0987654321')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-colors">
-                    Gọi quản lý điểm
-                  </button>
-                </div>
-              </div>
+            <div class="p-6 rounded-lg bg-slate-850/50 border border-slate-800 text-center space-y-2">
+              <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-500/70 mx-auto"></i>
+              <p class="text-xs text-slate-300 font-medium">Toàn bộ 5 phân hiệu hoạt động bình thường</p>
+              <p class="text-[11px] text-slate-500">Chưa ghi nhận sự cố hỏng hóc hoặc cảnh báo an toàn nào.</p>
             </div>
           </div>
         </div>
@@ -612,10 +596,10 @@
               <select id="branchFilterSelect" onchange="filterBranchVertical(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg text-xs text-white p-1.5">
                 <option value="ALL">Tất cả 5 Phân Hiệu</option>
                 <option value="BRANCH_CENTER">Điểm Trung Tâm</option>
-                <option value="BRANCH_1">Điểm 1 (Phú Hội 1)</option>
-                <option value="BRANCH_2">Điểm 2 (Phú Hội 2)</option>
-                <option value="BRANCH_3" selected>Điểm 3 (Tân Dân - Thầy Đức phụ trách)</option>
-                <option value="BRANCH_4">Điểm 4 (Suối Mơ - Thầy Đức phụ trách)</option>
+                <option value="BRANCH_1">Điểm 1</option>
+                <option value="BRANCH_2">Điểm 2</option>
+                <option value="BRANCH_3" selected>Điểm 3</option>
+                <option value="BRANCH_4">Điểm 4</option>
               </select>
             </div>
           </div>
@@ -635,29 +619,29 @@
             <!-- Daily Attendance Summary -->
             <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-4">
               <h3 class="font-bold text-sm text-slate-200 flex items-center gap-2">
-                <i data-lucide="user-minus" class="w-4 h-4 text-red-400"></i>
+                <i data-lucide="user-minus" class="w-4 h-4 text-slate-400"></i>
                 Chuyên Cần & Học Sinh Vắng Hôm Nay
               </h3>
               <div class="space-y-2 text-xs">
                 <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
-                  <span>Điểm Trung Tâm (8 lớp)</span>
-                  <span class="font-bold text-emerald-400">Vắng: 1 (có phép)</span>
+                  <span>Điểm Trung Tâm</span>
+                  <span class="text-slate-400 font-medium">Chưa có dữ liệu</span>
                 </div>
                 <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
-                  <span>Điểm 1 (6 lớp)</span>
-                  <span class="font-bold text-emerald-400">Vắng: 0</span>
+                  <span>Điểm 1</span>
+                  <span class="text-slate-400 font-medium">Chưa có dữ liệu</span>
                 </div>
                 <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
-                  <span>Điểm 2 (6 lớp)</span>
-                  <span class="font-bold text-amber-400">Vắng: 2 (1 không phép)</span>
+                  <span>Điểm 2</span>
+                  <span class="text-slate-400 font-medium">Chưa có dữ liệu</span>
                 </div>
                 <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
-                  <span>Điểm 3 (6 lớp)</span>
-                  <span class="font-bold text-red-400">Vắng: 3 (mưa lớn vùng trũng)</span>
+                  <span>Điểm 3</span>
+                  <span class="text-slate-400 font-medium">Chưa có dữ liệu</span>
                 </div>
                 <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
-                  <span>Điểm 4 Suối Mơ (6 lớp)</span>
-                  <span class="font-bold text-emerald-400">Vắng: 1 (có phép)</span>
+                  <span>Điểm 4</span>
+                  <span class="text-slate-400 font-medium">Chưa có dữ liệu</span>
                 </div>
               </div>
               <p class="text-[11px] text-slate-400">Dữ liệu sĩ số cập nhật tự động từ đầu giờ sáng mỗi ngày.</p>
@@ -805,17 +789,7 @@
                   <span>Tóm tắt bằng AI</span>
                 </button>
               </div>
-              <textarea id="meetingMinutesContent" rows="9" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-200 font-mono focus:ring-1 focus:ring-brand-500 leading-relaxed">
-BIÊN BẢN SINH HOẠT CHUYÊN MÔN THEO NGHIÊN CỨU BÀI HỌC
-Thời gian: 14h00 ngày 05/09/2026. Địa điểm: Phòng Hội đồng & Trực tuyến 5 điểm trường.
-Chủ trì: Cô Phan Kim Oanh (Tổ trưởng) / Thầy Trần Đình Trọng (Ủy quyền điều hành)
-Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (tiết 1)".
-1. Phân tích việc học của học sinh:
-- Nhóm 3 tiếp thu tích cực, tự tin nêu câu hỏi khi giải quyết bài toán thực tế.
-- Em Tuấn và em Lan còn chậm khi nhớ các tích 7x6, 7x8; giáo viên đã kịp thời gợi ý dùng que tính hỗ trợ trực quan.
-2. Thống nhất giải pháp chuyên môn áp dụng đại trà trong toàn khối:
-- Tăng cường đồ dùng học tập trực quan và trò chơi toán học trong tiết 2 buổi chiều.
-              </textarea>
+              <textarea id="meetingMinutesContent" rows="9" placeholder="Nhập nội dung biên bản sinh hoạt chuyên môn theo nghiên cứu bài học 4 bước (Quy định tại Công văn số 4069/BGDĐT-GDPT)..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-200 font-mono focus:ring-1 focus:ring-brand-500 leading-relaxed"></textarea>
             </div>
 
             <!-- Right: Student Evidence Photos & Discussion -->
@@ -824,22 +798,14 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
                 <i data-lucide="camera" class="w-4 h-4 text-brand-400"></i>
                 Minh Chứng Hoạt Động Học Của HS
               </h3>
-              <div class="grid grid-cols-2 gap-2">
-                <div class="rounded-lg overflow-hidden border border-slate-700 relative group">
-                  <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=300&q=80" alt="HS thảo luận nhóm" class="w-full h-24 object-cover" />
-                  <span class="absolute bottom-0 inset-x-0 bg-slate-900/80 text-[10px] text-slate-300 p-1 text-center truncate">Nhóm 3 thảo luận</span>
-                </div>
-                <div class="rounded-lg overflow-hidden border border-slate-700 relative group">
-                  <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=300&q=80" alt="HS chia sẻ ý kiến" class="w-full h-24 object-cover" />
-                  <span class="absolute bottom-0 inset-x-0 bg-slate-900/80 text-[10px] text-slate-300 p-1 text-center truncate">Em Tuấn thao tác que</span>
-                </div>
+              <div class="border-2 border-dashed border-slate-700 rounded-xl p-6 text-center space-y-2 bg-slate-900/60 hover:border-brand-500 transition-colors cursor-pointer">
+                <i data-lucide="image-plus" class="w-8 h-8 text-slate-500 mx-auto"></i>
+                <p class="text-xs text-slate-300 font-medium">Tải lên hình ảnh minh chứng hoạt động học của HS</p>
+                <p class="text-[11px] text-slate-500">Chụp khoảnh khắc học sinh thao tác, lúng túng hoặc hợp tác nhóm</p>
               </div>
               <div class="pt-2 text-xs space-y-2">
-                <div class="p-2 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
-                  <strong>Thầy Minh (Điểm 2):</strong> "Học sinh ở điểm lẻ cũng rất hứng thú với trò chơi đố vui này, tôi sẽ áp dụng ngay cho lớp 2C."
-                </div>
-                <div class="p-2 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
-                  <strong>Cô Hương (Hiệu phó CM):</strong> "Đánh giá cao việc giáo viên không tạo áp lực cho học sinh còn lúng túng."
+                <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-[11px] text-slate-500 text-center italic">
+                  Chưa có ý kiến thảo luận nào từ các điểm trường.
                 </div>
               </div>
             </div>
@@ -866,28 +832,27 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
             </button>
           </div>
 
-          <!-- Active Campaign Card (For Teachers) -->
-          <div class="p-4 rounded-xl bg-amber-950/30 border border-amber-800/60 space-y-3">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-900 text-amber-200">
-                MÃ CHIẾN DỊCH: REQ-2026-001
-              </span>
-              <span class="text-xs text-red-400 font-bold flex items-center gap-1">
-                <i data-lucide="timer" class="w-4 h-4"></i> Hạn chót: 16h30 Chiều nay (Còn 2 giờ 15 phút)
-              </span>
+          <!-- Campaign Card / Empty State Container -->
+          <div id="noCampaignState" class="p-8 rounded-xl bg-slate-850 border border-slate-800 text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-amber-400">
+              <i data-lucide="zap" class="w-6 h-6"></i>
             </div>
-            <h3 class="text-base font-bold text-white">Rà soát học sinh diện khó khăn nhận học bổng xã hội năm học 2026</h3>
-            <p class="text-xs text-slate-300">Yêu cầu tất cả GVCN 32 lớp kiểm tra danh sách học sinh thuộc diện hộ nghèo, cận nghèo hoặc mồ côi để lập danh sách nhận quà tài trợ của Huyện đoàn.</p>
+            <div class="space-y-1">
+              <h3 class="font-bold text-sm text-slate-200">Hàng Đợi Nhiệm Vụ & Báo Cáo Đột Xuất</h3>
+              <p class="text-xs text-slate-400 max-w-lg mx-auto leading-relaxed">
+                Hiện chưa có yêu cầu thu thập dữ liệu đột xuất nào từ Ban Giám Hiệu. Khi có yêu cầu mới phát đi, giáo viên có thể phản hồi siêu tốc 1-chạm (5 giây hoặc 30 giây) ngay tại đây.
+              </p>
+            </div>
             
-            <!-- Quick 1-Touch Buttons -->
-            <div class="pt-2 flex flex-wrap items-center gap-3">
-              <button onclick="quickSubmitNoTargetStudent()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-sm border border-slate-700 flex items-center gap-2 transition-colors">
+            <!-- Quick 1-Touch Buttons Demo / Readiness -->
+            <div class="pt-3 flex flex-wrap justify-center items-center gap-3">
+              <button onclick="quickSubmitNoTargetStudent()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 flex items-center gap-2 transition-colors" title="Báo cáo không có đối tượng cần rà soát trong 5s">
                 <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-                <span>Lớp Không Có Đối Tượng (5 Giây)</span>
+                <span>Thử phản hồi 5s: Không có đối tượng</span>
               </button>
-              <button onclick="openQuickStudentModal()" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow transition-colors">
+              <button onclick="openQuickStudentModal()" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-2 shadow transition-colors" title="Nhập nhanh danh sách học sinh trong 30s">
                 <i data-lucide="user-plus" class="w-4 h-4"></i>
-                <span>Nhập Nhanh Danh Sách (30 Giây)</span>
+                <span>Thử nhập nhanh học sinh (30s)</span>
               </button>
             </div>
           </div>
@@ -955,7 +920,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
               <p class="text-xs text-slate-400 mt-1">Hỗ trợ Nhu cầu 1 (Chia sẻ học liệu, quét QR dự giờ liên trường) & Nhu cầu 2 (Cấp trường mới độc lập 0đ)</p>
             </div>
             <span class="text-xs px-2.5 py-1 rounded bg-brand-950 text-brand-300 border border-brand-700 font-medium">
-              Cụm Tiểu Học Số 1 - Huyện Vạn Ninh
+              Cụm Chuyên Môn Tiểu Học
             </span>
           </div>
 
@@ -1121,15 +1086,15 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
   <!-- ========================================================================= -->
   <div id="printable-area" class="hidden">
     <div style="text-align: center; margin-bottom: 20px;">
-      <div style="font-size: 13pt; font-weight: bold;">PHÒNG GIÁO DỤC VÀ ĐÀO TẠO HUYỆN VẠN NINH</div>
-      <div style="font-size: 14pt; font-weight: bold; text-decoration: underline;">TRƯỜNG TIỂU HỌC PHÚ THẠNH</div>
-      <div style="margin-top: 15px; font-size: 16pt; font-weight: bold;">BÁO CÁO TỔNG HỢP MA TRẬN 5 PHÂN HIỆU</div>
+      <div style="font-size: 13pt; font-weight: bold;">PHÒNG GIÁO DỤC VÀ ĐÀO TẠO</div>
+      <div style="font-size: 14pt; font-weight: bold; text-decoration: underline;">TRƯỜNG TIỂU HỌC</div>
+      <div style="margin-top: 15px; font-size: 16pt; font-weight: bold;">BÁO CÁO TỔNG HỢP MA TRẬN PHÂN HIỆU</div>
       <div style="font-style: italic; font-size: 12pt;">(Kèm theo Công văn số 4069/BGDĐT-GDPT và Thông tư số 27/2020/TT-BGDĐT)</div>
     </div>
     
-    <p style="font-size: 13pt; line-height: 1.5;">Kính gửi: Phòng Giáo dục và Đào tạo huyện Vạn Ninh.</p>
+    <p style="font-size: 13pt; line-height: 1.5;">Kính gửi: Lãnh đạo Phòng Giáo dục và Đào tạo.</p>
     <p style="font-size: 13pt; line-height: 1.5; text-indent: 1.25cm;">
-      Trường Tiểu học Phú Thạnh kính báo cáo tình hình thực hiện chương trình giáo dục phổ thông, tiến độ bài dạy và công tác kiểm tra đánh giá của 32 lớp thuộc 5 phân hiệu trong tuần học vừa qua như sau:
+      Nhà trường kính báo cáo tình hình thực hiện chương trình giáo dục phổ thông, tiến độ bài dạy và công tác kiểm tra đánh giá của các lớp thuộc các phân hiệu trong tuần học vừa qua như sau:
     </p>
 
     <div id="printTableContainer" style="margin: 20px 0;">
@@ -1140,13 +1105,13 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       <div style="text-align: center; width: 45%;">
         <b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/>
         <i>(Ký và ghi rõ họ tên)</i><br/><br/><br/><br/>
-        <b>Phan Kim Oanh</b>
+        <b>(Họ và tên)</b>
       </div>
       <div style="text-align: center; width: 45%;">
-        <i>Phú Thạnh, ngày 05 tháng 09 năm 2026</i><br/>
+        <i>Ngày ...... tháng ...... năm ......</i><br/>
         <b>HIỆU TRƯỞNG</b><br/>
         <i>(Ký, đóng dấu và ghi rõ họ tên)</i><br/><br/><br/><br/>
-        <b>Nguyễn Văn An</b>
+        <b>(Họ và tên)</b>
       </div>
     </div>
   </div>
@@ -1162,11 +1127,11 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       isDelegatedToDeputy: false,
       activeTab: 'tab-master-matrix',
       branches: [
-        { id: 1, name: 'Điểm Trung Tâm', code: 'BRANCH_CENTER', classes: 8 },
-        { id: 2, name: 'Điểm 1 (Phú Hội 1)', code: 'BRANCH_1', classes: 6 },
-        { id: 3, name: 'Điểm 2 (Phú Hội 2)', code: 'BRANCH_2', classes: 6 },
-        { id: 4, name: 'Điểm 3 (Tân Dân)', code: 'BRANCH_3', classes: 6 },
-        { id: 5, name: 'Điểm 4 (Suối Mơ)', code: 'BRANCH_4', classes: 6 }
+        { id: 1, name: 'Điểm Trung Tâm', code: 'BRANCH_CENTER', classes: 0 },
+        { id: 2, name: 'Điểm 1', code: 'BRANCH_1', classes: 0 },
+        { id: 3, name: 'Điểm 2', code: 'BRANCH_2', classes: 0 },
+        { id: 4, name: 'Điểm 3', code: 'BRANCH_3', classes: 0 },
+        { id: 5, name: 'Điểm 4', code: 'BRANCH_4', classes: 0 }
       ],
       grades: [
         { id: 1, name: 'Khối 1' },
@@ -1182,26 +1147,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         '8. Công nghệ', '9. Tin học', '10. Tiếng Anh',
         '11. Âm nhạc', '12. Mĩ thuật', '13. GD thể chất'
       ],
-      notifications: [
-        {
-          id: 1,
-          urgency: 'EMERGENCY',
-          title: 'Cảnh báo mưa lũ lớn vùng trũng Tân Dân',
-          content: 'Hiệu trưởng chỉ đạo: Điểm 3 chủ động kê cao bàn ghế và cho học sinh tan học sớm 15 phút.',
-          sender: 'Thầy Hiệu Trưởng',
-          time: '10 phút trước',
-          isRead: false
-        },
-        {
-          id: 2,
-          urgency: 'HIGH',
-          title: 'Yêu cầu nộp danh sách REQ-2026-001',
-          content: 'Các lớp Khối 2 hoàn tất rà soát học sinh nhận học bổng trước 16h30.',
-          sender: 'BGH Chuyên Môn',
-          time: '1 giờ trước',
-          isRead: false
-        }
-      ]
+      notifications: []
     };
 
     // Initialize System on DOM Ready
@@ -1258,13 +1204,13 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         case 'deputy_head':
           badge.textContent = AppState.isDelegatedToDeputy ? '⚡ TỔ PHÓ (ĐƯỢC ỦY QUYỀN ĐIỀU HÀNH)' : '🎗️ TỔ PHÓ CHUYÊN MÔN';
           badge.className = AppState.isDelegatedToDeputy ? 'px-2.5 py-1 rounded-md bg-amber-900 text-amber-200 border border-amber-600 font-bold text-xs animate-pulse' : 'px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700 font-semibold text-xs';
-          desc.textContent = AppState.isDelegatedToDeputy ? 'Đang thực thi toàn bộ quyền hạn của Tổ trưởng theo ủy quyền.' : 'Hỗ trợ Tổ trưởng quản lý nề nếp Khối 2 và giảng dạy Lớp 2B.';
+          desc.textContent = AppState.isDelegatedToDeputy ? 'Đang thực thi toàn bộ quyền hạn của Tổ trưởng theo ủy quyền.' : 'Hỗ trợ Tổ trưởng quản lý nề nếp tổ chuyên môn.';
           showTab('tab-horizontal-stream');
           break;
         case 'teacher':
           badge.textContent = '👩‍🏫 GIÁO VIÊN BỘ MÔN / CHỦ NHIỆM';
           badge.className = 'px-2.5 py-1 rounded-md bg-emerald-900 text-emerald-200 border border-emerald-700 font-bold text-xs';
-          desc.textContent = 'Lớp 2A (Điểm Trung Tâm): Nhập báo cáo tuần 3 tab, nhận nhiệm vụ đột xuất 30s.';
+          desc.textContent = 'Nhập báo cáo tuần 3 tab, nhận nhiệm vụ đột xuất 30s.';
           showTab('tab-teacher-report');
           break;
         case 'guest':
@@ -1293,7 +1239,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         badge.textContent = 'BẬT';
         badge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-brand-900 text-brand-300 border border-brand-700';
         notice.classList.remove('hidden');
-        showToast('Đã BẬT ủy quyền cho Tổ phó! Thầy Trần Đình Trọng có đầy đủ thẩm quyền phê duyệt.', 'success');
+        showToast('Đã BẬT ủy quyền cho Tổ phó! Tổ phó có đầy đủ thẩm quyền điều hành và phê duyệt.', 'success');
       } else {
         btn.classList.add('bg-slate-700');
         btn.classList.remove('bg-brand-600');
@@ -1337,35 +1283,20 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         
         let cellsHtml = `
           <td class="p-3 font-medium text-white flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full ${bIdx === 3 ? 'bg-red-500' : 'bg-brand-500'}"></span>
+            <span class="w-2 h-2 rounded-full bg-slate-600"></span>
             ${branch.name}
           </td>
         `;
 
         AppState.grades.forEach((grade, gIdx) => {
-          let statusColor = 'bg-emerald-500';
-          let statusText = 'Đúng hạn';
-          let badge = '✓';
-
-          // Specific realistic mock variations
-          if (bIdx === 3 && gIdx === 1) {
-            statusColor = 'bg-red-500';
-            statusText = 'CSVC Khẩn cấp (Quạt hỏng)';
-            badge = '!';
-          } else if (bIdx === 2 && gIdx === 3) {
-            statusColor = 'bg-amber-500';
-            statusText = 'Nộp bù trễ 15p';
-            badge = '~';
-          } else if (bIdx === 4 && gIdx === 0) {
-            statusColor = 'bg-amber-500';
-            statusText = 'Mưa lớn đường xa';
-            badge = '~';
-          }
+          const statusColor = 'bg-slate-800 border border-slate-700 text-slate-400';
+          const statusText = 'Chưa có báo cáo';
+          const badge = '-';
 
           cellsHtml += `
             <td class="p-3 text-center">
               <button onclick="viewMatrixCellDetail('${branch.name}', '${grade.name}', '${statusText}')" 
-                class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${statusColor} text-slate-950 font-bold text-xs inline-flex items-center justify-center shadow hover:scale-110 transition-transform" 
+                class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${statusColor} font-bold text-xs inline-flex items-center justify-center shadow hover:scale-110 transition-transform" 
                 title="${branch.name} - ${grade.name}: ${statusText}">
                 ${badge}
               </button>
@@ -1374,8 +1305,8 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         });
 
         cellsHtml += `
-          <td class="p-3 text-center font-bold ${bIdx === 3 ? 'text-amber-400' : 'text-emerald-400'}">
-            ${bIdx === 3 ? '92%' : '98%'}
+          <td class="p-3 text-center font-bold text-slate-500">
+            0%
           </td>
         `;
 
@@ -1409,65 +1340,8 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       showToast(`Đã lọc danh mục: ${catName}`);
     }
 
-    // Resource Hub Mock Data
-    const mockResources = [
-      {
-        id: 1,
-        title: 'Bài giảng tương tác: Bảng nhân 7 (Tích hợp Canva)',
-        subject: 'Toán',
-        grade: 2,
-        type: 'CANVA',
-        yccd: 'Nhớ bảng nhân 7, giải toán có lời văn 1 bước tính',
-        author: 'Cô Nguyễn Thị Mai',
-        driveLink: 'https://drive.google.com',
-        format: 'PPTX',
-        level: 2,
-        rating: 5.0,
-        cluster: true
-      },
-      {
-        id: 2,
-        title: 'Bộ phiếu bài tập chế tạo: Chong chóng gió STEM Buổi 2',
-        subject: 'STEM Buổi 2',
-        grade: 2,
-        type: 'STEM',
-        yccd: 'Nhận biết năng lượng gió, rèn kỹ năng thực hành nhóm',
-        author: 'Thầy Lê Văn Hùng',
-        driveLink: 'https://drive.google.com',
-        format: 'DOCX',
-        level: 3,
-        rating: 4.9,
-        cluster: true
-      },
-      {
-        id: 3,
-        title: 'Ngân hàng 50 câu trắc nghiệm 3 mức độ (Thông tư 27)',
-        subject: 'Tiếng Việt',
-        grade: 2,
-        type: 'TT27',
-        yccd: 'Mức 1: Nhận biết, Mức 2: Kết nối, Mức 3: Vận dụng từ chỉ đặc điểm',
-        author: 'Cô Phan Kim Oanh',
-        driveLink: 'https://drive.google.com',
-        format: 'DOCX',
-        level: 1,
-        rating: 4.8,
-        cluster: false
-      },
-      {
-        id: 4,
-        title: 'Sổ tay Văn hóa đọc: 20 Câu chuyện nuôi dưỡng tâm hồn',
-        subject: 'Văn hóa đọc',
-        grade: 2,
-        type: 'READING',
-        yccd: 'Hình thành thói quen tự đọc sách 15 phút mỗi ngày',
-        author: 'Thầy Trần Đình Trọng',
-        driveLink: 'https://drive.google.com',
-        format: 'PDF',
-        level: 2,
-        rating: 5.0,
-        cluster: true
-      }
-    ];
+    // Resource Hub Data
+    const mockResources = [];
 
     function initResourceHub() {
       renderResourceCards(mockResources);
@@ -1476,6 +1350,18 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
     function renderResourceCards(items) {
       const grid = document.getElementById('resourceCardsGrid');
       grid.innerHTML = '';
+
+      if (!items || items.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-slate-850 rounded-xl border border-slate-800 text-slate-400 text-xs">
+            <i data-lucide="folder-open" class="w-8 h-8 text-slate-500 mx-auto mb-2"></i>
+            <p class="font-medium text-slate-300">Kho học liệu số hiện chưa có tài liệu nào.</p>
+            <p class="text-[11px] text-slate-500 mt-1">Bấm "+ Đóng Góp Học Liệu" để chia sẻ bài giảng hoặc kế hoạch bài dạy đầu tiên.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
 
       items.forEach(item => {
         const card = document.createElement('div');
@@ -1537,13 +1423,19 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       const container = document.getElementById('horizontalCardsGrid');
       container.innerHTML = '';
 
-      const classesK2 = [
-        { name: 'Lớp 2A', branch: 'Điểm Trung Tâm', gv: 'Cô Nguyễn Thị Mai', progress: 'Đúng tiến độ', weak: 'Em Tuấn, Lan (rèn trừ có nhớ)' },
-        { name: 'Lớp 2B', branch: 'Điểm 1 (Phú Hội 1)', gv: 'Thầy Trần Đình Trọng (Tổ phó)', progress: 'Đúng tiến độ', weak: 'Em Hùng (đọc ngắt nghỉ)' },
-        { name: 'Lớp 2C', branch: 'Điểm 2 (Phú Hội 2)', gv: 'Thầy Bùi Quang Minh', progress: 'Nộp bù trễ 15p', weak: 'Em Cường, Yến (tính nhẩm)' },
-        { name: 'Lớp 2D', branch: 'Điểm 3 (Tân Dân)', gv: 'Cô Đặng Thùy Trang', progress: 'Đúng tiến độ', weak: 'Em Bình (chính tả c/k)' },
-        { name: 'Lớp 2E', branch: 'Điểm 4 (Suối Mơ)', gv: 'Thầy Vừ A Lầu', progress: 'Mưa lớn đường xa', weak: '3 HS người đồng bào cần rèn tiếng Việt' }
-      ];
+      const classesK2 = [];
+
+      if (classesK2.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-slate-850 rounded-xl border border-slate-800 text-slate-400 text-xs">
+            <i data-lucide="users" class="w-8 h-8 text-slate-500 mx-auto mb-2"></i>
+            <p class="font-medium text-slate-300">Chưa có dữ liệu báo cáo tuần từ các lớp.</p>
+            <p class="text-[11px] text-slate-500 mt-1">Dữ liệu luồng ngang sẽ tự động hiển thị khi giáo viên nộp báo cáo tuần.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
 
       classesK2.forEach(c => {
         const card = document.createElement('div');
@@ -1562,6 +1454,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         `;
         container.appendChild(card);
       });
+      lucide.createIcons();
     }
 
     // Vertical Stream (Facilities & Branches)
@@ -1569,11 +1462,19 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       const container = document.getElementById('facilityItemsContainer');
       container.innerHTML = '';
 
-      const items = [
-        { branch: 'Điểm 3 (Tân Dân)', room: 'Phòng học 2D', issue: 'Quạt trần rung lắc mạnh nguy hiểm', urgency: 'RẤT KHẨN CẤP', status: 'Chờ thợ xử lý' },
-        { branch: 'Điểm 1 (Phú Hội 1)', room: 'Khu vệ sinh nữ', issue: 'Rò rỉ nước khóa van số 2', urgency: 'BÌNH THƯỜNG', status: 'Đã báo bảo vệ' },
-        { branch: 'Điểm 4 (Suối Mơ)', room: 'Phòng thư viện', issue: 'Mái hiên bị dột nước khi mưa to', urgency: 'KHẨN CẤP', status: 'Đã khảo sát' }
-      ];
+      const items = [];
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-slate-850 rounded-xl border border-slate-800 text-slate-400 text-xs">
+            <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-500 mx-auto mb-2"></i>
+            <p class="font-medium text-emerald-300">Hiện không có sự cố cơ sở vật chất nào cần xử lý.</p>
+            <p class="text-[11px] text-slate-400 mt-1">Cơ sở vật chất tại toàn bộ các phân hiệu đang hoạt động bình thường.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
 
       items.forEach(it => {
         const div = document.createElement('div');
@@ -1592,6 +1493,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         `;
         container.appendChild(div);
       });
+      lucide.createIcons();
     }
 
     function resolveFacilityIssue(btn) {
@@ -1605,17 +1507,18 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       const tbody = document.getElementById('complianceTableBody');
       tbody.innerHTML = '';
 
-      const teachers = [
-        { name: 'Nguyễn Thị Mai', class: '2A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:10' },
-        { name: 'Trần Đình Trọng', class: '2B', branch: 'Điểm 1', status: 'Đúng hạn', open: 'Hôm nay 07:15' },
-        { name: 'Bùi Quang Minh', class: '2C', branch: 'Điểm 2', status: 'Nộp trễ 15p', open: 'Hôm nay 08:30' },
-        { name: 'Đặng Thùy Trang', class: '2D', branch: 'Điểm 3', status: 'Đúng hạn', open: 'Hôm nay 07:05' },
-        { name: 'Vừ A Lầu', class: '2E', branch: 'Điểm 4', status: 'Chưa nộp', open: 'Hôm qua 18:20' },
-        { name: 'Lê Thu Thủy', class: '1A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:22' },
-        { name: 'Hoàng Văn Nam', class: '3A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:40' },
-        { name: 'Vũ Thị Hạnh', class: '4A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:35' },
-        { name: 'Trịnh Hoài An', class: '5A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:18' }
-      ];
+      const teachers = [];
+
+      if (teachers.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-6 text-center text-slate-500 text-xs italic">
+              Chưa có dữ liệu giám sát nề nếp giáo viên trong tuần này.
+            </td>
+          </tr>
+        `;
+        return;
+      }
 
       teachers.forEach((t, i) => {
         const tr = document.createElement('tr');
@@ -1668,34 +1571,44 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       showTab('tab-master-matrix');
     }
 
-    // Quick Data Collection (REQ-2026-001)
+    // Quick Data Collection
     function quickSubmitNoTargetStudent() {
-      showToast('Xác nhận: Lớp 2A không có học sinh diện học bổng đợt này. Hoàn thành trong 5 giây!', 'success');
+      showToast('Xác nhận: Lớp không có đối tượng thuộc diện rà soát đợt này. Hoàn thành trong 5 giây!', 'success');
       // Add to live aggregation
       const liveList = document.getElementById('liveAggregationList');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
-        <td class="py-1.5 px-2.5 text-slate-300">Cô Nguyễn Thị Mai</td>
-        <td class="py-1.5 px-2.5 text-emerald-400 font-medium">Không có đối tượng (0)</td>
-        <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
-      `;
-      liveList.prepend(tr);
-    }
-
-    function openQuickStudentModal() {
-      const studentName = prompt('Nhập họ tên học sinh diện khó khăn của lớp (hoặc ghi rõ lý do):', 'Nguyễn Văn Tuấn - Hộ nghèo thôn 1');
-      if (studentName) {
-        showToast(`Đã thêm học sinh [${studentName}] vào danh sách gửi BGH!`, 'success');
-        const liveList = document.getElementById('liveAggregationList');
+      if (liveList) {
+        if (liveList.querySelector('td[colspan]')) {
+          liveList.innerHTML = '';
+        }
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
-          <td class="py-1.5 px-2.5 text-slate-300">Cô Nguyễn Thị Mai</td>
-          <td class="py-1.5 px-2.5 text-amber-300 font-medium">${studentName}</td>
+          <td class="py-1.5 px-2.5 text-slate-300">Giáo viên phụ trách</td>
+          <td class="py-1.5 px-2.5 text-emerald-400 font-medium">Không có đối tượng (0)</td>
           <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
         `;
         liveList.prepend(tr);
+      }
+    }
+
+    function openQuickStudentModal() {
+      const studentName = prompt('Nhập họ tên học sinh và thông tin (Ví dụ: Họ và tên - Diện khó khăn):');
+      if (studentName) {
+        showToast(`Đã thêm học sinh [${studentName}] vào danh sách gửi BGH!`, 'success');
+        const liveList = document.getElementById('liveAggregationList');
+        if (liveList) {
+          if (liveList.querySelector('td[colspan]')) {
+            liveList.innerHTML = '';
+          }
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
+            <td class="py-1.5 px-2.5 text-slate-300">Giáo viên phụ trách</td>
+            <td class="py-1.5 px-2.5 text-amber-300 font-medium">${studentName}</td>
+            <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
+          `;
+          liveList.prepend(tr);
+        }
       }
     }
 
@@ -1705,19 +1618,19 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       try {
         const wb = XLSX.utils.book_new();
         const data = [
-          ['PHÒNG GD&ĐT VẠN NINH - TRƯỜNG TIỂU HỌC PHÚ THẠNH'],
-          ['BẢNG TỔNG HỢP MA TRẬN TIẾN ĐỘ 5 PHÂN HIỆU × 6 TỔ CHUYÊN MÔN (TUẦN 4)'],
+          ['PHÒNG GIÁO DỤC VÀ ĐÀO TẠO - TRƯỜNG TIỂU HỌC'],
+          ['BẢNG TỔNG HỢP MA TRẬN TIẾN ĐỘ 5 PHÂN HIỆU × 6 TỔ CHUYÊN MÔN'],
           [''],
           ['Phân Hiệu', 'Khối 1', 'Khối 2', 'Khối 3', 'Khối 4', 'Khối 5', 'Văn-Thể-Mỹ', 'Tiến Độ Chung'],
-          ['Điểm Trung Tâm', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '100%'],
-          ['Điểm 1 (Phú Hội 1)', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '100%'],
-          ['Điểm 2 (Phú Hội 2)', 'Đúng hạn', 'Nộp trễ 15p', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '95%'],
-          ['Điểm 3 (Tân Dân)', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'CSVC Hỏng', 'Đúng hạn', 'Đúng hạn', '92%'],
-          ['Điểm 4 (Suối Mơ)', 'Mưa lớn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '94%']
+          ['Điểm Trung Tâm', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', '0%'],
+          ['Điểm 1', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', '0%'],
+          ['Điểm 2', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', '0%'],
+          ['Điểm 3', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', '0%'],
+          ['Điểm 4', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', 'Chưa có báo cáo', '0%']
         ];
         const ws = XLSX.utils.aoa_to_sheet(data);
         XLSX.utils.book_append_sheet(wb, ws, 'MaTran_5x6');
-        XLSX.writeFile(wb, 'BaoCao_MaTran_TH_PhuThanh_Tuan4.xlsx');
+        XLSX.writeFile(wb, 'BaoCao_MaTran_ChuyenMon.xlsx');
         showToast('Xuất Excel thành công! Đã lưu tệp vào máy.', 'success');
       } catch (err) {
         showToast('Lỗi khi xuất file Excel: ' + err.message, 'error');
@@ -1740,25 +1653,25 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       `;
       const body = `
         <div style="text-align: center;">
-          <p><b>PHÒNG GIÁO DỤC VÀ ĐÀO TẠO VẠN NINH<br/>TRƯỜNG TIỂU HỌC PHÚ THẠNH</b></p>
+          <p><b>PHÒNG GIÁO DỤC VÀ ĐÀO TẠO<br/>TRƯỜNG TIỂU HỌC</b></p>
           <p style="font-size: 14pt;"><b>BÁO CÁO TỔNG HỢP TIẾN ĐỘ CHUYÊN MÔN MA TRẬN 5 PHÂN HIỆU</b></p>
           <p><i>(Ban hành theo CV 4069/BGDĐT-GDPT & TT 27/2020/TT-BGDĐT)</i></p>
         </div>
-        <p style="text-indent: 1.25cm;">Kính gửi: Ban Giám Hiệu Trường Tiểu Học Phú Thạnh và Lãnh đạo Phòng GD&ĐT.</p>
-        <p>Tổ chuyên môn báo cáo tổng hợp tiến độ giảng dạy và nề nếp tuần 4:</p>
+        <p style="text-indent: 1.25cm;">Kính gửi: Ban Giám Hiệu và Lãnh đạo Phòng Giáo dục và Đào tạo.</p>
+        <p>Tổ chuyên môn báo cáo tổng hợp tiến độ giảng dạy và nề nếp tuần vừa qua:</p>
         <table>
           <tr><th>Phân Hiệu</th><th>Khối 1</th><th>Khối 2</th><th>Khối 3</th><th>Khối 4</th><th>Khối 5</th><th>Văn-Thể-Mỹ</th><th>Tỷ Lệ</th></tr>
-          <tr><td>Điểm Trung Tâm</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>100%</td></tr>
-          <tr><td>Điểm 1 (Phú Hội 1)</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>100%</td></tr>
-          <tr><td>Điểm 2 (Phú Hội 2)</td><td>Đúng hạn</td><td>Nộp trễ 15p</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>95%</td></tr>
-          <tr><td>Điểm 3 (Tân Dân)</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>CSVC Hỏng</td><td>Đúng hạn</td><td>Đúng hạn</td><td>92%</td></tr>
-          <tr><td>Điểm 4 (Suối Mơ)</td><td>Mưa lớn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>94%</td></tr>
+          <tr><td>Điểm Trung Tâm</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0%</td></tr>
+          <tr><td>Điểm 1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0%</td></tr>
+          <tr><td>Điểm 2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0%</td></tr>
+          <tr><td>Điểm 3</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0%</td></tr>
+          <tr><td>Điểm 4</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>0%</td></tr>
         </table>
         <br/><br/>
         <table style="border: none;">
           <tr style="border: none;">
-            <td style="border: none; text-align: center; width: 50%;"><b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/><br/><br/>Phan Kim Oanh</td>
-            <td style="border: none; text-align: center; width: 50%;"><b>HIỆU TRƯỞNG PHÊ DUYỆT</b><br/><br/><br/>Nguyễn Văn An</td>
+            <td style="border: none; text-align: center; width: 50%;"><b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/><i>(Ký và ghi rõ họ tên)</i><br/><br/><br/>(Họ và tên)</td>
+            <td style="border: none; text-align: center; width: 50%;"><b>HIỆU TRƯỞNG PHÊ DUYỆT</b><br/><i>(Ký, đóng dấu và ghi rõ họ tên)</i><br/><br/><br/>(Họ và tên)</td>
           </tr>
         </table>
       `;
@@ -1800,7 +1713,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       showToast('Trợ lý AI đang phân tích biên bản và trích xuất YCCĐ...', 'info');
       setTimeout(() => {
         const area = document.getElementById('meetingMinutesContent');
-        area.value += "\n\n[TRỢ LÝ AI TỔNG HỢP]: Tiết học minh họa môn Toán bảng nhân 7 đạt 100% mục tiêu YCCĐ. Đề xuất nhân rộng trò chơi que tính cho toàn bộ 5 phân hiệu.";
+        area.value += "\n\n[TRỢ LÝ AI TỔNG HỢP]: Tiết học minh họa bám sát mục tiêu YCCĐ của chương trình GDPT 2018 theo Công văn số 4069/BGDĐT-GDPT. Đề xuất nhân rộng các phương pháp tổ chức hoạt động học tích cực cho các phân hiệu.";
         showToast('Trợ lý AI đã tóm tắt thành công!', 'success');
       }, 1000);
     }
@@ -1814,6 +1727,17 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
     function renderNotifications() {
       const list = document.getElementById('notificationsList');
       list.innerHTML = '';
+
+      if (!AppState.notifications || AppState.notifications.length === 0) {
+        list.innerHTML = `
+          <div class="p-8 text-center text-slate-500 text-xs italic space-y-2">
+            <i data-lucide="bell-off" class="w-8 h-8 text-slate-600 mx-auto"></i>
+            <p>Không có thông báo mới nào.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
 
       AppState.notifications.forEach(n => {
         const card = document.createElement('div');
@@ -1885,11 +1809,11 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
         openNewSchoolModal();
         return;
       }
-      showToast(`Đã chuyển không gian làm việc sang: ${schoolId === '1' ? 'Trường TH Phú Thạnh' : 'Trường TH Vạn Thắng'}`);
+      showToast('Đã chuyển không gian làm việc của trường.');
     }
 
     function openNewSchoolModal() {
-      const name = prompt('Nhập tên trường học mới cần khởi tạo không gian:', 'Trường Tiểu Học Vạn Giã');
+      const name = prompt('Nhập tên trường học mới cần khởi tạo không gian:');
       if (name) {
         showToast(`Đã tạo thành công không gian làm việc riêng cho [${name}] (0 đồng trọn đời)!`, 'success');
       }
@@ -1904,7 +1828,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "SynchroEdu_FullBackup_PhuThanh.json");
+      downloadAnchor.setAttribute("download", "SynchroEdu_FullBackup.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();

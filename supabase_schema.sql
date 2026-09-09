@@ -274,44 +274,30 @@ AFTER INSERT ON notifications
 FOR EACH ROW EXECUTE FUNCTION populate_notification_reads();
 
 -- ==============================================================================
--- DỮ LIỆU MẪU BAN ĐẦU (SEED DATA: 5 PHÂN HIỆU, 6 TỔ, 32 GIÁO VIÊN)
+-- CƠ SỞ DỮ LIỆU SẠCH (KHÔNG CHỨA DỮ LIỆU MẪU)
+-- Dữ liệu trường học, giáo viên và báo cáo sẽ được khởi tạo thực tế khi sử dụng
 -- ==============================================================================
 
-INSERT INTO clusters (id, name, district, province) 
-VALUES (1, 'Cụm Chuyên Môn Tiểu Học Số 1 - Huyện Vạn Ninh', 'Huyện Vạn Ninh', 'Khánh Hòa')
-ON CONFLICT (id) DO NOTHING;
+-- ==============================================================================
+-- BẢO MẬT DỮ LIỆU ĐA TRƯỜNG & ĐA PHÂN HIỆU (ROW LEVEL SECURITY - RLS)
+-- ==============================================================================
+ALTER TABLE clusters ENABLE ROW LEVEL SECURITY;
+ALTER TABLE schools ENABLE ROW LEVEL SECURITY;
+ALTER TABLE branches ENABLE ROW LEVEL SECURITY;
+ALTER TABLE departments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE weekly_reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE data_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE student_submissions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE resource_hub ENABLE ROW LEVEL SECURITY;
+ALTER TABLE meeting_minutes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notification_reads ENABLE ROW LEVEL SECURITY;
 
-INSERT INTO schools (id, cluster_id, name, short_name, code, address, principal_name)
-VALUES (1, 1, 'Trường Tiểu Học Phú Thạnh', 'TH Phú Thạnh', 'TH-PHUTHANH', 'Xã Phú Thạnh, Vạn Ninh, Khánh Hòa', 'Thầy Nguyễn Văn An')
-ON CONFLICT (id) DO NOTHING;
+-- Policies cơ bản cho truy cập dữ liệu
+CREATE POLICY "Cho phép truy cập kho học liệu cụm" ON resource_hub FOR ALL USING (true);
+CREATE POLICY "Cho phép truy cập thông tin trường" ON schools FOR ALL USING (true);
+CREATE POLICY "Cho phép truy cập thông tin phân hiệu" ON branches FOR ALL USING (true);
+CREATE POLICY "Cho phép truy cập thông tin tổ chuyên môn" ON departments FOR ALL USING (true);
+CREATE POLICY "Cho phép truy cập báo cáo theo trường" ON weekly_reports FOR ALL USING (true);
 
-INSERT INTO branches (id, school_id, name, code, distance_from_center_km) VALUES
-(1, 1, 'Điểm Trung Tâm (Thôn 1)', 'BRANCH_CENTER', 0.0),
-(2, 1, 'Điểm 1 (Thôn Phú Hội 1)', 'BRANCH_1', 3.5),
-(3, 1, 'Điểm 2 (Thôn Phú Hội 2)', 'BRANCH_2', 5.2),
-(4, 1, 'Điểm 3 (Thôn Tân Dân)', 'BRANCH_3', 7.8),
-(5, 1, 'Điểm 4 (Khu Vùng Cao Suối Mơ)', 'BRANCH_4', 11.5)
-ON CONFLICT (id) DO NOTHING;
-
-INSERT INTO departments (id, school_id, name, grade_level) VALUES
-(1, 1, 'Tổ Chuyên Môn Khối 1', 1),
-(2, 1, 'Tổ Chuyên Môn Khối 2', 2),
-(3, 1, 'Tổ Chuyên Môn Khối 3', 3),
-(4, 1, 'Tổ Chuyên Môn Khối 4', 4),
-(5, 1, 'Tổ Chuyên Môn Khối 5', 5),
-(6, 1, 'Tổ Văn - Thể - Mỹ (Âm nhạc, Mĩ thuật, Thể chất, Tiếng Anh)', NULL)
-ON CONFLICT (id) DO NOTHING;
-
-INSERT INTO users (id, school_id, branch_id, dept_id, full_name, email, role, assigned_class) VALUES
-(1, 1, 1, NULL, 'Thầy Nguyễn Văn An', 'hieutruong@phuthanh.edu.vn', 'PRINCIPAL', 'BGH Toàn trường'),
-(2, 1, 1, NULL, 'Cô Trần Thị Hương', 'hieupho_cm@phuthanh.edu.vn', 'VICE_PRINCIPAL', 'BGH Chuyên môn'),
-(3, 1, 4, NULL, 'Thầy Lê Hoàng Đức', 'hieupho_diem@phuthanh.edu.vn', 'VICE_PRINCIPAL', 'Phụ trách Điểm 3, 4'),
-(4, 1, 1, 2, 'Cô Phan Kim Oanh', 'totruong_k2@phuthanh.edu.vn', 'HEAD_DEPT', 'Tổ trưởng Khối 2'),
-(5, 1, 2, 2, 'Thầy Trần Đình Trọng', 'topho_k2@phuthanh.edu.vn', 'DEPUTY_HEAD', 'Tổ phó Khối 2 - Lớp 2B'),
-(6, 1, 1, 2, 'Cô Nguyễn Thị Mai', 'gv_mai@phuthanh.edu.vn', 'TEACHER', 'Lớp 2A (Điểm TT)'),
-(7, 1, 3, 2, 'Thầy Bùi Quang Minh', 'gv_minh@phuthanh.edu.vn', 'TEACHER', 'Lớp 2C (Điểm 2)'),
-(8, 1, 4, 2, 'Cô Đặng Thùy Trang', 'gv_trang@phuthanh.edu.vn', 'TEACHER', 'Lớp 2D (Điểm 3)'),
-(9, 1, 5, 2, 'Thầy Vừ A Lầu', 'gv_lau@phuthanh.edu.vn', 'TEACHER', 'Lớp 2E (Điểm 4 Suối Mơ)')
-ON CONFLICT (id) DO NOTHING;
-
-UPDATE departments SET head_id = 4, deputy_id = 5 WHERE id = 2;
