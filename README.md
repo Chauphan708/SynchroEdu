@@ -1,8 +1,8 @@
 # SynchroEdu 🎓🏫
 ### Nền Tảng Quản Trị Sinh Hoạt Chuyên Môn Số & Báo Cáo Ma Trận 2D Cấp Tiểu Học
 
-[![SynchroEdu CI](https://github.com/your-username/synchroedu/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/synchroedu/actions/workflows/ci.yml)
-[![Deploy to GitHub Pages](https://github.com/your-username/synchroedu/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/your-username/synchroedu/actions/workflows/deploy-pages.yml)
+[![SynchroEdu CI](https://github.com/Chauphan708/SynchroEdu/actions/workflows/ci.yml/badge.svg)](https://github.com/Chauphan708/SynchroEdu/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/Chauphan708/SynchroEdu/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/Chauphan708/SynchroEdu/actions/workflows/deploy-pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![PWA Ready](https://img.shields.io/badge/PWA-Mobile--First-blue.svg)](manifest.json)
 [![Zero Cost](https://img.shields.io/badge/Cost-0%C4%91%20Lifetime-success.svg)](DEPLOY_0_DONG.md)
@@ -154,7 +154,7 @@ git branch -M main
 
 # 5. Liên kết với kho lưu trữ trên GitHub của bạn
 # (Thay your-username bằng tài khoản GitHub của bạn)
-git remote add origin https://github.com/your-username/synchroedu.git
+git remote add origin https://github.com/Chauphan708/SynchroEdu.git
 
 # 6. Đẩy mã nguồn lên GitHub
 git push -u origin main
