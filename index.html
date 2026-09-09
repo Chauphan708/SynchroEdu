@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>EduMatrix - SHCM Pro: Quản Trị Chuyên Môn & Báo Cáo Ma Trận 2D</title>
+  <meta name="description" content="Hệ thống Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo CV 4069/BGDĐT-GDPT và TT 27/2020/TT-BGDĐT" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#065f46" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- SheetJS (xlsx) for full Excel export -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22'
+            },
+            slate: {
+              850: '#151f32',
+              900: '#0f172a',
+              950: '#090d16'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Design Guidance - Contrast & Typography */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
+    }
+
+    /* Print Preview according to Nghị định 30/2020/NĐ-CP */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-area, #printable-area * {
+        visibility: visible;
+      }
+      #printable-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20mm 15mm 20mm 20mm;
+        font-family: "Times New Roman", Times, serif !important;
+        color: #000 !important;
+        background: #fff !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-full flex flex-col antialiased selection:bg-brand-600 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- TOP HEADER (DESKTOP & MOBILE) -->
+  <!-- ========================================================================= -->
+  <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-3 py-2.5 sm:px-6 sm:py-3 flex items-center justify-between shadow-md">
+    <!-- Brand & School Selector -->
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-brand-800 border border-brand-600 flex items-center justify-center text-brand-100 font-bold text-lg shadow-inner">
+        <i data-lucide="graduation-cap" class="w-5 h-5 text-brand-400"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm sm:text-base text-white tracking-tight">EduMatrix - SHCM Pro</span>
+          <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-brand-900/80 text-brand-300 border border-brand-700/50">
+            Tiểu Học (CV 4069 & TT 27)
+          </span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+          <i data-lucide="building" class="w-3.5 h-3.5 text-brand-400"></i>
+          <select id="schoolSelector" onchange="changeSchool(this.value)" class="bg-transparent text-slate-300 border-0 focus:ring-0 cursor-pointer font-medium hover:text-white transition-colors p-0 text-xs">
+            <option value="1" selected>Trường Tiểu Học Phú Thạnh (5 Phân Hiệu)</option>
+            <option value="2">Trường Tiểu Học Vạn Thắng (3 Phân Hiệu)</option>
+            <option value="3">Trường Tiểu Học Vạn Khánh (4 Phân Hiệu)</option>
+            <option value="new">+ Khởi tạo Trường Mới Trong Cụm...</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role Switcher & Header Controls -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Role Switcher -->
+      <div class="flex items-center gap-1.5 bg-slate-800/90 rounded-lg px-2 py-1.5 border border-slate-700 text-xs">
+        <i data-lucide="user-check" class="w-3.5 h-3.5 text-brand-400 hidden sm:inline-block"></i>
+        <select id="roleSelector" onchange="switchRole(this.value)" class="bg-transparent text-slate-200 font-medium border-0 focus:ring-0 cursor-pointer p-0 text-xs pr-4">
+          <option value="principal">Hiệu Trưởng (Thầy Nguyễn Văn An)</option>
+          <option value="vp_branch">Phó Hiệu Trưởng Điểm 3, 4 (Thầy Lê Hoàng Đức)</option>
+          <option value="head_dept" selected>Tổ Trưởng Khối 2 (Cô Phan Kim Oanh)</option>
+          <option value="deputy_head">Tổ Phó Khối 2 (Thầy Trần Đình Trọng)</option>
+          <option value="teacher">Giáo Viên Lớp 2A (Cô Nguyễn Thị Mai)</option>
+          <option value="guest">Khách Mời Cụm Chuyên Môn (Dự giờ liên trường)</option>
+        </select>
+      </div>
+
+      <!-- Delegation Switch (Ủy quyền Tổ phó) -->
+      <div id="delegationContainer" class="hidden sm:flex items-center gap-1.5 bg-brand-950/80 border border-brand-700/60 rounded-lg px-2.5 py-1 text-xs">
+        <span class="text-slate-300 text-[11px]">Ủy quyền Tổ phó:</span>
+        <button id="delegationBtn" onclick="toggleDelegation()" class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-slate-700">
+          <span id="delegationDot" class="translate-x-0 pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+        </button>
+        <span id="delegationBadge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">TẮT</span>
+      </div>
+
+      <!-- Instant Notification Bell -->
+      <button onclick="toggleNotificationDrawer()" class="relative p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors" title="Thông báo khẩn tức thì">
+        <i data-lucide="bell" class="w-4 h-4"></i>
+        <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">2</span>
+      </button>
+
+      <!-- Full Backup 0-Cost Button -->
+      <button onclick="exportFullSystemBackup()" class="hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 transition-colors" title="Sao lưu toàn bộ hệ thống (JSON / No Vendor Lock-in)">
+        <i data-lucide="hard-drive-download" class="w-3.5 h-3.5 text-brand-400"></i>
+        <span>Sao lưu 0đ</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN LAYOUT (DESKTOP SIDEBAR + RESPONSIVE CONTENT AREA) -->
+  <!-- ========================================================================= -->
+  <div class="flex-1 flex overflow-hidden">
+    <!-- Desktop Sidebar Navigation -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 hidden md:flex flex-col justify-between p-3 overflow-y-auto">
+      <div class="space-y-1">
+        <!-- Section: Bàn Chỉ Đạo & Quản Trị -->
+        <div class="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          Chỉ Đạo & Ma Trận 2D
+        </div>
+        <button onclick="showTab('tab-master-matrix')" id="nav-master-matrix" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-800 text-white">
+          <i data-lucide="layout-grid" class="w-4 h-4 text-brand-300"></i>
+          <span>Bàn Chỉ Đạo Ma Trận 5×6</span>
+        </button>
+        <button onclick="showTab('tab-teacher-report')" id="nav-teacher-report" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="clipboard-pen-line" class="w-4 h-4 text-slate-400"></i>
+          <span>Báo Cáo Tuần 3 Tab (GV)</span>
+        </button>
+        <button onclick="showTab('tab-horizontal-stream')" id="nav-horizontal-stream" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="git-branch" class="w-4 h-4 text-slate-400"></i>
+          <span>Luồng Ngang: Khối 5 Điểm</span>
+        </button>
+        <button onclick="showTab('tab-vertical-stream')" id="nav-vertical-stream" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="wrench" class="w-4 h-4 text-slate-400"></i>
+          <span>Luồng Dọc: CSVC & Sĩ Số</span>
+        </button>
+
+        <!-- Section: Sinh Hoạt Chuyên Môn & Tài Nguyên (CV 4069) -->
+        <div class="pt-4 px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          Chuyên Môn & Học Liệu
+        </div>
+        <button onclick="showTab('tab-resource-hub')" id="nav-resource-hub" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="book-open-check" class="w-4 h-4 text-slate-400"></i>
+          <span>Kho Học Liệu Số 13 Môn</span>
+          <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-brand-900 text-brand-300 border border-brand-700/50">Buổi 2</span>
+        </button>
+        <button onclick="showTab('tab-lesson-study')" id="nav-lesson-study" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="users" class="w-4 h-4 text-slate-400"></i>
+          <span>Nghiên Cứu Bài Học 4 Bước</span>
+        </button>
+        <button onclick="showTab('tab-quick-campaign')" id="nav-quick-campaign" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+          <span>Thu Thập Đột Xuất (30s)</span>
+          <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-700/50">REQ</span>
+        </button>
+        <button onclick="showTab('tab-compliance-matrix')" id="nav-compliance-matrix" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="award" class="w-4 h-4 text-slate-400"></i>
+          <span>Nề Nếp & Trễ Hạn 32 GV</span>
+        </button>
+
+        <!-- Section: Cụm Chuyên Môn & Đa Trường -->
+        <div class="pt-4 px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          Mạng Lưới Liên Trường
+        </div>
+        <button onclick="showTab('tab-cluster-portal')" id="nav-cluster-portal" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800">
+          <i data-lucide="qr-code" class="w-4 h-4 text-slate-400"></i>
+          <span>Cổng Cụm & QR Dự Giờ</span>
+        </button>
+      </div>
+
+      <!-- Sidebar Footer: System Status -->
+      <div class="p-3 bg-slate-850 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Cloud Sync: Supabase
+          </span>
+          <span class="text-[10px] font-mono text-slate-500">v5.0</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Không hành chính hóa • Lưu trữ 0đ với Google Drive & Vercel</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="flex-1 overflow-y-auto p-3 sm:p-6 pb-20 md:pb-6 space-y-6">
+
+      <!-- Alert Banner: Role Context Indicator -->
+      <div id="roleContextBanner" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-2 shadow-sm">
+        <div class="flex items-center gap-2 text-xs sm:text-sm">
+          <span id="roleBadge" class="px-2.5 py-1 rounded-md bg-brand-900 text-brand-200 border border-brand-700 font-semibold text-xs">
+            👑 TỔ TRƯỞNG CHUYÊN MÔN
+          </span>
+          <span id="roleDesc" class="text-slate-300">
+            Đang quản lý chuyên môn Khối 2 trên cả 5 phân hiệu.
+          </span>
+        </div>
+        <div id="delegationNotice" class="hidden text-xs text-amber-300 bg-amber-950/80 px-2 py-1 rounded border border-amber-800/60 font-medium">
+          ⚡ Quyền điều hành đang được ủy quyền cho Tổ phó
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 0: BÀN CHỈ ĐẠO BAN GIÁM HIỆU & MA TRẬN 5x6 (TỔNG HỢP TOÀN TRƯỜNG) -->
+      <!-- ===================================================================== -->
+      <section id="tab-master-matrix" class="tab-pane space-y-6">
+        <!-- Top Stats KPIs -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <span>Tỷ lệ nộp đúng hạn</span>
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-bold text-white">94%</div>
+            <div class="text-[11px] text-emerald-400 mt-1 font-medium">30/32 lớp đã gửi báo cáo</div>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <span>Nộp trễ có giải trình</span>
+              <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-bold text-amber-300">2</div>
+            <div class="text-[11px] text-amber-400/90 mt-1 font-medium">Trễ 12 phút & 25 phút</div>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <span>Sự cố CSVC khẩn cấp</span>
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-red-400"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-bold text-red-400">1</div>
+            <div class="text-[11px] text-red-300 mt-1 font-medium">Điểm 3: Quạt rơi hỏng</div>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <span>Học liệu số mới</span>
+              <i data-lucide="file-check" class="w-4 h-4 text-brand-400"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-bold text-brand-300">18</div>
+            <div class="text-[11px] text-brand-400 mt-1 font-medium">Đã thẩm định dùng chung</div>
+          </div>
+        </div>
+
+        <!-- Master Matrix 5x6 Table -->
+        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">
+          <div class="p-4 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="grid" class="w-5 h-5 text-brand-400"></i>
+                Bảng Tổng Hợp Ma Trận 5 Phân Hiệu × 6 Tổ Chuyên Môn
+              </h2>
+              <p class="text-xs text-slate-400 mt-0.5">Hội tụ 1 nguồn nhập duy nhất từ 32 giáo viên - Phân luồng ngang và dọc tức thì</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="exportMatrixExcel()" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-emerald-100 text-xs font-semibold flex items-center gap-1.5 border border-emerald-600 transition-colors">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                <span>Xuất Excel (SheetJS)</span>
+              </button>
+              <button onclick="exportMatrixWord()" class="px-3 py-1.5 rounded-lg bg-blue-800 hover:bg-blue-700 text-blue-100 text-xs font-semibold flex items-center gap-1.5 border border-blue-600 transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4"></i>
+                <span>Xuất Word (.docx)</span>
+              </button>
+              <button onclick="printPreviewDocument()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-colors">
+                <i data-lucide="printer" class="w-4 h-4"></i>
+                <span>In A4 (NĐ 30)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- The 5x6 Matrix Grid Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-850 text-slate-300 font-semibold border-b border-slate-800">
+                <tr>
+                  <th class="p-3">Phân Hiệu / Điểm Trường</th>
+                  <th class="p-3 text-center">Khối 1</th>
+                  <th class="p-3 text-center">Khối 2</th>
+                  <th class="p-3 text-center">Khối 3</th>
+                  <th class="p-3 text-center">Khối 4</th>
+                  <th class="p-3 text-center">Khối 5</th>
+                  <th class="p-3 text-center">Văn-Thể-Mỹ</th>
+                  <th class="p-3 text-center">Tiến Độ Chung</th>
+                </tr>
+              </thead>
+              <tbody id="matrixTableBody" class="divide-y divide-slate-800/80">
+                <!-- Generated dynamically via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+          <div class="p-3 bg-slate-850/60 border-t border-slate-800/60 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+            <div class="flex items-center gap-4">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Đúng tiến độ / Đã nộp</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Nộp trễ có giải trình</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Chưa nộp / Có sự cố</span>
+            </div>
+            <span>Nhấp vào từng ô để xem chi tiết báo cáo và hình ảnh CSVC</span>
+          </div>
+        </div>
+
+        <!-- Live Urgent Issues & Student Aggregation Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Live Student Aggregation (REQ-2026-001) -->
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="p-1.5 rounded-lg bg-amber-950 border border-amber-700 text-amber-400">
+                  <i data-lucide="zap" class="w-4 h-4"></i>
+                </span>
+                <div>
+                  <h3 class="font-bold text-sm text-white">Thu Thập Đột Xuất: REQ-2026-001</h3>
+                  <p class="text-xs text-slate-400">Rà soát học sinh diện khó khăn nhận học bổng xã hội</p>
+                </div>
+              </div>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                28/32 Lớp hoàn thành (87%)
+              </span>
+            </div>
+            
+            <div class="overflow-y-auto max-h-56">
+              <table class="w-full text-left text-xs">
+                <thead class="text-slate-400 bg-slate-850/50">
+                  <tr>
+                    <th class="py-2 px-2.5">Lớp</th>
+                    <th class="py-2 px-2.5">Giáo Viên</th>
+                    <th class="py-2 px-2.5">Đối Tượng</th>
+                    <th class="py-2 px-2.5">Thời Gian</th>
+                  </tr>
+                </thead>
+                <tbody id="liveAggregationList" class="divide-y divide-slate-800/60">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button onclick="exportCampaignExcel()" class="text-xs text-brand-400 hover:text-brand-300 font-medium flex items-center gap-1">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Tải danh sách Excel đợt này
+              </button>
+            </div>
+          </div>
+
+          <!-- Urgent Facility Alert Widget -->
+          <div class="bg-slate-900 rounded-xl border border-slate-800 p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="p-1.5 rounded-lg bg-red-950 border border-red-700 text-red-400">
+                  <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                </span>
+                <div>
+                  <h3 class="font-bold text-sm text-white">Cảnh Báo CSVC Khẩn Cấp Tại Điểm Trường</h3>
+                  <p class="text-xs text-slate-400">Ảnh chụp trực tiếp từ giáo viên phân hiệu chuyển về</p>
+                </div>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded bg-red-900/80 text-red-200 border border-red-700 font-bold">
+                1 Cần xử lý gấp
+              </span>
+            </div>
+
+            <div class="p-3 rounded-lg bg-red-950/20 border border-red-800/40 flex items-start gap-3">
+              <div class="w-20 h-20 rounded bg-slate-800 border border-slate-700 overflow-hidden shrink-0 flex items-center justify-center">
+                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=200&q=80" alt="Ảnh hiện trường CSVC" class="w-full h-full object-cover" />
+              </div>
+              <div class="space-y-1 text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white">Điểm 3 (Thôn Tân Dân) - Lớp 2D</span>
+                  <span class="text-[10px] px-1.5 py-0.2 rounded bg-red-900 text-red-200 font-semibold">RẤT KHẨN CẤP</span>
+                </div>
+                <p class="text-slate-300">Quạt trần phòng học kêu to, có dấu hiệu lỏng ốc treo rung lắc nguy hiểm.</p>
+                <div class="text-slate-400 text-[11px]">Báo cáo bởi: Cô Đặng Thùy Trang • 07:15 sáng nay</div>
+                <div class="pt-1.5 flex gap-2">
+                  <button onclick="resolveFacilityIssue(this)" class="px-2.5 py-1 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-medium text-xs transition-colors">
+                    Đã chuyển thợ sửa chữa
+                  </button>
+                  <button onclick="callBranchLeader('0987654321')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition-colors">
+                    Gọi quản lý điểm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 1: BÁO CÁO TUẦN 3 TAB (DÀNH CHO GIÁO VIÊN - 1 NGUỒN NHẬP) -->
+      <!-- ===================================================================== -->
+      <section id="tab-teacher-report" class="tab-pane hidden space-y-6 max-w-4xl mx-auto">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-6 shadow-sm">
+          <div class="border-b border-slate-800 pb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="clipboard-check" class="w-5 h-5 text-brand-400"></i>
+                Báo Cáo Tuần 3 Bước (1 Nguồn Nhập Duy Nhất)
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Hệ thống tự động chuyển tiếp về Luồng Ngang (Tổ trưởng) và Luồng Dọc (Hiệu phó điểm)</p>
+            </div>
+            <div class="text-xs bg-brand-950 border border-brand-800 text-brand-300 px-3 py-1 rounded-lg font-medium">
+              Tuần 4 • Học kỳ 1 • Lớp 2A (Điểm TT)
+            </div>
+          </div>
+
+          <!-- 3 Tabs Navigation -->
+          <div class="flex border-b border-slate-800 text-xs sm:text-sm font-medium">
+            <button onclick="switchReportSubTab('rep-tab-academic')" id="btn-rep-academic" class="subtab-btn px-4 py-2.5 border-b-2 border-brand-500 text-brand-400 font-bold flex items-center gap-2">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+              <span>1. Chuyên Môn & Bài Dạy</span>
+            </button>
+            <button onclick="switchReportSubTab('rep-tab-facility')" id="btn-rep-facility" class="subtab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+              <i data-lucide="wrench" class="w-4 h-4"></i>
+              <span>2. Cơ Sở Vật Chất & An Toàn</span>
+            </button>
+            <button onclick="switchReportSubTab('rep-tab-feedback')" id="btn-rep-feedback" class="subtab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              <span>3. Phản Ánh & Đề Xuất</span>
+            </button>
+          </div>
+
+          <!-- Tab Content 1: Chuyên Môn -->
+          <div id="rep-tab-academic" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+              <div>
+                <label class="block text-slate-300 mb-1.5 font-medium">Môn học phụ trách:</label>
+                <select id="reportSubject" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:ring-1 focus:ring-brand-500">
+                  <option>Toán (Khối 2)</option>
+                  <option selected>Tiếng Việt (Khối 2)</option>
+                  <option>Tự nhiên và Xã hội (Khối 2)</option>
+                  <option>Đạo đức (Khối 2)</option>
+                  <option>Hoạt động trải nghiệm (Khối 2)</option>
+                  <option>Giáo dục thể chất (Khối 2)</option>
+                  <option>Âm nhạc (Khối 2)</option>
+                  <option>Mĩ thuật (Khối 2)</option>
+                  <option>Tiếng Anh (Khối 2)</option>
+                  <option>Dạy học Buổi 2 (STEM / Kỹ năng sống)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1.5 font-medium">Tiến độ theo phân phối chương trình:</label>
+                <select id="reportProgress" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:ring-1 focus:ring-brand-500">
+                  <option value="ON_TRACK" selected>Đúng tiến độ (Không chậm tiết)</option>
+                  <option value="DELAYED">Chậm tiến độ (Kèm lý do)</option>
+                  <option value="AHEAD">Vượt tiến độ</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1.5 font-medium text-xs sm:text-sm">Danh sách học sinh cần hỗ trợ / phụ đạo (Theo Thông tư 27):</label>
+              <textarea id="reportRemedial" rows="3" placeholder="Ghi rõ tên học sinh và kỹ năng cần rèn (Ví dụ: Em Nguyễn Văn Tuấn - rèn thêm phép trừ có nhớ; Em Lê Thị Lan - đọc ngắt nghỉ hơi)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-xs sm:text-sm focus:ring-1 focus:ring-brand-500"></textarea>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Cơ Sở Vật Chất -->
+          <div id="rep-tab-facility" class="space-y-4 hidden">
+            <div>
+              <label class="block text-slate-300 mb-1.5 font-medium text-xs sm:text-sm">Mức độ tình trạng cơ sở vật chất phòng học:</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                <label class="p-2.5 rounded-lg border border-slate-700 bg-slate-800 flex items-center gap-2 cursor-pointer hover:bg-slate-750">
+                  <input type="radio" name="facility_level" value="NORMAL" checked class="text-brand-500" />
+                  <span>Bình thường tốt</span>
+                </label>
+                <label class="p-2.5 rounded-lg border border-slate-700 bg-slate-800 flex items-center gap-2 cursor-pointer hover:bg-slate-750">
+                  <input type="radio" name="facility_level" value="DEFECT" class="text-amber-500" />
+                  <span>Hư hỏng nhẹ</span>
+                </label>
+                <label class="p-2.5 rounded-lg border border-slate-700 bg-slate-800 flex items-center gap-2 cursor-pointer hover:bg-slate-750">
+                  <input type="radio" name="facility_level" value="URGENT" class="text-orange-500" />
+                  <span>Khẩn cấp</span>
+                </label>
+                <label class="p-2.5 rounded-lg border border-red-800 bg-red-950/30 flex items-center gap-2 cursor-pointer hover:bg-red-950/50">
+                  <input type="radio" name="facility_level" value="EMERGENCY" class="text-red-500" />
+                  <span class="text-red-300 font-bold">Rất khẩn cấp</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1.5 font-medium text-xs sm:text-sm">Mô tả chi tiết sự cố CSVC (nếu có):</label>
+              <input type="text" id="reportFacilityDesc" placeholder="Ví dụ: Bóng đèn huỳnh quang nhấp nháy, vòi nước bồn rửa tay bị rò rỉ..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-xs sm:text-sm focus:ring-1 focus:ring-brand-500" />
+            </div>
+
+            <!-- Camera upload mock -->
+            <div>
+              <label class="block text-slate-300 mb-1.5 font-medium text-xs sm:text-sm">Chụp ảnh hiện trường hư hỏng (Gửi thẳng Phó Hiệu trưởng điểm):</label>
+              <div class="border-2 border-dashed border-slate-700 rounded-xl p-4 text-center hover:border-brand-500 transition-colors bg-slate-850 cursor-pointer">
+                <i data-lucide="camera" class="w-8 h-8 text-slate-400 mx-auto mb-2"></i>
+                <p class="text-xs text-slate-300 font-medium">Bấm vào đây để chụp ảnh từ camera điện thoại hoặc tải file</p>
+                <p class="text-[11px] text-slate-500 mt-1">Hỗ trợ JPG, PNG dưới 5MB</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 3: Phản Ánh & Đề Xuất -->
+          <div id="rep-tab-feedback" class="space-y-4 hidden">
+            <div>
+              <label class="block text-slate-300 mb-1.5 font-medium text-xs sm:text-sm">Ý kiến đề xuất đối với Tổ chuyên môn và Nhà trường:</label>
+              <textarea id="reportSuggestions" rows="4" placeholder="Đề xuất về đồ dùng dạy học, bài tập STEM buổi 2, đề xuất chuyên đề sinh hoạt tổ..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-xs sm:text-sm focus:ring-1 focus:ring-brand-500"></textarea>
+            </div>
+          </div>
+
+          <!-- Form Submit Button -->
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <div class="text-xs text-slate-400">
+              <span class="text-emerald-400 font-medium">✓ Đã tự động lưu bản nháp</span>
+            </div>
+            <button onclick="submitTeacherReport()" class="px-6 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-brand-950 transition-colors">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Gửi Báo Cáo Tuần 4</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 2: LUỒNG NGANG - THEO DÕI CHUYÊN MÔN KHỐI 5 ĐIỂM TRƯỜNG -->
+      <!-- ===================================================================== -->
+      <section id="tab-horizontal-stream" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="git-branch" class="w-5 h-5 text-brand-400"></i>
+                Luồng Ngang: Theo Dõi Tiến Độ Chuyên Môn Khối 2 (5 Phân Hiệu)
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Dành cho Tổ trưởng & Tổ phó chuyên môn giám sát bài dạy và học sinh cần phụ đạo</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="exportHorizontalStreamExcel()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Tải Bảng Excel Khối</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Cards for 5 Classes of Grade 2 across 5 Branches -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="horizontalCardsGrid">
+            <!-- Dynamically loaded -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 3: LUỒNG DỌC - ĐỊA BÀN PHÂN HIỆU (PHÓ HIỆU TRƯỞNG & CSVC) -->
+      <!-- ===================================================================== -->
+      <section id="tab-vertical-stream" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="wrench" class="w-5 h-5 text-brand-400"></i>
+                Luồng Dọc: Quản Lý Cơ Sở Vật Chất & Sĩ Số Theo Điểm Trường
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Phó Hiệu trưởng phụ trách quản lý sĩ số chuyên cần và điều phối sửa chữa hư hỏng</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400">Xem điểm:</span>
+              <select id="branchFilterSelect" onchange="filterBranchVertical(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg text-xs text-white p-1.5">
+                <option value="ALL">Tất cả 5 Phân Hiệu</option>
+                <option value="BRANCH_CENTER">Điểm Trung Tâm</option>
+                <option value="BRANCH_1">Điểm 1 (Phú Hội 1)</option>
+                <option value="BRANCH_2">Điểm 2 (Phú Hội 2)</option>
+                <option value="BRANCH_3" selected>Điểm 3 (Tân Dân - Thầy Đức phụ trách)</option>
+                <option value="BRANCH_4">Điểm 4 (Suối Mơ - Thầy Đức phụ trách)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Facility Task List -->
+            <div class="lg:col-span-2 space-y-3">
+              <h3 class="font-bold text-sm text-slate-200 flex items-center gap-2">
+                <i data-lucide="hammer" class="w-4 h-4 text-amber-400"></i>
+                Danh Sách Thiết Bị Hư Hỏng Cần Điều Phối
+              </h3>
+              <div class="space-y-2.5" id="facilityItemsContainer">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Daily Attendance Summary -->
+            <div class="bg-slate-850 p-4 rounded-xl border border-slate-800 space-y-4">
+              <h3 class="font-bold text-sm text-slate-200 flex items-center gap-2">
+                <i data-lucide="user-minus" class="w-4 h-4 text-red-400"></i>
+                Chuyên Cần & Học Sinh Vắng Hôm Nay
+              </h3>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
+                  <span>Điểm Trung Tâm (8 lớp)</span>
+                  <span class="font-bold text-emerald-400">Vắng: 1 (có phép)</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
+                  <span>Điểm 1 (6 lớp)</span>
+                  <span class="font-bold text-emerald-400">Vắng: 0</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
+                  <span>Điểm 2 (6 lớp)</span>
+                  <span class="font-bold text-amber-400">Vắng: 2 (1 không phép)</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
+                  <span>Điểm 3 (6 lớp)</span>
+                  <span class="font-bold text-red-400">Vắng: 3 (mưa lớn vùng trũng)</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex justify-between items-center">
+                  <span>Điểm 4 Suối Mơ (6 lớp)</span>
+                  <span class="font-bold text-emerald-400">Vắng: 1 (có phép)</span>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-400">Dữ liệu sĩ số cập nhật tự động từ đầu giờ sáng mỗi ngày.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 4: KHO HỌC LIỆU SỐ DÙNG CHUNG 13 MÔN & BUỔI THỨ HAI (CV 4069) -->
+      <!-- ===================================================================== -->
+      <section id="tab-resource-hub" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="book-marked" class="w-5 h-5 text-brand-400"></i>
+                Kho Học Liệu Số Dùng Chung & Dạy Học Buổi 2 (Tiểu Học)
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Chuẩn hóa 13 môn học, ngân hàng câu hỏi 3 mức độ (TT 27), xem trực tiếp qua Google Drive 0đ</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openContributeModal()" class="px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow transition-colors">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>+ Đóng Góp Học Liệu</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 13 Subjects & Resource Explorer -->
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Subjects Tree Sidebar -->
+            <div class="bg-slate-850 p-3 rounded-xl border border-slate-800 space-y-2">
+              <div class="font-bold text-xs uppercase tracking-wider text-slate-400 px-2 py-1 flex items-center justify-between">
+                <span>CÂY 13 MÔN HỌC</span>
+                <i data-lucide="folder-tree" class="w-3.5 h-3.5"></i>
+              </div>
+              <div class="space-y-0.5 text-xs font-medium" id="subjectsTree">
+                <!-- Subject Links injected via JS -->
+              </div>
+              <!-- Special Highlight: Buổi thứ 2 -->
+              <div class="pt-2 border-t border-slate-800">
+                <button onclick="selectSubjectCategory('BUOI_2')" class="w-full text-left px-2.5 py-2 rounded-lg bg-brand-950/80 border border-brand-700/60 text-brand-300 font-bold hover:bg-brand-900 transition-colors flex items-center gap-2">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+                  <span>Dạy Học Buổi 2 (STEM & Đọc)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Resource Cards Grid & Search Filter -->
+            <div class="lg:col-span-3 space-y-4">
+              <!-- Search & Filter Bar -->
+              <div class="flex flex-wrap gap-2">
+                <div class="flex-1 min-w-[200px] relative">
+                  <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-500"></i>
+                  <input type="text" id="resourceSearchInput" oninput="searchResources(this.value)" placeholder="Tìm bài học, chủ đề, Yêu cầu cần đạt (YCCĐ)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-white focus:ring-1 focus:ring-brand-500" />
+                </div>
+                <select id="resourceGradeFilter" onchange="filterResourceGrade(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                  <option value="ALL">Tất cả Khối 1-5</option>
+                  <option value="1">Khối 1</option>
+                  <option value="2" selected>Khối 2</option>
+                  <option value="3">Khối 3</option>
+                  <option value="4">Khối 4</option>
+                  <option value="5">Khối 5</option>
+                </select>
+                <select id="resourceTypeFilter" onchange="filterResourceType(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                  <option value="ALL">Mọi loại học liệu</option>
+                  <option value="CANVA">Bài giảng Canva / PPT</option>
+                  <option value="TT27">Đề KT 3 mức độ (TT 27)</option>
+                  <option value="STEM">Kế hoạch STEM Buổi 2</option>
+                  <option value="READING">Văn hóa đọc</option>
+                </select>
+              </div>
+
+              <!-- Resource Items Cards Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="resourceCardsGrid">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 5: NGHIÊN CỨU BÀI HỌC 4 BƯỚC & BIÊN BẢN SHCM TỰ ĐỘNG (CV 4069) -->
+      <!-- ===================================================================== -->
+      <section id="tab-lesson-study" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="file-signature" class="w-5 h-5 text-brand-400"></i>
+                Sinh Hoạt Chuyên Môn Theo Nghiên Cứu Bài Học (CV 4069)
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Quy trình 4 bước chuẩn hóa • Phân tích minh chứng việc học của học sinh</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="exportMeetingMinutesWord()" class="px-3 py-1.5 rounded-lg bg-blue-800 hover:bg-blue-700 text-blue-100 text-xs font-semibold flex items-center gap-1.5 border border-blue-600 transition-colors">
+                <i data-lucide="file-text" class="w-4 h-4"></i>
+                <span>Xuất File Word (.docx)</span>
+              </button>
+              <button onclick="printMeetingMinutes()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-colors">
+                <i data-lucide="printer" class="w-4 h-4"></i>
+                <span>In Biên Bản A4</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Humane Spirit Banner -->
+          <div class="p-3 rounded-lg bg-emerald-950/60 border border-emerald-800/80 flex items-center gap-2.5 text-xs text-emerald-300">
+            <i data-lucide="heart-handshake" class="w-5 h-5 shrink-0 text-emerald-400"></i>
+            <span>
+              <strong>Tinh thần chỉ đạo CV 4069:</strong> Sinh hoạt chuyên môn vì sự tiến bộ của học sinh — <strong>Tuyệt đối không xếp loại giờ dạy minh họa</strong>, tạo môi trường sư phạm cởi mở, hỗ trợ lẫn nhau.
+            </span>
+          </div>
+
+          <!-- 4-Step Progress Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">1</span>
+              <span>Soạn KHBD Minh Họa</span>
+            </div>
+            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">2</span>
+              <span>Dự Giờ Quan Sát HS</span>
+            </div>
+            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">3</span>
+              <span>Thảo Luận Minh Chứng</span>
+            </div>
+            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">4</span>
+              <span>Áp Dụng Thực Tiễn</span>
+            </div>
+          </div>
+
+          <!-- Meeting Details & Student Observation Evidence Gallery -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left: Meeting Editor with AI Assistant -->
+            <div class="lg:col-span-2 space-y-4">
+              <div class="flex items-center justify-between">
+                <label class="font-bold text-xs sm:text-sm text-slate-200">Nội dung biên bản sinh hoạt tổ chuyên môn:</label>
+                <button onclick="aiSummarizeMeeting()" class="text-xs px-2.5 py-1 rounded bg-brand-900 hover:bg-brand-800 text-brand-300 border border-brand-700/60 flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Tóm tắt bằng AI</span>
+                </button>
+              </div>
+              <textarea id="meetingMinutesContent" rows="9" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-200 font-mono focus:ring-1 focus:ring-brand-500 leading-relaxed">
+BIÊN BẢN SINH HOẠT CHUYÊN MÔN THEO NGHIÊN CỨU BÀI HỌC
+Thời gian: 14h00 ngày 05/09/2026. Địa điểm: Phòng Hội đồng & Trực tuyến 5 điểm trường.
+Chủ trì: Cô Phan Kim Oanh (Tổ trưởng) / Thầy Trần Đình Trọng (Ủy quyền điều hành)
+Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (tiết 1)".
+1. Phân tích việc học của học sinh:
+- Nhóm 3 tiếp thu tích cực, tự tin nêu câu hỏi khi giải quyết bài toán thực tế.
+- Em Tuấn và em Lan còn chậm khi nhớ các tích 7x6, 7x8; giáo viên đã kịp thời gợi ý dùng que tính hỗ trợ trực quan.
+2. Thống nhất giải pháp chuyên môn áp dụng đại trà trong toàn khối:
+- Tăng cường đồ dùng học tập trực quan và trò chơi toán học trong tiết 2 buổi chiều.
+              </textarea>
+            </div>
+
+            <!-- Right: Student Evidence Photos & Discussion -->
+            <div class="space-y-3 bg-slate-850 p-4 rounded-xl border border-slate-800">
+              <h3 class="font-bold text-xs sm:text-sm text-slate-200 flex items-center gap-2">
+                <i data-lucide="camera" class="w-4 h-4 text-brand-400"></i>
+                Minh Chứng Hoạt Động Học Của HS
+              </h3>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="rounded-lg overflow-hidden border border-slate-700 relative group">
+                  <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=300&q=80" alt="HS thảo luận nhóm" class="w-full h-24 object-cover" />
+                  <span class="absolute bottom-0 inset-x-0 bg-slate-900/80 text-[10px] text-slate-300 p-1 text-center truncate">Nhóm 3 thảo luận</span>
+                </div>
+                <div class="rounded-lg overflow-hidden border border-slate-700 relative group">
+                  <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=300&q=80" alt="HS chia sẻ ý kiến" class="w-full h-24 object-cover" />
+                  <span class="absolute bottom-0 inset-x-0 bg-slate-900/80 text-[10px] text-slate-300 p-1 text-center truncate">Em Tuấn thao tác que</span>
+                </div>
+              </div>
+              <div class="pt-2 text-xs space-y-2">
+                <div class="p-2 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
+                  <strong>Thầy Minh (Điểm 2):</strong> "Học sinh ở điểm lẻ cũng rất hứng thú với trò chơi đố vui này, tôi sẽ áp dụng ngay cho lớp 2C."
+                </div>
+                <div class="p-2 rounded bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
+                  <strong>Cô Hương (Hiệu phó CM):</strong> "Đánh giá cao việc giáo viên không tạo áp lực cho học sinh còn lúng túng."
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 6: THU THẬP DỮ LIỆU ĐỘT XUẤT 1-CHẠM (REQ-CAMPAIGN) -->
+      <!-- ===================================================================== -->
+      <section id="tab-quick-campaign" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+                Hàng Đợi Nhiệm Vụ & Thu Thập Dữ Liệu Đột Xuất (Phản Hồi 30 Giây)
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Giáo viên phản hồi siêu tốc 1-chạm • BGH theo dõi bảng dồn số liệu trực tiếp</p>
+            </div>
+            <button onclick="openCreateCampaignModal()" class="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow transition-colors">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>+ Tạo Yêu Cầu Đột Xuất Mới (BGH)</span>
+            </button>
+          </div>
+
+          <!-- Active Campaign Card (For Teachers) -->
+          <div class="p-4 rounded-xl bg-amber-950/30 border border-amber-800/60 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-900 text-amber-200">
+                MÃ CHIẾN DỊCH: REQ-2026-001
+              </span>
+              <span class="text-xs text-red-400 font-bold flex items-center gap-1">
+                <i data-lucide="timer" class="w-4 h-4"></i> Hạn chót: 16h30 Chiều nay (Còn 2 giờ 15 phút)
+              </span>
+            </div>
+            <h3 class="text-base font-bold text-white">Rà soát học sinh diện khó khăn nhận học bổng xã hội năm học 2026</h3>
+            <p class="text-xs text-slate-300">Yêu cầu tất cả GVCN 32 lớp kiểm tra danh sách học sinh thuộc diện hộ nghèo, cận nghèo hoặc mồ côi để lập danh sách nhận quà tài trợ của Huyện đoàn.</p>
+            
+            <!-- Quick 1-Touch Buttons -->
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <button onclick="quickSubmitNoTargetStudent()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-sm border border-slate-700 flex items-center gap-2 transition-colors">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Lớp Không Có Đối Tượng (5 Giây)</span>
+              </button>
+              <button onclick="openQuickStudentModal()" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow transition-colors">
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                <span>Nhập Nhanh Danh Sách (30 Giây)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 7: NỀ NẾP THI ĐUA & THEO DÕI TRỄ HẠN 32 GIÁO VIÊN -->
+      <!-- ===================================================================== -->
+      <section id="tab-compliance-matrix" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="award" class="w-5 h-5 text-brand-400"></i>
+                Giám Sát Nề Nếp & Bảng Xếp Hạng Thi Đua 32 Giáo Viên
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Theo dõi thời gian thực ai đã mở app, ai nộp đúng hạn, nút bắn tin nhắc Zalo 1-click</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="exportComplianceExcel()" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-emerald-100 text-xs font-semibold flex items-center gap-1.5 border border-emerald-600">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                <span>Xuất Excel Thi Đua</span>
+              </button>
+              <button onclick="remindAllLateZalo()" class="px-3 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-xs font-semibold flex items-center gap-1.5 shadow">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                <span>Bắn Tin Nhắc Zalo Tất Cả GV Chưa Nộp</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 32 Teachers Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-850 text-slate-400 font-semibold border-b border-slate-800">
+                <tr>
+                  <th class="p-2.5">STT</th>
+                  <th class="p-2.5">Giáo Viên</th>
+                  <th class="p-2.5">Lớp Phụ Trách</th>
+                  <th class="p-2.5">Phân Hiệu</th>
+                  <th class="p-2.5">Tình Trạng Nộp</th>
+                  <th class="p-2.5">Thời Gian Mở App</th>
+                  <th class="p-2.5">Hành Động</th>
+                </tr>
+              </thead>
+              <tbody id="complianceTableBody" class="divide-y divide-slate-800/70">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 8: CỔNG CỤM CHUYÊN MÔN LIÊN TRƯỜNG & QUÉT MÃ QR DỰ GIỜ -->
+      <!-- ===================================================================== -->
+      <section id="tab-cluster-portal" class="tab-pane hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="qr-code" class="w-5 h-5 text-brand-400"></i>
+                Cổng Giao Lưu & Sinh Hoạt Cụm Chuyên Môn (Theo CV 4069)
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Hỗ trợ Nhu cầu 1 (Chia sẻ học liệu, quét QR dự giờ liên trường) & Nhu cầu 2 (Cấp trường mới độc lập 0đ)</p>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded bg-brand-950 text-brand-300 border border-brand-700 font-medium">
+              Cụm Tiểu Học Số 1 - Huyện Vạn Ninh
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- QR Code for Cluster Lesson Study -->
+            <div class="bg-slate-850 p-5 rounded-xl border border-slate-800 text-center space-y-3">
+              <h3 class="font-bold text-sm text-white">Mã QR Dự Giờ Tiết Dạy Minh Họa Cấp Cụm</h3>
+              <p class="text-xs text-slate-400">Giáo viên các trường bạn chỉ cần mở camera Zalo quét mã để xem Kế hoạch bài dạy và gửi nhận xét trực tuyến</p>
+              
+              <!-- SVG QR Code -->
+              <div class="w-44 h-44 mx-auto bg-white p-2 rounded-xl flex items-center justify-center shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full">
+                  <path d="M0,0 h30 v30 h-30 z M40,0 h20 v10 h-20 z M70,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z M80,10 h10 v10 h-10 z M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z M40,40 h20 v20 h-20 z M50,20 h10 v20 h-10 z M70,50 h30 v10 h-30 z M70,70 h10 v30 h-10 z M90,80 h10 v20 h-10 z" fill="#064e3b" />
+                </svg>
+              </div>
+
+              <div class="text-xs text-brand-300 font-mono font-medium">
+                Mã tiết: CLUSTER-LESSON-2026-01
+              </div>
+              <div class="flex justify-center gap-2 pt-2">
+                <button onclick="copyClusterLink()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1.5">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Sao chép liên kết dự giờ
+                </button>
+              </div>
+            </div>
+
+            <!-- Multi-School Provisioning (Nhu cầu 2) -->
+            <div class="bg-slate-850 p-5 rounded-xl border border-slate-800 space-y-4">
+              <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                <i data-lucide="building-2" class="w-4 h-4 text-brand-400"></i>
+                Nhân Bản & Cấp Trường Mới (Multi-Tenant 0đ)
+              </h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Khi trường bạn muốn có một hệ thống quản trị chuyên môn riêng, bạn có thể tạo ngay một trường mới độc lập trên cùng nền tảng hoặc chia sẻ template mã nguồn miễn phí.
+              </p>
+              <div class="space-y-2 text-xs">
+                <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                  <span class="font-bold text-white">Cách 1: Khởi tạo trên cùng Đám mây Cụm</span>
+                  <p class="text-slate-400 text-[11px]">Bảo mật dữ liệu độc lập giữa các trường, chia sẻ kho học liệu dùng chung.</p>
+                  <button onclick="openNewSchoolModal()" class="mt-1 px-3 py-1 rounded bg-brand-700 hover:bg-brand-600 text-white font-medium text-xs">
+                    + Cấp tài khoản trường mới
+                  </button>
+                </div>
+                <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1">
+                  <span class="font-bold text-white">Cách 2: Triển khai độc lập với Vercel (1-Click)</span>
+                  <p class="text-slate-400 text-[11px]">Trường bạn tự sở hữu máy chủ riêng, tên miền riêng hoàn toàn miễn phí trọn đời.</p>
+                  <a href="https://vercel.com" target="_blank" class="inline-block mt-1 px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs border border-slate-700">
+                    Xem hướng dẫn Deploy Vercel
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MOBILE BOTTOM NAVIGATION (CHUYÊN BIỆT CHO ĐIỆN THOẠI) -->
+  <!-- ========================================================================= -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 z-40 px-2 py-1.5 flex items-center justify-around text-[10px] font-medium text-slate-400">
+    <button onclick="showTab('tab-master-matrix')" class="mobile-nav-btn flex flex-col items-center gap-1 p-1 text-brand-400 font-bold">
+      <i data-lucide="layout-grid" class="w-5 h-5"></i>
+      <span>Ma Trận</span>
+    </button>
+    <button onclick="showTab('tab-teacher-report')" class="mobile-nav-btn flex flex-col items-center gap-1 p-1 hover:text-white">
+      <i data-lucide="clipboard-pen-line" class="w-5 h-5"></i>
+      <span>Báo Cáo</span>
+    </button>
+    <button onclick="showTab('tab-resource-hub')" class="mobile-nav-btn flex flex-col items-center gap-1 p-1 hover:text-white">
+      <i data-lucide="book-open-check" class="w-5 h-5"></i>
+      <span>13 Môn</span>
+    </button>
+    <button onclick="showTab('tab-quick-campaign')" class="mobile-nav-btn flex flex-col items-center gap-1 p-1 hover:text-white">
+      <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+      <span>Đột Xuất</span>
+    </button>
+    <button onclick="toggleNotificationDrawer()" class="mobile-nav-btn flex flex-col items-center gap-1 p-1 hover:text-white relative">
+      <i data-lucide="bell" class="w-5 h-5"></i>
+      <span>Tin Nhắn</span>
+    </button>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- NOTIFICATION & BROADCAST DRAWER (TRƯỢT TỨC THÌ <1S) -->
+  <!-- ========================================================================= -->
+  <div id="notificationDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+    <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-850">
+      <div class="flex items-center gap-2">
+        <i data-lucide="bell-ring" class="w-5 h-5 text-brand-400"></i>
+        <h3 class="font-bold text-sm text-white">Trung Tâm Thông Báo Đa Cấp</h3>
+      </div>
+      <button onclick="toggleNotificationDrawer()" class="p-1 rounded text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Notifications List -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-3" id="notificationsList">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- Footer: Broadcast Action -->
+    <div class="p-3 border-t border-slate-800 bg-slate-850">
+      <button onclick="openBroadcastModal()" class="w-full py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition-colors">
+        <i data-lucide="send" class="w-4 h-4"></i>
+        <span>Phát Thông Báo Mới Theo Phân Quyền</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Broadcast Modal -->
+  <div id="broadcastModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl max-w-lg w-full p-5 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+          <i data-lucide="radio" class="w-4 h-4 text-brand-400"></i>
+          Phát Thông Báo Khẩn Tức Thì
+        </h3>
+        <button onclick="closeBroadcastModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 mb-1">Phạm vi gửi (Theo phân quyền):</label>
+          <select id="broadcastScope" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+            <option value="ALL">Toàn trường (5 Phân hiệu - Chỉ BGH)</option>
+            <option value="BRANCH">Toàn bộ phân hiệu phụ trách</option>
+            <option value="DEPT" selected>Tổ chuyên môn (Khối 2)</option>
+            <option value="DIRECT">Nhắn riêng cá nhân giáo viên</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">Mức độ ưu tiên:</label>
+          <select id="broadcastUrgency" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+            <option value="NORMAL">Bình thường</option>
+            <option value="HIGH">Quan trọng</option>
+            <option value="EMERGENCY">🚨 Khẩn cấp (Bão lũ, nghỉ học)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">Tiêu đề thông báo:</label>
+          <input type="text" id="broadcastTitle" placeholder="Ví dụ: Thông báo kiểm tra chuyên đề tuần 5..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white" />
+        </div>
+        <div>
+          <label class="block text-slate-300 mb-1">Nội dung chi tiết:</label>
+          <textarea id="broadcastContent" rows="3" placeholder="Nhập nội dung chỉ đạo..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeBroadcastModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 text-xs">Hủy</button>
+        <button onclick="sendBroadcast()" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs">Gửi Ngay (<1s)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Overlay -->
+  <div id="toastContainer" class="fixed top-14 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ========================================================================= -->
+  <!-- PRINTABLE AREA (A4 CHUẨN NGHỊ ĐỊNH 30/2020/NĐ-CP) -->
+  <!-- ========================================================================= -->
+  <div id="printable-area" class="hidden">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="font-size: 13pt; font-weight: bold;">PHÒNG GIÁO DỤC VÀ ĐÀO TẠO HUYỆN VẠN NINH</div>
+      <div style="font-size: 14pt; font-weight: bold; text-decoration: underline;">TRƯỜNG TIỂU HỌC PHÚ THẠNH</div>
+      <div style="margin-top: 15px; font-size: 16pt; font-weight: bold;">BÁO CÁO TỔNG HỢP MA TRẬN 5 PHÂN HIỆU</div>
+      <div style="font-style: italic; font-size: 12pt;">(Kèm theo Công văn số 4069/BGDĐT-GDPT và Thông tư số 27/2020/TT-BGDĐT)</div>
+    </div>
+    
+    <p style="font-size: 13pt; line-height: 1.5;">Kính gửi: Phòng Giáo dục và Đào tạo huyện Vạn Ninh.</p>
+    <p style="font-size: 13pt; line-height: 1.5; text-indent: 1.25cm;">
+      Trường Tiểu học Phú Thạnh kính báo cáo tình hình thực hiện chương trình giáo dục phổ thông, tiến độ bài dạy và công tác kiểm tra đánh giá của 32 lớp thuộc 5 phân hiệu trong tuần học vừa qua như sau:
+    </p>
+
+    <div id="printTableContainer" style="margin: 20px 0;">
+      <!-- Matrix Table will be injected here during print -->
+    </div>
+
+    <div style="margin-top: 30px; display: flex; justify-content: space-between; font-size: 13pt;">
+      <div style="text-align: center; width: 45%;">
+        <b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/>
+        <i>(Ký và ghi rõ họ tên)</i><br/><br/><br/><br/>
+        <b>Phan Kim Oanh</b>
+      </div>
+      <div style="text-align: center; width: 45%;">
+        <i>Phú Thạnh, ngày 05 tháng 09 năm 2026</i><br/>
+        <b>HIỆU TRƯỞNG</b><br/>
+        <i>(Ký, đóng dấu và ghi rõ họ tên)</i><br/><br/><br/><br/>
+        <b>Nguyễn Văn An</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- APPLICATION CORE LOGIC (JAVASCRIPT) -->
+  <!-- ========================================================================= -->
+  <script>
+    // System Global State
+    const AppState = {
+      currentRole: 'head_dept', // Default: Tổ Trưởng Khối 2
+      currentSchoolId: 1,
+      isDelegatedToDeputy: false,
+      activeTab: 'tab-master-matrix',
+      branches: [
+        { id: 1, name: 'Điểm Trung Tâm', code: 'BRANCH_CENTER', classes: 8 },
+        { id: 2, name: 'Điểm 1 (Phú Hội 1)', code: 'BRANCH_1', classes: 6 },
+        { id: 3, name: 'Điểm 2 (Phú Hội 2)', code: 'BRANCH_2', classes: 6 },
+        { id: 4, name: 'Điểm 3 (Tân Dân)', code: 'BRANCH_3', classes: 6 },
+        { id: 5, name: 'Điểm 4 (Suối Mơ)', code: 'BRANCH_4', classes: 6 }
+      ],
+      grades: [
+        { id: 1, name: 'Khối 1' },
+        { id: 2, name: 'Khối 2' },
+        { id: 3, name: 'Khối 3' },
+        { id: 4, name: 'Khối 4' },
+        { id: 5, name: 'Khối 5' },
+        { id: 6, name: 'Văn-Thể-Mỹ' }
+      ],
+      subjects13: [
+        '1. Toán', '2. Tiếng Việt', '3. Đạo đức', '4. HĐ trải nghiệm',
+        '5. Khoa học (4-5)', '6. Lịch sử & Địa lí (4-5)', '7. TN & Xã hội (1-3)',
+        '8. Công nghệ', '9. Tin học', '10. Tiếng Anh',
+        '11. Âm nhạc', '12. Mĩ thuật', '13. GD thể chất'
+      ],
+      notifications: [
+        {
+          id: 1,
+          urgency: 'EMERGENCY',
+          title: 'Cảnh báo mưa lũ lớn vùng trũng Tân Dân',
+          content: 'Hiệu trưởng chỉ đạo: Điểm 3 chủ động kê cao bàn ghế và cho học sinh tan học sớm 15 phút.',
+          sender: 'Thầy Hiệu Trưởng',
+          time: '10 phút trước',
+          isRead: false
+        },
+        {
+          id: 2,
+          urgency: 'HIGH',
+          title: 'Yêu cầu nộp danh sách REQ-2026-001',
+          content: 'Các lớp Khối 2 hoàn tất rà soát học sinh nhận học bổng trước 16h30.',
+          sender: 'BGH Chuyên Môn',
+          time: '1 giờ trước',
+          isRead: false
+        }
+      ]
+    };
+
+    // Initialize System on DOM Ready
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initMatrixTable();
+      initSubjectsTree();
+      initResourceHub();
+      initHorizontalStream();
+      initVerticalStream();
+      initComplianceTable();
+      renderNotifications();
+      registerServiceWorker();
+    });
+
+    // PWA Service Worker Registration
+    function registerServiceWorker() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('[EduMatrix] Service Worker Registered successfully:', reg.scope))
+          .catch(err => console.log('[EduMatrix] SW Registration skipped:', err));
+      }
+    }
+
+    // Role Switching Engine
+    function switchRole(roleKey) {
+      AppState.currentRole = roleKey;
+      const badge = document.getElementById('roleBadge');
+      const desc = document.getElementById('roleDesc');
+      const delegationCont = document.getElementById('delegationContainer');
+
+      delegationCont.classList.add('hidden');
+
+      switch (roleKey) {
+        case 'principal':
+          badge.textContent = '🏫 HIỆU TRƯỞNG';
+          badge.className = 'px-2.5 py-1 rounded-md bg-purple-900 text-purple-200 border border-purple-700 font-bold text-xs';
+          desc.textContent = 'Toàn quyền điều hành 5 phân hiệu, phát thông báo khẩn toàn trường và xuất báo cáo.';
+          showTab('tab-master-matrix');
+          break;
+        case 'vp_branch':
+          badge.textContent = '🏢 PHÓ HIỆU TRƯỞNG (ĐIỂM TRƯỜNG)';
+          badge.className = 'px-2.5 py-1 rounded-md bg-blue-900 text-blue-200 border border-blue-700 font-bold text-xs';
+          desc.textContent = 'Phụ trách Điểm 3 & Điểm 4: Sĩ số, chuyên cần và sự cố CSVC.';
+          showTab('tab-vertical-stream');
+          break;
+        case 'head_dept':
+          badge.textContent = '👑 TỔ TRƯỞNG CHUYÊN MÔN';
+          badge.className = 'px-2.5 py-1 rounded-md bg-brand-900 text-brand-200 border border-brand-700 font-bold text-xs';
+          desc.textContent = 'Quản lý chuyên môn Khối 2 trên cả 5 phân hiệu, phê duyệt học liệu số.';
+          delegationCont.classList.remove('hidden');
+          showTab('tab-master-matrix');
+          break;
+        case 'deputy_head':
+          badge.textContent = AppState.isDelegatedToDeputy ? '⚡ TỔ PHÓ (ĐƯỢC ỦY QUYỀN ĐIỀU HÀNH)' : '🎗️ TỔ PHÓ CHUYÊN MÔN';
+          badge.className = AppState.isDelegatedToDeputy ? 'px-2.5 py-1 rounded-md bg-amber-900 text-amber-200 border border-amber-600 font-bold text-xs animate-pulse' : 'px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700 font-semibold text-xs';
+          desc.textContent = AppState.isDelegatedToDeputy ? 'Đang thực thi toàn bộ quyền hạn của Tổ trưởng theo ủy quyền.' : 'Hỗ trợ Tổ trưởng quản lý nề nếp Khối 2 và giảng dạy Lớp 2B.';
+          showTab('tab-horizontal-stream');
+          break;
+        case 'teacher':
+          badge.textContent = '👩‍🏫 GIÁO VIÊN BỘ MÔN / CHỦ NHIỆM';
+          badge.className = 'px-2.5 py-1 rounded-md bg-emerald-900 text-emerald-200 border border-emerald-700 font-bold text-xs';
+          desc.textContent = 'Lớp 2A (Điểm Trung Tâm): Nhập báo cáo tuần 3 tab, nhận nhiệm vụ đột xuất 30s.';
+          showTab('tab-teacher-report');
+          break;
+        case 'guest':
+          badge.textContent = '🤝 KHÁCH MỜI CỤM CHUYÊN MÔN';
+          badge.className = 'px-2.5 py-1 rounded-md bg-cyan-900 text-cyan-200 border border-cyan-700 font-bold text-xs';
+          desc.textContent = 'Dự giờ liên trường, xem Kế hoạch bài dạy và tải học liệu chia sẻ Cụm.';
+          showTab('tab-cluster-portal');
+          break;
+      }
+      showToast(`Đã chuyển sang vai trò: ${badge.textContent}`);
+    }
+
+    // Toggle Delegation for Deputy Head
+    function toggleDelegation() {
+      AppState.isDelegatedToDeputy = !AppState.isDelegatedToDeputy;
+      const btn = document.getElementById('delegationBtn');
+      const dot = document.getElementById('delegationDot');
+      const badge = document.getElementById('delegationBadge');
+      const notice = document.getElementById('delegationNotice');
+
+      if (AppState.isDelegatedToDeputy) {
+        btn.classList.remove('bg-slate-700');
+        btn.classList.add('bg-brand-600');
+        dot.classList.remove('translate-x-0');
+        dot.classList.add('translate-x-4');
+        badge.textContent = 'BẬT';
+        badge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-brand-900 text-brand-300 border border-brand-700';
+        notice.classList.remove('hidden');
+        showToast('Đã BẬT ủy quyền cho Tổ phó! Thầy Trần Đình Trọng có đầy đủ thẩm quyền phê duyệt.', 'success');
+      } else {
+        btn.classList.add('bg-slate-700');
+        btn.classList.remove('bg-brand-600');
+        dot.classList.add('translate-x-0');
+        dot.classList.remove('translate-x-4');
+        badge.textContent = 'TẮT';
+        badge.className = 'text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400';
+        notice.classList.add('hidden');
+        showToast('Đã thu hồi ủy quyền của Tổ phó.');
+      }
+    }
+
+    // Navigation Tab Switching
+    function showTab(tabId) {
+      AppState.activeTab = tabId;
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden');
+
+      // Update Desktop Sidebar Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.className = 'nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800';
+      });
+      const activeNavId = tabId.replace('tab-', 'nav-');
+      const activeNav = document.getElementById(activeNavId);
+      if (activeNav) {
+        activeNav.className = 'nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-800 text-white shadow-sm';
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Generate Master Matrix 5x6
+    function initMatrixTable() {
+      const tbody = document.getElementById('matrixTableBody');
+      tbody.innerHTML = '';
+
+      AppState.branches.forEach((branch, bIdx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-850/70 transition-colors';
+        
+        let cellsHtml = `
+          <td class="p-3 font-medium text-white flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full ${bIdx === 3 ? 'bg-red-500' : 'bg-brand-500'}"></span>
+            ${branch.name}
+          </td>
+        `;
+
+        AppState.grades.forEach((grade, gIdx) => {
+          let statusColor = 'bg-emerald-500';
+          let statusText = 'Đúng hạn';
+          let badge = '✓';
+
+          // Specific realistic mock variations
+          if (bIdx === 3 && gIdx === 1) {
+            statusColor = 'bg-red-500';
+            statusText = 'CSVC Khẩn cấp (Quạt hỏng)';
+            badge = '!';
+          } else if (bIdx === 2 && gIdx === 3) {
+            statusColor = 'bg-amber-500';
+            statusText = 'Nộp bù trễ 15p';
+            badge = '~';
+          } else if (bIdx === 4 && gIdx === 0) {
+            statusColor = 'bg-amber-500';
+            statusText = 'Mưa lớn đường xa';
+            badge = '~';
+          }
+
+          cellsHtml += `
+            <td class="p-3 text-center">
+              <button onclick="viewMatrixCellDetail('${branch.name}', '${grade.name}', '${statusText}')" 
+                class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${statusColor} text-slate-950 font-bold text-xs inline-flex items-center justify-center shadow hover:scale-110 transition-transform" 
+                title="${branch.name} - ${grade.name}: ${statusText}">
+                ${badge}
+              </button>
+            </td>
+          `;
+        });
+
+        cellsHtml += `
+          <td class="p-3 text-center font-bold ${bIdx === 3 ? 'text-amber-400' : 'text-emerald-400'}">
+            ${bIdx === 3 ? '92%' : '98%'}
+          </td>
+        `;
+
+        tr.innerHTML = cellsHtml;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function viewMatrixCellDetail(branchName, gradeName, status) {
+      showToast(`Chi tiết [${branchName} - ${gradeName}]: ${status}`);
+    }
+
+    // 13 Subjects Tree Explorer
+    function initSubjectsTree() {
+      const container = document.getElementById('subjectsTree');
+      container.innerHTML = '';
+
+      AppState.subjects13.forEach((sub, idx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => selectSubjectCategory(sub);
+        btn.className = 'w-full text-left px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors flex items-center justify-between text-xs';
+        btn.innerHTML = `
+          <span class="truncate">${sub}</span>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function selectSubjectCategory(catName) {
+      showToast(`Đã lọc danh mục: ${catName}`);
+    }
+
+    // Resource Hub Mock Data
+    const mockResources = [
+      {
+        id: 1,
+        title: 'Bài giảng tương tác: Bảng nhân 7 (Tích hợp Canva)',
+        subject: 'Toán',
+        grade: 2,
+        type: 'CANVA',
+        yccd: 'Nhớ bảng nhân 7, giải toán có lời văn 1 bước tính',
+        author: 'Cô Nguyễn Thị Mai',
+        driveLink: 'https://drive.google.com',
+        format: 'PPTX',
+        level: 2,
+        rating: 5.0,
+        cluster: true
+      },
+      {
+        id: 2,
+        title: 'Bộ phiếu bài tập chế tạo: Chong chóng gió STEM Buổi 2',
+        subject: 'STEM Buổi 2',
+        grade: 2,
+        type: 'STEM',
+        yccd: 'Nhận biết năng lượng gió, rèn kỹ năng thực hành nhóm',
+        author: 'Thầy Lê Văn Hùng',
+        driveLink: 'https://drive.google.com',
+        format: 'DOCX',
+        level: 3,
+        rating: 4.9,
+        cluster: true
+      },
+      {
+        id: 3,
+        title: 'Ngân hàng 50 câu trắc nghiệm 3 mức độ (Thông tư 27)',
+        subject: 'Tiếng Việt',
+        grade: 2,
+        type: 'TT27',
+        yccd: 'Mức 1: Nhận biết, Mức 2: Kết nối, Mức 3: Vận dụng từ chỉ đặc điểm',
+        author: 'Cô Phan Kim Oanh',
+        driveLink: 'https://drive.google.com',
+        format: 'DOCX',
+        level: 1,
+        rating: 4.8,
+        cluster: false
+      },
+      {
+        id: 4,
+        title: 'Sổ tay Văn hóa đọc: 20 Câu chuyện nuôi dưỡng tâm hồn',
+        subject: 'Văn hóa đọc',
+        grade: 2,
+        type: 'READING',
+        yccd: 'Hình thành thói quen tự đọc sách 15 phút mỗi ngày',
+        author: 'Thầy Trần Đình Trọng',
+        driveLink: 'https://drive.google.com',
+        format: 'PDF',
+        level: 2,
+        rating: 5.0,
+        cluster: true
+      }
+    ];
+
+    function initResourceHub() {
+      renderResourceCards(mockResources);
+    }
+
+    function renderResourceCards(items) {
+      const grid = document.getElementById('resourceCardsGrid');
+      grid.innerHTML = '';
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-xl bg-slate-850 border border-slate-800 space-y-3 shadow-sm hover:border-brand-600 transition-colors flex flex-col justify-between';
+        
+        card.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-950 text-brand-300 border border-brand-700">
+                ${item.subject} • Khối ${item.grade}
+              </span>
+              ${item.cluster ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 font-semibold">Chia sẻ Cụm</span>' : ''}
+            </div>
+            <h4 class="font-bold text-sm text-white leading-snug">${item.title}</h4>
+            <p class="text-xs text-slate-400"><strong class="text-slate-300">YCCĐ:</strong> ${item.yccd}</p>
+            <div class="text-[11px] text-slate-500">Tác giả: ${item.author} • ⭐ ${item.rating}</div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
+            <a href="${item.driveLink}" target="_blank" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1 font-medium">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i> Xem Google Drive
+            </a>
+            <button onclick="downloadResourceFile('${item.title}', '${item.format}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Tải ${item.format}
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function searchResources(query) {
+      const q = query.toLowerCase();
+      const filtered = mockResources.filter(r => 
+        r.title.toLowerCase().includes(q) || 
+        r.subject.toLowerCase().includes(q) || 
+        r.yccd.toLowerCase().includes(q)
+      );
+      renderResourceCards(filtered);
+    }
+
+    function filterResourceGrade(grade) {
+      if (grade === 'ALL') renderResourceCards(mockResources);
+      else renderResourceCards(mockResources.filter(r => r.grade === parseInt(grade)));
+    }
+
+    function filterResourceType(type) {
+      if (type === 'ALL') renderResourceCards(mockResources);
+      else renderResourceCards(mockResources.filter(r => r.type === type));
+    }
+
+    function downloadResourceFile(title, format) {
+      showToast(`Đang tải file [${title}.${format.toLowerCase()}] (0 đồng)...`, 'success');
+    }
+
+    // Horizontal Stream (Khối 2 at 5 branches)
+    function initHorizontalStream() {
+      const container = document.getElementById('horizontalCardsGrid');
+      container.innerHTML = '';
+
+      const classesK2 = [
+        { name: 'Lớp 2A', branch: 'Điểm Trung Tâm', gv: 'Cô Nguyễn Thị Mai', progress: 'Đúng tiến độ', weak: 'Em Tuấn, Lan (rèn trừ có nhớ)' },
+        { name: 'Lớp 2B', branch: 'Điểm 1 (Phú Hội 1)', gv: 'Thầy Trần Đình Trọng (Tổ phó)', progress: 'Đúng tiến độ', weak: 'Em Hùng (đọc ngắt nghỉ)' },
+        { name: 'Lớp 2C', branch: 'Điểm 2 (Phú Hội 2)', gv: 'Thầy Bùi Quang Minh', progress: 'Nộp bù trễ 15p', weak: 'Em Cường, Yến (tính nhẩm)' },
+        { name: 'Lớp 2D', branch: 'Điểm 3 (Tân Dân)', gv: 'Cô Đặng Thùy Trang', progress: 'Đúng tiến độ', weak: 'Em Bình (chính tả c/k)' },
+        { name: 'Lớp 2E', branch: 'Điểm 4 (Suối Mơ)', gv: 'Thầy Vừ A Lầu', progress: 'Mưa lớn đường xa', weak: '3 HS người đồng bào cần rèn tiếng Việt' }
+      ];
+
+      classesK2.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-xl bg-slate-850 border border-slate-800 space-y-2.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-white">${c.name} • ${c.branch}</span>
+            <span class="text-[11px] px-2 py-0.5 rounded ${c.progress.includes('trễ') ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-emerald-950 text-emerald-300 border border-emerald-800'} font-semibold">
+              ${c.progress}
+            </span>
+          </div>
+          <div class="text-xs text-slate-400">GVCN: <strong class="text-slate-200">${c.gv}</strong></div>
+          <div class="p-2.5 rounded bg-slate-900 border border-slate-800/80 text-xs text-slate-300">
+            <strong class="text-brand-300">HS cần kèm cặp (TT 27):</strong> ${c.weak}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Vertical Stream (Facilities & Branches)
+    function initVerticalStream() {
+      const container = document.getElementById('facilityItemsContainer');
+      container.innerHTML = '';
+
+      const items = [
+        { branch: 'Điểm 3 (Tân Dân)', room: 'Phòng học 2D', issue: 'Quạt trần rung lắc mạnh nguy hiểm', urgency: 'RẤT KHẨN CẤP', status: 'Chờ thợ xử lý' },
+        { branch: 'Điểm 1 (Phú Hội 1)', room: 'Khu vệ sinh nữ', issue: 'Rò rỉ nước khóa van số 2', urgency: 'BÌNH THƯỜNG', status: 'Đã báo bảo vệ' },
+        { branch: 'Điểm 4 (Suối Mơ)', room: 'Phòng thư viện', issue: 'Mái hiên bị dột nước khi mưa to', urgency: 'KHẨN CẤP', status: 'Đã khảo sát' }
+      ];
+
+      items.forEach(it => {
+        const div = document.createElement('div');
+        div.className = 'p-3 rounded-lg bg-slate-850 border border-slate-800 flex items-center justify-between text-xs gap-3';
+        div.innerHTML = `
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white">${it.branch} - ${it.room}</span>
+              <span class="text-[10px] px-1.5 py-0.2 rounded ${it.urgency.includes('RẤT') ? 'bg-red-900 text-red-200 font-bold' : 'bg-amber-900 text-amber-200'}">${it.urgency}</span>
+            </div>
+            <p class="text-slate-300 mt-0.5">${it.issue}</p>
+          </div>
+          <button onclick="resolveFacilityIssue(this)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 shrink-0">
+            Cập nhật đã sửa
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function resolveFacilityIssue(btn) {
+      btn.textContent = '✓ Đã hoàn thành';
+      btn.className = 'px-2.5 py-1 rounded bg-emerald-900 text-emerald-300 text-xs font-bold border border-emerald-700';
+      showToast('Đã ghi nhận khắc phục sự cố CSVC.');
+    }
+
+    // 32 Teachers Compliance Table
+    function initComplianceTable() {
+      const tbody = document.getElementById('complianceTableBody');
+      tbody.innerHTML = '';
+
+      const teachers = [
+        { name: 'Nguyễn Thị Mai', class: '2A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:10' },
+        { name: 'Trần Đình Trọng', class: '2B', branch: 'Điểm 1', status: 'Đúng hạn', open: 'Hôm nay 07:15' },
+        { name: 'Bùi Quang Minh', class: '2C', branch: 'Điểm 2', status: 'Nộp trễ 15p', open: 'Hôm nay 08:30' },
+        { name: 'Đặng Thùy Trang', class: '2D', branch: 'Điểm 3', status: 'Đúng hạn', open: 'Hôm nay 07:05' },
+        { name: 'Vừ A Lầu', class: '2E', branch: 'Điểm 4', status: 'Chưa nộp', open: 'Hôm qua 18:20' },
+        { name: 'Lê Thu Thủy', class: '1A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:22' },
+        { name: 'Hoàng Văn Nam', class: '3A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:40' },
+        { name: 'Vũ Thị Hạnh', class: '4A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:35' },
+        { name: 'Trịnh Hoài An', class: '5A', branch: 'Điểm Trung Tâm', status: 'Đúng hạn', open: 'Hôm nay 07:18' }
+      ];
+
+      teachers.forEach((t, i) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-850/50';
+        tr.innerHTML = `
+          <td class="p-2.5 text-slate-400 font-mono">${i + 1}</td>
+          <td class="p-2.5 font-bold text-white">${t.name}</td>
+          <td class="p-2.5 text-slate-300">${t.class}</td>
+          <td class="p-2.5 text-slate-300">${t.branch}</td>
+          <td class="p-2.5">
+            <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${t.status === 'Đúng hạn' ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : (t.status.includes('trễ') ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-red-950 text-red-300 border border-red-800')}">
+              ${t.status}
+            </span>
+          </td>
+          <td class="p-2.5 text-slate-400">${t.open}</td>
+          <td class="p-2.5">
+            <button onclick="remindSingleZalo('${t.name}')" class="px-2 py-1 rounded bg-blue-900/60 hover:bg-blue-800 text-blue-200 border border-blue-700 text-xs">
+              Nhắc Zalo
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Teacher 3-Step Report Sub-Tabs
+    function switchReportSubTab(subTabId) {
+      document.getElementById('rep-tab-academic').classList.add('hidden');
+      document.getElementById('rep-tab-facility').classList.add('hidden');
+      document.getElementById('rep-tab-feedback').classList.add('hidden');
+      document.getElementById(subTabId).classList.remove('hidden');
+
+      document.querySelectorAll('.subtab-btn').forEach(btn => {
+        btn.className = 'subtab-btn px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2';
+      });
+
+      const btnMap = {
+        'rep-tab-academic': 'btn-rep-academic',
+        'rep-tab-facility': 'btn-rep-facility',
+        'rep-tab-feedback': 'btn-rep-feedback'
+      };
+      const activeBtn = document.getElementById(btnMap[subTabId]);
+      if (activeBtn) {
+        activeBtn.className = 'subtab-btn px-4 py-2.5 border-b-2 border-brand-500 text-brand-400 font-bold flex items-center gap-2';
+      }
+    }
+
+    function submitTeacherReport() {
+      showToast('Báo cáo tuần đã được gửi thành công! Luồng ngang và luồng dọc đã nhận dữ liệu.', 'success');
+      showTab('tab-master-matrix');
+    }
+
+    // Quick Data Collection (REQ-2026-001)
+    function quickSubmitNoTargetStudent() {
+      showToast('Xác nhận: Lớp 2A không có học sinh diện học bổng đợt này. Hoàn thành trong 5 giây!', 'success');
+      // Add to live aggregation
+      const liveList = document.getElementById('liveAggregationList');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
+        <td class="py-1.5 px-2.5 text-slate-300">Cô Nguyễn Thị Mai</td>
+        <td class="py-1.5 px-2.5 text-emerald-400 font-medium">Không có đối tượng (0)</td>
+        <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
+      `;
+      liveList.prepend(tr);
+    }
+
+    function openQuickStudentModal() {
+      const studentName = prompt('Nhập họ tên học sinh diện khó khăn của lớp (hoặc ghi rõ lý do):', 'Nguyễn Văn Tuấn - Hộ nghèo thôn 1');
+      if (studentName) {
+        showToast(`Đã thêm học sinh [${studentName}] vào danh sách gửi BGH!`, 'success');
+        const liveList = document.getElementById('liveAggregationList');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
+          <td class="py-1.5 px-2.5 text-slate-300">Cô Nguyễn Thị Mai</td>
+          <td class="py-1.5 px-2.5 text-amber-300 font-medium">${studentName}</td>
+          <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
+        `;
+        liveList.prepend(tr);
+      }
+    }
+
+    // Export Master Matrix to Excel using SheetJS
+    function exportMatrixExcel() {
+      showToast('Đang kết xuất bảng Ma trận 5x6 ra file Excel (.xlsx)...');
+      try {
+        const wb = XLSX.utils.book_new();
+        const data = [
+          ['PHÒNG GD&ĐT VẠN NINH - TRƯỜNG TIỂU HỌC PHÚ THẠNH'],
+          ['BẢNG TỔNG HỢP MA TRẬN TIẾN ĐỘ 5 PHÂN HIỆU × 6 TỔ CHUYÊN MÔN (TUẦN 4)'],
+          [''],
+          ['Phân Hiệu', 'Khối 1', 'Khối 2', 'Khối 3', 'Khối 4', 'Khối 5', 'Văn-Thể-Mỹ', 'Tiến Độ Chung'],
+          ['Điểm Trung Tâm', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '100%'],
+          ['Điểm 1 (Phú Hội 1)', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '100%'],
+          ['Điểm 2 (Phú Hội 2)', 'Đúng hạn', 'Nộp trễ 15p', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '95%'],
+          ['Điểm 3 (Tân Dân)', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'CSVC Hỏng', 'Đúng hạn', 'Đúng hạn', '92%'],
+          ['Điểm 4 (Suối Mơ)', 'Mưa lớn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', 'Đúng hạn', '94%']
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        XLSX.utils.book_append_sheet(wb, ws, 'MaTran_5x6');
+        XLSX.writeFile(wb, 'BaoCao_MaTran_TH_PhuThanh_Tuan4.xlsx');
+        showToast('Xuất Excel thành công! Đã lưu tệp vào máy.', 'success');
+      } catch (err) {
+        showToast('Lỗi khi xuất file Excel: ' + err.message, 'error');
+      }
+    }
+
+    // Export Word .docx (HTML-based Docx compatible with Word 2016-2026)
+    function exportMatrixWord() {
+      showToast('Đang tạo văn bản Word (.docx) chuẩn thể thức NĐ 30/2020...');
+      const header = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>Báo Cáo Chuyên Môn</title>
+        <style>
+          body { font-family: "Times New Roman", serif; font-size: 13pt; line-height: 1.5; }
+          table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+          th, td { border: 1px solid black; padding: 6px 10px; font-size: 12pt; }
+          th { background-color: #f2f2f2; text-align: center; }
+        </style>
+        </head><body>
+      `;
+      const body = `
+        <div style="text-align: center;">
+          <p><b>PHÒNG GIÁO DỤC VÀ ĐÀO TẠO VẠN NINH<br/>TRƯỜNG TIỂU HỌC PHÚ THẠNH</b></p>
+          <p style="font-size: 14pt;"><b>BÁO CÁO TỔNG HỢP TIẾN ĐỘ CHUYÊN MÔN MA TRẬN 5 PHÂN HIỆU</b></p>
+          <p><i>(Ban hành theo CV 4069/BGDĐT-GDPT & TT 27/2020/TT-BGDĐT)</i></p>
+        </div>
+        <p style="text-indent: 1.25cm;">Kính gửi: Ban Giám Hiệu Trường Tiểu Học Phú Thạnh và Lãnh đạo Phòng GD&ĐT.</p>
+        <p>Tổ chuyên môn báo cáo tổng hợp tiến độ giảng dạy và nề nếp tuần 4:</p>
+        <table>
+          <tr><th>Phân Hiệu</th><th>Khối 1</th><th>Khối 2</th><th>Khối 3</th><th>Khối 4</th><th>Khối 5</th><th>Văn-Thể-Mỹ</th><th>Tỷ Lệ</th></tr>
+          <tr><td>Điểm Trung Tâm</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>100%</td></tr>
+          <tr><td>Điểm 1 (Phú Hội 1)</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>100%</td></tr>
+          <tr><td>Điểm 2 (Phú Hội 2)</td><td>Đúng hạn</td><td>Nộp trễ 15p</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>95%</td></tr>
+          <tr><td>Điểm 3 (Tân Dân)</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>CSVC Hỏng</td><td>Đúng hạn</td><td>Đúng hạn</td><td>92%</td></tr>
+          <tr><td>Điểm 4 (Suối Mơ)</td><td>Mưa lớn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>Đúng hạn</td><td>94%</td></tr>
+        </table>
+        <br/><br/>
+        <table style="border: none;">
+          <tr style="border: none;">
+            <td style="border: none; text-align: center; width: 50%;"><b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/><br/><br/>Phan Kim Oanh</td>
+            <td style="border: none; text-align: center; width: 50%;"><b>HIỆU TRƯỞNG PHÊ DUYỆT</b><br/><br/><br/>Nguyễn Văn An</td>
+          </tr>
+        </table>
+      `;
+      const footer = "</body></html>";
+      const blob = new Blob(['\ufeff' + header + body + footer], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'BaoCao_MaTran_ChuyenMon_NghiDinh30.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Đã tải văn bản Word (.docx) chuẩn mẫu Bộ GD&ĐT!', 'success');
+    }
+
+    // Export Meeting Minutes to Word
+    function exportMeetingMinutesWord() {
+      exportMatrixWord();
+    }
+
+    // Export Compliance Excel
+    function exportComplianceExcel() {
+      exportMatrixExcel();
+    }
+
+    // Print Preview A4 Action
+    function printPreviewDocument() {
+      document.getElementById('printable-area').classList.remove('hidden');
+      window.print();
+      document.getElementById('printable-area').classList.add('hidden');
+    }
+
+    function printMeetingMinutes() {
+      printPreviewDocument();
+    }
+
+    // AI Assistant Simulation
+    function aiSummarizeMeeting() {
+      showToast('Trợ lý AI đang phân tích biên bản và trích xuất YCCĐ...', 'info');
+      setTimeout(() => {
+        const area = document.getElementById('meetingMinutesContent');
+        area.value += "\n\n[TRỢ LÝ AI TỔNG HỢP]: Tiết học minh họa môn Toán bảng nhân 7 đạt 100% mục tiêu YCCĐ. Đề xuất nhân rộng trò chơi que tính cho toàn bộ 5 phân hiệu.";
+        showToast('Trợ lý AI đã tóm tắt thành công!', 'success');
+      }, 1000);
+    }
+
+    // Notifications System
+    function toggleNotificationDrawer() {
+      const drawer = document.getElementById('notificationDrawer');
+      drawer.classList.toggle('translate-x-full');
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notificationsList');
+      list.innerHTML = '';
+
+      AppState.notifications.forEach(n => {
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-lg border ${n.urgency === 'EMERGENCY' ? 'bg-red-950/40 border-red-800/80' : 'bg-slate-850 border-slate-800'} space-y-1.5`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold px-1.5 py-0.2 rounded ${n.urgency === 'EMERGENCY' ? 'bg-red-900 text-red-200' : 'bg-brand-900 text-brand-200'}">
+              ${n.urgency === 'EMERGENCY' ? '🚨 KHẨN CẤP' : 'QUAN TRỌNG'}
+            </span>
+            <span class="text-[11px] text-slate-500">${n.time}</span>
+          </div>
+          <h4 class="font-bold text-xs text-white">${n.title}</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">${n.content}</p>
+          <div class="text-[11px] text-slate-400">Người gửi: <strong>${n.sender}</strong></div>
+          <button onclick="ackNotification(${n.id}, this)" class="mt-1 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 flex items-center gap-1">
+            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Đã nhận chỉ đạo
+          </button>
+        `;
+        list.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function ackNotification(id, btn) {
+      btn.textContent = '✓ Đã xác nhận lúc ' + new Date().toLocaleTimeString('vi-VN');
+      btn.className = 'mt-1 px-2.5 py-1 rounded bg-emerald-950 text-emerald-300 text-xs font-bold border border-emerald-800';
+      showToast('Đã gửi xác nhận tiếp nhận chỉ đạo đến BGH.');
+    }
+
+    function openBroadcastModal() {
+      document.getElementById('broadcastModal').classList.remove('hidden');
+    }
+
+    function closeBroadcastModal() {
+      document.getElementById('broadcastModal').classList.add('hidden');
+    }
+
+    function sendBroadcast() {
+      const title = document.getElementById('broadcastTitle').value || 'Thông báo khẩn từ BGH';
+      const content = document.getElementById('broadcastContent').value || 'Yêu cầu các tổ trưởng và GV thực hiện nghiêm túc.';
+      
+      AppState.notifications.unshift({
+        id: Date.now(),
+        urgency: document.getElementById('broadcastUrgency').value,
+        title: title,
+        content: content,
+        sender: 'Tôi (' + AppState.currentRole + ')',
+        time: 'Vừa xong',
+        isRead: false
+      });
+
+      renderNotifications();
+      closeBroadcastModal();
+      showToast('Thông báo khẩn đã được phát tới các đối tượng trong < 1 giây!', 'success');
+    }
+
+    // Reminders via Zalo 1-Click
+    function remindSingleZalo(teacherName) {
+      showToast(`Đã bắn tin nhắn Zalo ZNS nhắc nộp báo cáo tới [${teacherName}] thành công!`, 'success');
+    }
+
+    function remindAllLateZalo() {
+      showToast('Đã gửi tin nhắn Zalo tự động tới tất cả giáo viên chưa nộp báo cáo!', 'success');
+    }
+
+    // Multi-School Actions
+    function changeSchool(schoolId) {
+      if (schoolId === 'new') {
+        openNewSchoolModal();
+        return;
+      }
+      showToast(`Đã chuyển không gian làm việc sang: ${schoolId === '1' ? 'Trường TH Phú Thạnh' : 'Trường TH Vạn Thắng'}`);
+    }
+
+    function openNewSchoolModal() {
+      const name = prompt('Nhập tên trường học mới cần khởi tạo không gian:', 'Trường Tiểu Học Vạn Giã');
+      if (name) {
+        showToast(`Đã tạo thành công không gian làm việc riêng cho [${name}] (0 đồng trọn đời)!`, 'success');
+      }
+    }
+
+    function copyClusterLink() {
+      navigator.clipboard.writeText(window.location.href);
+      showToast('Đã sao chép link dự giờ Cụm chuyên môn vào bộ nhớ tạm!', 'success');
+    }
+
+    function exportFullSystemBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "EduMatrix_FullBackup_PhuThanh.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Đã xuất file sao lưu toàn bộ hệ thống (No Vendor Lock-in)!', 'success');
+    }
+
+    // Toast Notification Utility
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      let bg = 'bg-slate-900 border-slate-700 text-slate-200';
+      if (type === 'success') bg = 'bg-brand-900/95 border-brand-600 text-white';
+      if (type === 'error') bg = 'bg-red-900/95 border-red-600 text-white';
+
+      toast.className = `${bg} border px-4 py-2.5 rounded-xl shadow-xl text-xs sm:text-sm font-medium flex items-center gap-2 transition-all duration-300 transform translate-y-0 opacity-100 pointer-events-auto`;
+      toast.innerHTML = `
+        <i data-lucide="${type === 'success' ? 'check-circle-2' : (type === 'error' ? 'alert-triangle' : 'info')}" class="w-4 h-4 shrink-0"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
