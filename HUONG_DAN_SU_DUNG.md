@@ -1,4 +1,4 @@
-# HƯỚNG DẪN SỬ DỤNG: NỀN TẢNG EDUMATRIX - SHCM PRO
+# HƯỚNG DẪN SỬ DỤNG: NỀN TẢNG SYNCHROEDU
 ## HỆ THỐNG QUẢN TRỊ CHUYÊN MÔN SỐ & BÁO CÁO MA TRẬN 2D CẤP TIỂU HỌC
 *(Ban hành bám sát Công văn số 4069/BGDĐT-GDPT và Thông tư số 27/2020/TT-BGDĐT)*
 
@@ -17,7 +17,7 @@
   # hoặc: node server.mjs
   ```
 * Mở trình duyệt truy cập: `http://localhost:3000`
-* Trên thanh địa chỉ trình duyệt, bấm vào biểu tượng **"Cài đặt ứng dụng" (Install App)** để cài EduMatrix về màn hình chính máy tính hoặc điện thoại như một App độc lập.
+* Trên thanh địa chỉ trình duyệt, bấm vào biểu tượng **"Cài đặt ứng dụng" (Install App)** để cài SynchroEdu về màn hình chính máy tính hoặc điện thoại như một App độc lập.
 
 ---
 
@@ -70,4 +70,4 @@
 1. **Xuất Excel (SheetJS)**: Tạo file `.xlsx` thật sự, chuẩn cột, không bị lỗi font tiếng Việt.
 2. **Xuất Word (`.docx` / `.doc`)**: Định dạng sẵn văn bản hành chính theo Nghị định 30/2020/NĐ-CP (Times New Roman, căn lề chuẩn).
 3. **In ấn A4 trực tiếp**: Hỗ trợ in trang báo cáo và biên bản sạch đẹp, không dính thanh menu hay icon thừa.
-4. **Sao lưu dữ liệu 0đ (No Vendor Lock-in)**: Bấm nút *"Sao lưu 0đ"* ở góc trên bên phải để tải file `EduMatrix_FullBackup_PhuThanh.json` về máy tính lưu trữ an toàn trọn đời.
+4. **Sao lưu dữ liệu 0đ (No Vendor Lock-in)**: Bấm nút *"Sao lưu 0đ"* ở góc trên bên phải để tải file `SynchroEdu_FullBackup_PhuThanh.json` về máy tính lưu trữ an toàn trọn đời.

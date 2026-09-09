@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>EduMatrix - SHCM Pro: Quản Trị Chuyên Môn & Báo Cáo Ma Trận 2D</title>
-  <meta name="description" content="Hệ thống Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo CV 4069/BGDĐT-GDPT và TT 27/2020/TT-BGDĐT" />
+  <title>SynchroEdu - Quản Trị Chuyên Môn & Báo Cáo Ma Trận 2D</title>
+  <meta name="description" content="SynchroEdu - Hệ thống Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo CV 4069/BGDĐT-GDPT và TT 27/2020/TT-BGDĐT" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#065f46" />
 
@@ -111,7 +111,7 @@
       </div>
       <div>
         <div class="flex items-center gap-2">
-          <span class="font-bold text-sm sm:text-base text-white tracking-tight">EduMatrix - SHCM Pro</span>
+          <span class="font-bold text-sm sm:text-base text-white tracking-tight">SynchroEdu</span>
           <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-brand-900/80 text-brand-300 border border-brand-700/50">
             Tiểu Học (CV 4069 & TT 27)
           </span>
@@ -1221,8 +1221,8 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
     function registerServiceWorker() {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('[EduMatrix] Service Worker Registered successfully:', reg.scope))
-          .catch(err => console.log('[EduMatrix] SW Registration skipped:', err));
+          .then(reg => console.log('[SynchroEdu] Service Worker Registered successfully:', reg.scope))
+          .catch(err => console.log('[SynchroEdu] SW Registration skipped:', err));
       }
     }
 
@@ -1904,7 +1904,7 @@ Nội dung: Phân tích tiết dạy minh họa môn Toán 2: "Bảng nhân 7 (t
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "EduMatrix_FullBackup_PhuThanh.json");
+      downloadAnchor.setAttribute("download", "SynchroEdu_FullBackup_PhuThanh.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();

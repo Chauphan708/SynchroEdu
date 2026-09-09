@@ -1,9 +1,9 @@
 @echo off
 chcp 65001 >nul
-title EduMatrix - SHCM Pro (He Thong Quan Tri Chuyen Mon)
+title SynchroEdu (He Thong Quan Tri Chuyen Mon & Dong Bo Ma Tran 2D)
 echo ========================================================
 echo   HE THONG QUAN TRI CHUYEN MON & BAO CAO MA TRAN 2D
-echo             EDUMATRIX - SHCM PRO
+echo                    SYNCHROEDU
 echo ========================================================
 echo.
 echo [1/2] Dang mo trinh duyet tai http://localhost:3000 ...

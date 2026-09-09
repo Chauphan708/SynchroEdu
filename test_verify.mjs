@@ -1,4 +1,4 @@
-// Automated Verification Test Suite - EduMatrix SHCM Pro
+// Automated Verification Test Suite - SynchroEdu
 import fs from 'fs';
 import path from 'path';
 import http from 'http';
@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 console.log('=====================================================');
-console.log('BẮT ĐẦU KIỂM THỬ TỰ ĐỘNG: EDUMATRIX - SHCM PRO');
+console.log('BẮT ĐẦU KIỂM THỬ TỰ ĐỘNG: SYNCHROEDU');
 console.log('=====================================================');
 
 let passedTests = 0;
@@ -37,7 +37,7 @@ assert(fs.existsSync(path.join(__dirname, 'server.mjs')), 'Tệp server.mjs tồ
 console.log('\n2. Kiểm tra cấu hình PWA Manifest:');
 try {
   const manifestData = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8'));
-  assert(manifestData.name.includes('EduMatrix'), 'Manifest name chứa EduMatrix');
+  assert(manifestData.name.includes('SynchroEdu'), 'Manifest name chứa SynchroEdu');
   assert(manifestData.display === 'standalone', 'Manifest display là standalone (chạy như App di động)');
   assert(manifestData.theme_color === '#065f46', 'Theme color chuẩn Deep Emerald (#065f46)');
 } catch (e) {

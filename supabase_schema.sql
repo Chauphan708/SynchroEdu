@@ -1,7 +1,6 @@
 -- ==============================================================================
--- CƠ SỞ DỮ LIỆU CHUẨN HÓA: EDUMATRIX - SHCM PRO (SUPABASE / POSTGRESQL)
+-- CƠ SỞ DỮ LIỆU CHUẨN HÓA: SYNCHROEDU (SUPABASE / POSTGRESQL)
 -- Hệ thống Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học
--- Hỗ trợ: Đa trường (Multi-tenant), Cụm chuyên môn, 5 phân hiệu, 13 môn học, RLS
 -- ==============================================================================
 
 -- 1. BẢNG CỤM CHUYÊN MÔN LIÊN TRƯỜNG (CLUSTERS)

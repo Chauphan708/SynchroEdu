@@ -1,8 +1,8 @@
-# EduMatrix - SHCM Pro 🎓🏫
+# SynchroEdu 🎓🏫
 ### Nền Tảng Quản Trị Sinh Hoạt Chuyên Môn Số & Báo Cáo Ma Trận 2D Cấp Tiểu Học
 
-[![EduMatrix CI](https://github.com/your-username/edumatrix-shcm-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/edumatrix-shcm-pro/actions/workflows/ci.yml)
-[![Deploy to GitHub Pages](https://github.com/your-username/edumatrix-shcm-pro/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/your-username/edumatrix-shcm-pro/actions/workflows/deploy-pages.yml)
+[![SynchroEdu CI](https://github.com/your-username/synchroedu/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/synchroedu/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/your-username/synchroedu/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/your-username/synchroedu/actions/workflows/deploy-pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![PWA Ready](https://img.shields.io/badge/PWA-Mobile--First-blue.svg)](manifest.json)
 [![Zero Cost](https://img.shields.io/badge/Cost-0%C4%91%20Lifetime-success.svg)](DEPLOY_0_DONG.md)
@@ -12,15 +12,15 @@
 
 ## 📖 GIỚI THIỆU TỔNG QUAN
 
-**EduMatrix - SHCM Pro** là giải pháp chuyển đổi số toàn diện cho trường Tiểu học có quy mô nhiều phân hiệu (1 Điểm trung tâm + 4 Điểm lẻ; 32 lớp học, 32 giáo viên). Hệ thống hợp nhất trọn vẹn hai trụ cột chiến lược:
+**SynchroEdu** là giải pháp chuyển đổi số toàn diện cho trường Tiểu học có quy mô nhiều phân hiệu (1 Điểm trung tâm + 4 Điểm lẻ; 32 lớp học, 32 giáo viên). Hệ thống hợp nhất trọn vẹn hai trụ cột chiến lược:
 1. **Sổ tay Quản trị Sinh hoạt Chuyên môn Số (E-EduSHCM)** bám sát [Công văn số 4069/BGDĐT-GDPT](https://moet.gov.vn) & [Thông tư số 27/2020/TT-BGDĐT](https://moet.gov.vn).
-2. **Kiến trúc Báo cáo Ma trận 2D & Thông báo Tức thì (School Matrix Reporting Architecture - EduMatrix 5.0)**: Giáo viên chỉ nhập liệu **1 lần**, hệ thống tự động phân tách thành **2 luồng** (ngang cho Tổ trưởng, dọc cho Hiệu phó điểm) và **hội tụ tại Ma trận 5x6** cho Ban Giám Hiệu.
+2. **Kiến trúc Báo cáo Ma trận 2D & Thông báo Tức thì (School Matrix Reporting Architecture)**: Giáo viên chỉ nhập liệu **1 lần**, hệ thống tự động phân tách thành **2 luồng đồng bộ** (ngang cho Tổ trưởng, dọc cho Hiệu phó điểm) và **hội tụ tại Ma trận 5x6** cho Ban Giám Hiệu.
 
 ---
 
 ## 🏛️ CHUẨN HÓA VĂN BẢN QUY PHẠM PHÁP LUẬT
 
-| Văn bản pháp lý | Yêu cầu cốt lõi | Cách EduMatrix - SHCM Pro đáp ứng |
+| Văn bản pháp lý | Yêu cầu cốt lõi | Cách SynchroEdu đáp ứng |
 | :--- | :--- | :--- |
 | **Công văn 4069/BGDĐT-GDPT** | Sinh hoạt chuyên môn theo nghiên cứu bài học 4 bước; Tập trung vào việc học của học sinh; **Tuyệt đối không đánh giá, xếp loại người dạy**. | Bảng điện tử 4 bước có đồng hồ đếm ngược; AI tóm tắt biên bản; Banner cam kết sư phạm không xếp loại giờ dạy. |
 | **Thông tư 27/2020/TT-BGDĐT** | Đánh giá học sinh tiểu học theo 3 mức độ nhận thức (Mức 1: Biết, Mức 2: Hiểu, Mức 3: Vận dụng). | Ngân hàng câu hỏi ma trận đề kiểm tra phân loại rõ ràng 3 mức độ cho toàn bộ 13 môn học. |
@@ -57,7 +57,7 @@ graph TD
 ## 📁 CẤU TRÚC THƯ MỤC DỰ ÁN
 
 ```text
-edumatrix-shcm-pro/
+synchroedu/
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                 # Tự động kiểm thử (Node 18, 20, 22)
@@ -123,7 +123,7 @@ Hệ thống được thiết kế với tiêu chí **Zero Cost Stack** (Không 
 
 ### 2. Triển khai Web miễn phí qua Vercel
 1. Đăng nhập [Vercel.com](https://vercel.com) bằng tài khoản GitHub.
-2. Bấm **Add New... > Project** và chọn kho lưu trữ `edumatrix-shcm-pro`.
+2. Bấm **Add New... > Project** và chọn kho lưu trữ `synchroedu`.
 3. Bấm **Deploy** (Vercel tự động nhận diện `vercel.json` và `index.html` không cần cấu hình).
 
 ### 3. Thiết lập Cơ sở dữ liệu qua Supabase
@@ -140,21 +140,21 @@ Chi tiết xem tại tài liệu: [`DEPLOY_0_DONG.md`](DEPLOY_0_DONG.md).
 Mở cửa sổ dòng lệnh tại thư mục dự án và thực hiện các bước sau:
 
 ```bash
-# 1. Khởi tạo kho lưu trữ git cục bộ
+# 1. Khởi tạo kho lưu trữ git cục bộ (đã thực hiện sẵn)
 git init
 
 # 2. Thêm tất cả tệp tin vào staging
 git add .
 
-# 3. Tạo commit đầu tiên
-git commit -m "feat: khoi tao nen tang EduMatrix - SHCM Pro v5.0.0 hoan chinh"
+# 3. Tạo commit
+git commit -m "feat: cap nhat thuong hieu SynchroEdu v5.0.0 hoan chinh"
 
 # 4. Đổi tên nhánh mặc định thành main
 git branch -M main
 
 # 5. Liên kết với kho lưu trữ trên GitHub của bạn
-# (Thay your-username và repo-name bằng tài khoản và tên kho của bạn trên GitHub)
-git remote add origin https://github.com/your-username/edumatrix-shcm-pro.git
+# (Thay your-username bằng tài khoản GitHub của bạn)
+git remote add origin https://github.com/your-username/synchroedu.git
 
 # 6. Đẩy mã nguồn lên GitHub
 git push -u origin main

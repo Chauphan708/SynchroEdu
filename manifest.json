@@ -1,6 +1,6 @@
 {
-  "name": "EduMatrix - SHCM Pro: Quản Trị Chuyên Môn & Báo Cáo Ma Trận",
-  "short_name": "EduMatrix",
+  "name": "SynchroEdu - Quản Trị Chuyên Môn Số & Báo Cáo Ma Trận 2D",
+  "short_name": "SynchroEdu",
   "description": "Nền tảng Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học (CV 4069/BGDĐT-GDPT & TT 27/2020/TT-BGDĐT)",
   "start_url": "./index.html",
   "display": "standalone",

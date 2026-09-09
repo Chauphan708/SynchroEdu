@@ -1,7 +1,7 @@
 {
-  "name": "edumatrix-shcm-pro",
+  "name": "synchroedu",
   "version": "5.0.0",
-  "description": "Nền tảng Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo Công văn 4069/BGDĐT-GDPT & Thông tư 27/2020/TT-BGDĐT",
+  "description": "SynchroEdu - Nền tảng Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo Công văn 4069/BGDĐT-GDPT & Thông tư 27/2020/TT-BGDĐT",
   "main": "server.mjs",
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "dev": "node server.mjs"
   },
   "keywords": [
-    "edumatrix",
+    "synchroedu",
     "shcm-pro",
     "sinh-hoat-chuyen-mon",
     "cv4069",
@@ -20,15 +20,16 @@
     "matrix-reporting",
     "education-management"
   ],
-  "author": "EduMatrix Team",
+  "author": "SynchroEdu Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/edumatrix-shcm-pro.git"
+    "url": "https://github.com/your-username/synchroedu.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/edumatrix-shcm-pro/issues"
+    "url": "https://github.com/your-username/synchroedu/issues"
   },
-  "homepage": "https://github.com/your-username/edumatrix-shcm-pro#readme"
+  "homepage": "https://github.com/your-username/synchroedu#readme"
 }
+
 

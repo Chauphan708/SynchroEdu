@@ -1,4 +1,4 @@
-// Native Node.js Server - EduMatrix SHCM Pro
+// Native Node.js Server - SynchroEdu
 // Chạy trực tiếp không cần cài đặt thêm thư viện (Zero external dependencies)
 import http from 'http';
 import fs from 'fs';
@@ -55,8 +55,8 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`[EduMatrix - SHCM Pro] Server running at http://localhost:${PORT}`);
-  console.log(`[EduMatrix - SHCM Pro] Ready for testing and local demonstration.`);
+  console.log(`[SynchroEdu] Server running at http://localhost:${PORT}`);
+  console.log(`[SynchroEdu] Ready for testing and local demonstration.`);
 });
 
 export { server };

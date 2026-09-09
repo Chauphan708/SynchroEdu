@@ -1,5 +1,5 @@
-// Service Worker - EduMatrix SHCM Pro
-const CACHE_NAME = 'edumatrix-shcm-v1';
+// Service Worker - SynchroEdu
+const CACHE_NAME = 'synchroedu-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -50,7 +50,7 @@ self.addEventListener('fetch', (event) => {
 
 // Push notification handling
 self.addEventListener('push', (event) => {
-  let data = { title: 'EduMatrix Thông Báo', body: 'Có chỉ đạo mới từ BGH nhà trường' };
+  let data = { title: 'SynchroEdu Thông Báo', body: 'Có chỉ đạo mới từ BGH nhà trường' };
   if (event.data) {
     try {
       data = event.data.json();

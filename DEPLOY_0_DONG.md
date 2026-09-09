@@ -1,5 +1,5 @@
 # HƯỚNG DẪN TRIỂN KHAI MIỄN PHÍ 100% (DEPLOY 0 ĐỒNG TRỌN ĐỜI)
-## ĐƯA EDUMATRIX - SHCM PRO LÊN INTERNET CHO TOÀN TRƯỜNG & CỤM SỬ DỤNG
+## ĐƯA SYNCHROEDU LÊN INTERNET CHO TOÀN TRƯỜNG & CỤM SỬ DỤNG
 
 Hệ thống được thiết kế để vận hành hoàn toàn miễn phí trọn đời bằng cách kết hợp 3 nền tảng đám mây uy tín hàng đầu:
 1. **Frontend Web & PWA**: Vercel hoặc Cloudflare Pages (Miễn phí vĩnh viễn, băng thông không giới hạn, hỗ trợ tên miền riêng `.edu.vn`).
@@ -23,7 +23,7 @@ Hệ thống được thiết kế để vận hành hoàn toàn miễn phí tr�
 ## BƯỚC 2: KẾT NỐI SUPABASE POSTGRESQL (NẾU DÙNG CLOUD REALTIME)
 
 1. Truy cập [https://supabase.com](https://supabase.com) và tạo một tài khoản miễn phí.
-2. Bấm **"New project"** $\rightarrow$ Đặt tên dự án (ví dụ: `edumatrix-phuthanh`), chọn khu vực máy chủ `Singapore` (để tải nhanh nhất tại Việt Nam).
+2. Bấm **"New project"** $\rightarrow$ Đặt tên dự án (ví dụ: `synchroedu-phuthanh`), chọn khu vực máy chủ `Singapore` (để tải nhanh nhất tại Việt Nam).
 3. Vào mục **SQL Editor** trong bảng điều khiển của Supabase.
 4. Mở tệp `supabase_schema.sql` trong thư mục này, sao chép toàn bộ nội dung và dán vào SQL Editor của Supabase $\rightarrow$ Bấm nút **"Run"**.
 5. Cơ sở dữ liệu 12 bảng, triggers tính trễ hạn và tài khoản 32 giáo viên sẽ được khởi tạo tự động trong 5 giây!
@@ -45,4 +45,4 @@ Hệ thống được thiết kế để vận hành hoàn toàn miễn phí tr�
   * Truy cập link web $\rightarrow$ Bấm vào dấu 3 chấm góc trên bên phải $\rightarrow$ Chọn **"Cài đặt ứng dụng"** hoặc **"Thêm vào Màn hình chính"**.
 * **Trên iPhone / iPad (Safari):**
   * Truy cập link web $\rightarrow$ Bấm vào nút **Chia sẻ** (biểu tượng hình vuông có mũi tên chỉ lên) $\rightarrow$ Chọn **"Thêm vào Màn hình chính (Add to Home Screen)"**.
-* Biểu tượng ứng dụng **EduMatrix** màu xanh ngọc bích sẽ xuất hiện trên màn hình điện thoại, mở lên dùng mượt mà như một App tải từ App Store.
+* Biểu tượng ứng dụng **SynchroEdu** màu xanh ngọc bích sẽ xuất hiện trên màn hình điện thoại, mở lên dùng mượt mà như một App tải từ App Store.

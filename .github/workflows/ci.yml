@@ -1,4 +1,4 @@
-name: EduMatrix CI
+name: SynchroEdu CI
 
 on:
   push:
