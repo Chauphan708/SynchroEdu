@@ -1,4 +1,4 @@
-// Native Node.js Server - SynchroEdu
+// Native Node.js Server - SynchroEdu (Local Development & Testing)
 // Chạy trực tiếp không cần cài đặt thêm thư viện (Zero external dependencies)
 import http from 'http';
 import fs from 'fs';
@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 3000;
 
 const MIME_TYPES = {
@@ -31,7 +32,7 @@ const server = http.createServer((req, res) => {
 
   // Decode URI component for filenames
   reqPath = decodeURIComponent(reqPath);
-  const filePath = path.join(__dirname, reqPath);
+  const filePath = path.join(rootDir, reqPath);
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {

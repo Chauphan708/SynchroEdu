@@ -1,0 +1,5 @@
+# Ignore development scripts from Vercel deployment
+scripts/
+*.bat
+*.sql
+*.md

@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
 console.log('=====================================================');
 console.log('BẮT ĐẦU KIỂM THỬ TỰ ĐỘNG: SYNCHROEDU');
@@ -27,16 +28,16 @@ function assert(condition, message) {
 
 // 1. Kiểm tra tồn tại các file cốt lõi
 console.log('\n1. Kiểm tra cấu trúc tệp tin dự án:');
-assert(fs.existsSync(path.join(__dirname, 'index.html')), 'Tệp index.html tồn tại');
-assert(fs.existsSync(path.join(__dirname, 'supabase_schema.sql')), 'Tệp cơ sở dữ liệu supabase_schema.sql tồn tại');
-assert(fs.existsSync(path.join(__dirname, 'manifest.json')), 'Tệp manifest.json (PWA) tồn tại');
-assert(fs.existsSync(path.join(__dirname, 'sw.js')), 'Tệp Service Worker sw.js tồn tại');
-assert(fs.existsSync(path.join(__dirname, 'server.mjs')), 'Tệp server.mjs tồn tại');
+assert(fs.existsSync(path.join(rootDir, 'index.html')), 'Tệp index.html tồn tại');
+assert(fs.existsSync(path.join(rootDir, 'supabase_schema.sql')), 'Tệp cơ sở dữ liệu supabase_schema.sql tồn tại');
+assert(fs.existsSync(path.join(rootDir, 'manifest.json')), 'Tệp manifest.json (PWA) tồn tại');
+assert(fs.existsSync(path.join(rootDir, 'sw.js')), 'Tệp Service Worker sw.js tồn tại');
+assert(fs.existsSync(path.join(__dirname, 'server.mjs')), 'Tệp scripts/server.mjs tồn tại');
 
 // 2. Kiểm tra tính hợp lệ của manifest.json
 console.log('\n2. Kiểm tra cấu hình PWA Manifest:');
 try {
-  const manifestData = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8'));
+  const manifestData = JSON.parse(fs.readFileSync(path.join(rootDir, 'manifest.json'), 'utf8'));
   assert(manifestData.name.includes('SynchroEdu'), 'Manifest name chứa SynchroEdu');
   assert(manifestData.display === 'standalone', 'Manifest display là standalone (chạy như App di động)');
   assert(manifestData.theme_color === '#065f46', 'Theme color chuẩn Deep Emerald (#065f46)');
@@ -46,7 +47,7 @@ try {
 
 // 3. Kiểm tra tính hợp lệ của SQL Schema
 console.log('\n3. Kiểm tra tính toàn vẹn của Cơ sở dữ liệu SQL (12 bảng & Triggers):');
-const sqlContent = fs.readFileSync(path.join(__dirname, 'supabase_schema.sql'), 'utf8');
+const sqlContent = fs.readFileSync(path.join(rootDir, 'supabase_schema.sql'), 'utf8');
 const expectedTables = [
   'clusters', 'schools', 'branches', 'departments', 'users',
   'weekly_reports', 'data_requests', 'student_submissions',
@@ -62,7 +63,7 @@ assert(sqlContent.includes('Phan Kim Oanh') && sqlContent.includes('Trần Đìn
 
 // 4. Kiểm tra tính năng trong index.html
 console.log('\n4. Kiểm tra các module chức năng trong index.html:');
-const htmlContent = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+const htmlContent = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
 
 assert(htmlContent.includes('exportMatrixExcel()') && htmlContent.includes('XLSX.utils'), 'Chức năng xuất Excel SheetJS hoạt động');
 assert(htmlContent.includes('exportMatrixWord()') && htmlContent.includes('application/msword'), 'Chức năng xuất Word (.docx) chuẩn mẫu hoạt động');

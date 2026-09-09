@@ -4,9 +4,9 @@
   "description": "SynchroEdu - Nền tảng Quản trị Sinh hoạt Chuyên môn Số & Báo cáo Ma trận 2D Cấp Tiểu Học theo Công văn 4069/BGDĐT-GDPT & Thông tư 27/2020/TT-BGDĐT",
   "type": "module",
   "scripts": {
-    "start": "node server.mjs",
-    "test": "node test_verify.mjs",
-    "dev": "node server.mjs"
+    "start": "node scripts/server.mjs",
+    "test": "node scripts/test_verify.mjs",
+    "dev": "node scripts/server.mjs"
   },
   "keywords": [
     "synchroedu",

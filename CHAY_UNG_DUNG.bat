@@ -13,5 +13,5 @@ echo.
 echo * Luu y: Giu nguyen cua so nay khi dang su dung web.
 echo * Nhan Ctrl + C de tat may chu khi dung xong.
 echo.
-node server.mjs
+node scripts/server.mjs
 pause
