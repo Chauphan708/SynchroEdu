@@ -43,10 +43,44 @@
   </script>
 
   <style>
+    /* System Dark Theme & Form Controls */
+    :root, html {
+      color-scheme: dark;
+    }
+
     /* Design Guidance - Contrast & Typography */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    /* System-wide Dark styling for Native Select, Option & Input Elements */
+    select {
+      color-scheme: dark;
+    }
+
+    select, option, optgroup {
+      color-scheme: dark;
+      background-color: #1e293b;
+      color: #f8fafc;
+    }
+
+    select option {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      padding: 6px 12px;
+    }
+
+    select option:checked,
+    select option:hover,
+    select option:focus {
+      background-color: #065f46 !important;
+      color: #ffffff !important;
+    }
+
+    /* Native inputs & textareas dark styling */
+    input, textarea, select {
+      color-scheme: dark;
     }
     
     /* Scrollbar Styling */
@@ -119,9 +153,9 @@
         </div>
         <div class="flex items-center gap-1.5 text-xs text-slate-400">
           <i data-lucide="building" class="w-3.5 h-3.5 text-brand-400"></i>
-          <select id="schoolSelector" onchange="changeSchool(this.value)" class="bg-transparent text-slate-300 border-0 focus:ring-0 cursor-pointer font-medium hover:text-white transition-colors p-0 text-xs">
-            <option value="1" selected>Trường Tiểu Học (Điểm Trung Tâm & Điểm Lẻ)</option>
-            <option value="new">+ Khởi tạo Trường Mới Trong Cụm...</option>
+          <select id="schoolSelector" onchange="changeSchool(this.value)" class="bg-slate-900 text-slate-200 border-0 focus:ring-0 cursor-pointer font-medium hover:text-white transition-colors p-0 text-xs">
+            <option class="bg-slate-800 text-slate-100" value="1" class="bg-slate-800 text-slate-100" selected>Trường Tiểu Học (Điểm Trung Tâm & Điểm Lẻ)</option>
+            <option class="bg-slate-800 text-slate-100" value="new" class="bg-slate-800 text-slate-100">+ Khởi tạo Trường Mới Trong Cụm...</option>
           </select>
         </div>
       </div>
@@ -132,13 +166,13 @@
       <!-- Role Switcher -->
       <div class="flex items-center gap-1.5 bg-slate-800/90 rounded-lg px-2 py-1.5 border border-slate-700 text-xs">
         <i data-lucide="user-check" class="w-3.5 h-3.5 text-brand-400 hidden sm:inline-block"></i>
-        <select id="roleSelector" onchange="switchRole(this.value)" class="bg-transparent text-slate-200 font-medium border-0 focus:ring-0 cursor-pointer p-0 text-xs pr-4">
-          <option value="principal">Hiệu Trưởng</option>
-          <option value="vp_branch">Phó Hiệu Trưởng (Phụ trách Điểm trường)</option>
-          <option value="head_dept" selected>Tổ Trưởng Chuyên Môn</option>
-          <option value="deputy_head">Tổ Phó Chuyên Môn</option>
-          <option value="teacher">Giáo Viên (Chủ Nhiệm / Bộ Môn)</option>
-          <option value="guest">Khách Mời Cụm Chuyên Môn (Dự giờ liên trường)</option>
+        <select id="roleSelector" onchange="switchRole(this.value)" class="bg-slate-800 text-slate-200 font-medium border-0 focus:ring-0 cursor-pointer p-0 text-xs pr-4">
+          <option class="bg-slate-800 text-slate-100" value="principal" class="bg-slate-800 text-slate-100">Hiệu Trưởng</option>
+          <option class="bg-slate-800 text-slate-100" value="vp_branch" class="bg-slate-800 text-slate-100">Phó Hiệu Trưởng (Phụ trách Điểm trường)</option>
+          <option class="bg-slate-800 text-slate-100" value="head_dept" class="bg-slate-800 text-slate-100" selected>Tổ Trưởng Chuyên Môn</option>
+          <option class="bg-slate-800 text-slate-100" value="deputy_head" class="bg-slate-800 text-slate-100">Tổ Phó Chuyên Môn</option>
+          <option class="bg-slate-800 text-slate-100" value="teacher" class="bg-slate-800 text-slate-100">Giáo Viên (Chủ Nhiệm / Bộ Môn)</option>
+          <option class="bg-slate-800 text-slate-100" value="guest" class="bg-slate-800 text-slate-100">Khách Mời Cụm Chuyên Môn (Dự giờ liên trường)</option>
         </select>
       </div>
 
@@ -467,24 +501,24 @@
               <div>
                 <label class="block text-slate-300 mb-1.5 font-medium">Môn học phụ trách:</label>
                 <select id="reportSubject" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:ring-1 focus:ring-brand-500">
-                  <option>Toán (Khối 2)</option>
-                  <option selected>Tiếng Việt (Khối 2)</option>
-                  <option>Tự nhiên và Xã hội (Khối 2)</option>
-                  <option>Đạo đức (Khối 2)</option>
-                  <option>Hoạt động trải nghiệm (Khối 2)</option>
-                  <option>Giáo dục thể chất (Khối 2)</option>
-                  <option>Âm nhạc (Khối 2)</option>
-                  <option>Mĩ thuật (Khối 2)</option>
-                  <option>Tiếng Anh (Khối 2)</option>
-                  <option>Dạy học Buổi 2 (STEM / Kỹ năng sống)</option>
+                  <option class="bg-slate-800 text-slate-100">Toán (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100" selected>Tiếng Việt (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Tự nhiên và Xã hội (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Đạo đức (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Hoạt động trải nghiệm (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Giáo dục thể chất (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Âm nhạc (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Mĩ thuật (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Tiếng Anh (Khối 2)</option>
+                  <option class="bg-slate-800 text-slate-100">Dạy học Buổi 2 (STEM / Kỹ năng sống)</option>
                 </select>
               </div>
               <div>
                 <label class="block text-slate-300 mb-1.5 font-medium">Tiến độ theo phân phối chương trình:</label>
                 <select id="reportProgress" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:ring-1 focus:ring-brand-500">
-                  <option value="ON_TRACK" selected>Đúng tiến độ (Không chậm tiết)</option>
-                  <option value="DELAYED">Chậm tiến độ (Kèm lý do)</option>
-                  <option value="AHEAD">Vượt tiến độ</option>
+                  <option class="bg-slate-800 text-slate-100" value="ON_TRACK" selected>Đúng tiến độ (Không chậm tiết)</option>
+                  <option class="bg-slate-800 text-slate-100" value="DELAYED">Chậm tiến độ (Kèm lý do)</option>
+                  <option class="bg-slate-800 text-slate-100" value="AHEAD">Vượt tiến độ</option>
                 </select>
               </div>
             </div>
@@ -600,12 +634,12 @@
             <div class="flex items-center gap-2">
               <span class="text-xs text-slate-400">Xem điểm:</span>
               <select id="branchFilterSelect" onchange="filterBranchVertical(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg text-xs text-white p-1.5">
-                <option value="ALL">Tất cả 5 Phân Hiệu</option>
-                <option value="BRANCH_CENTER">Điểm Trung Tâm</option>
-                <option value="BRANCH_1">Điểm 1</option>
-                <option value="BRANCH_2">Điểm 2</option>
-                <option value="BRANCH_3" selected>Điểm 3</option>
-                <option value="BRANCH_4">Điểm 4</option>
+                <option class="bg-slate-800 text-slate-100" value="ALL">Tất cả 5 Phân Hiệu</option>
+                <option class="bg-slate-800 text-slate-100" value="BRANCH_CENTER">Điểm Trung Tâm</option>
+                <option class="bg-slate-800 text-slate-100" value="BRANCH_1">Điểm 1</option>
+                <option class="bg-slate-800 text-slate-100" value="BRANCH_2">Điểm 2</option>
+                <option class="bg-slate-800 text-slate-100" value="BRANCH_3" selected>Điểm 3</option>
+                <option class="bg-slate-800 text-slate-100" value="BRANCH_4">Điểm 4</option>
               </select>
             </div>
           </div>
@@ -706,19 +740,19 @@
                   <input type="text" id="resourceSearchInput" oninput="searchResources(this.value)" placeholder="Tìm bài học, chủ đề, Yêu cầu cần đạt (YCCĐ)..." class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-white focus:ring-1 focus:ring-brand-500" />
                 </div>
                 <select id="resourceGradeFilter" onchange="filterResourceGrade(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
-                  <option value="ALL">Tất cả Khối 1-5</option>
-                  <option value="1">Khối 1</option>
-                  <option value="2" selected>Khối 2</option>
-                  <option value="3">Khối 3</option>
-                  <option value="4">Khối 4</option>
-                  <option value="5">Khối 5</option>
+                  <option class="bg-slate-800 text-slate-100" value="ALL">Tất cả Khối 1-5</option>
+                  <option class="bg-slate-800 text-slate-100" value="1">Khối 1</option>
+                  <option class="bg-slate-800 text-slate-100" value="2" selected>Khối 2</option>
+                  <option class="bg-slate-800 text-slate-100" value="3">Khối 3</option>
+                  <option class="bg-slate-800 text-slate-100" value="4">Khối 4</option>
+                  <option class="bg-slate-800 text-slate-100" value="5">Khối 5</option>
                 </select>
                 <select id="resourceTypeFilter" onchange="filterResourceType(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
-                  <option value="ALL">Mọi loại học liệu</option>
-                  <option value="CANVA">Bài giảng Canva / PPT</option>
-                  <option value="TT27">Đề KT 3 mức độ (TT 27)</option>
-                  <option value="STEM">Kế hoạch STEM Buổi 2</option>
-                  <option value="READING">Văn hóa đọc</option>
+                  <option class="bg-slate-800 text-slate-100" value="ALL">Mọi loại học liệu</option>
+                  <option class="bg-slate-800 text-slate-100" value="CANVA">Bài giảng Canva / PPT</option>
+                  <option class="bg-slate-800 text-slate-100" value="TT27">Đề KT 3 mức độ (TT 27)</option>
+                  <option class="bg-slate-800 text-slate-100" value="STEM">Kế hoạch STEM Buổi 2</option>
+                  <option class="bg-slate-800 text-slate-100" value="READING">Văn hóa đọc</option>
                 </select>
               </div>
 
@@ -1148,21 +1182,21 @@
               <input type="text" id="userSearchInput" oninput="filterUsers()" placeholder="Tìm theo họ tên, SĐT, lớp..." class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-white focus:ring-1 focus:ring-brand-500" />
             </div>
             <select id="userRoleFilter" onchange="filterUsers()" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
-              <option value="ALL">Tất cả vai trò / chức vụ</option>
-              <option value="principal">Hiệu Trưởng</option>
-              <option value="vp_branch">Phó Hiệu Trưởng (Điểm trường)</option>
-              <option value="head_dept">Tổ Trưởng Chuyên Môn</option>
-              <option value="deputy_head">Tổ Phó Chuyên Môn</option>
-              <option value="teacher">Giáo Viên (Chủ Nhiệm / Bộ Môn)</option>
-              <option value="guest">Khách Mời Cụm</option>
+              <option class="bg-slate-800 text-slate-100" value="ALL">Tất cả vai trò / chức vụ</option>
+              <option class="bg-slate-800 text-slate-100" value="principal">Hiệu Trưởng</option>
+              <option class="bg-slate-800 text-slate-100" value="vp_branch">Phó Hiệu Trưởng (Điểm trường)</option>
+              <option class="bg-slate-800 text-slate-100" value="head_dept">Tổ Trưởng Chuyên Môn</option>
+              <option class="bg-slate-800 text-slate-100" value="deputy_head">Tổ Phó Chuyên Môn</option>
+              <option class="bg-slate-800 text-slate-100" value="teacher">Giáo Viên (Chủ Nhiệm / Bộ Môn)</option>
+              <option class="bg-slate-800 text-slate-100" value="guest">Khách Mời Cụm</option>
             </select>
             <select id="userBranchFilter" onchange="filterUsers()" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
-              <option value="ALL">Tất cả 5 Phân Hiệu</option>
-              <option value="Điểm Trung Tâm">Điểm Trung Tâm</option>
-              <option value="Điểm 1">Điểm 1</option>
-              <option value="Điểm 2">Điểm 2</option>
-              <option value="Điểm 3">Điểm 3</option>
-              <option value="Điểm 4">Điểm 4</option>
+              <option class="bg-slate-800 text-slate-100" value="ALL">Tất cả 5 Phân Hiệu</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm Trung Tâm">Điểm Trung Tâm</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 1">Điểm 1</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 2">Điểm 2</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 3">Điểm 3</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 4">Điểm 4</option>
             </select>
           </div>
 
@@ -1265,18 +1299,18 @@
         <div>
           <label class="block text-slate-300 mb-1">Phạm vi gửi (Theo phân quyền):</label>
           <select id="broadcastScope" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-            <option value="ALL">Toàn trường (5 Phân hiệu - Chỉ BGH)</option>
-            <option value="BRANCH">Toàn bộ phân hiệu phụ trách</option>
-            <option value="DEPT" selected>Tổ chuyên môn (Khối 2)</option>
-            <option value="DIRECT">Nhắn riêng cá nhân giáo viên</option>
+            <option class="bg-slate-800 text-slate-100" value="ALL">Toàn trường (5 Phân hiệu - Chỉ BGH)</option>
+            <option class="bg-slate-800 text-slate-100" value="BRANCH">Toàn bộ phân hiệu phụ trách</option>
+            <option class="bg-slate-800 text-slate-100" value="DEPT" selected>Tổ chuyên môn (Khối 2)</option>
+            <option class="bg-slate-800 text-slate-100" value="DIRECT">Nhắn riêng cá nhân giáo viên</option>
           </select>
         </div>
         <div>
           <label class="block text-slate-300 mb-1">Mức độ ưu tiên:</label>
           <select id="broadcastUrgency" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
-            <option value="NORMAL">Bình thường</option>
-            <option value="HIGH">Quan trọng</option>
-            <option value="EMERGENCY">🚨 Khẩn cấp (Bão lũ, nghỉ học)</option>
+            <option class="bg-slate-800 text-slate-100" value="NORMAL">Bình thường</option>
+            <option class="bg-slate-800 text-slate-100" value="HIGH">Quan trọng</option>
+            <option class="bg-slate-800 text-slate-100" value="EMERGENCY">🚨 Khẩn cấp (Bão lũ, nghỉ học)</option>
           </select>
         </div>
         <div>
@@ -1326,8 +1360,8 @@
           <div>
             <label class="block text-slate-300 font-medium mb-1">Trạng Thái Tài Khoản</label>
             <select id="userFormStatus" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-brand-500">
-              <option value="active">Đang hoạt động</option>
-              <option value="inactive">Tạm ngưng hoạt động</option>
+              <option class="bg-slate-800 text-slate-100" value="active">Đang hoạt động</option>
+              <option class="bg-slate-800 text-slate-100" value="inactive">Tạm ngưng hoạt động</option>
             </select>
           </div>
         </div>
@@ -1336,22 +1370,22 @@
           <div>
             <label class="block text-slate-300 font-medium mb-1">Vai Trò & Quyền Hạn <span class="text-red-400">*</span></label>
             <select id="userFormRole" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-brand-500">
-              <option value="teacher">Giáo Viên Bộ Môn / Chủ Nhiệm</option>
-              <option value="head_dept">Tổ Trưởng Chuyên Môn</option>
-              <option value="deputy_head">Tổ Phó Chuyên Môn</option>
-              <option value="vp_branch">Phó Hiệu Trưởng (Điểm trường)</option>
-              <option value="principal">Hiệu Trưởng</option>
-              <option value="guest">Khách Mời Cụm Chuyên Môn</option>
+              <option class="bg-slate-800 text-slate-100" value="teacher">Giáo Viên Bộ Môn / Chủ Nhiệm</option>
+              <option class="bg-slate-800 text-slate-100" value="head_dept">Tổ Trưởng Chuyên Môn</option>
+              <option class="bg-slate-800 text-slate-100" value="deputy_head">Tổ Phó Chuyên Môn</option>
+              <option class="bg-slate-800 text-slate-100" value="vp_branch">Phó Hiệu Trưởng (Điểm trường)</option>
+              <option class="bg-slate-800 text-slate-100" value="principal">Hiệu Trưởng</option>
+              <option class="bg-slate-800 text-slate-100" value="guest">Khách Mời Cụm Chuyên Môn</option>
             </select>
           </div>
           <div>
             <label class="block text-slate-300 font-medium mb-1">Phân Hiệu Trực Thuộc <span class="text-red-400">*</span></label>
             <select id="userFormBranch" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-brand-500">
-              <option value="Điểm Trung Tâm">Điểm Trung Tâm</option>
-              <option value="Điểm 1">Điểm 1</option>
-              <option value="Điểm 2">Điểm 2</option>
-              <option value="Điểm 3">Điểm 3</option>
-              <option value="Điểm 4">Điểm 4</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm Trung Tâm">Điểm Trung Tâm</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 1">Điểm 1</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 2">Điểm 2</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 3">Điểm 3</option>
+              <option class="bg-slate-800 text-slate-100" value="Điểm 4">Điểm 4</option>
             </select>
           </div>
         </div>
@@ -1492,26 +1526,26 @@
         <div>
           <label class="block text-slate-300 font-medium mb-1">Lớp Báo Cáo <span class="text-amber-400">*</span>:</label>
           <select id="batchClassSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500">
-            <option value="Lớp 1A">Lớp 1A</option>
-            <option value="Lớp 1B">Lớp 1B</option>
-            <option value="Lớp 2A" selected>Lớp 2A</option>
-            <option value="Lớp 2B">Lớp 2B</option>
-            <option value="Lớp 3A">Lớp 3A</option>
-            <option value="Lớp 3B">Lớp 3B</option>
-            <option value="Lớp 4A">Lớp 4A</option>
-            <option value="Lớp 4B">Lớp 4B</option>
-            <option value="Lớp 5A">Lớp 5A</option>
-            <option value="Lớp 5B">Lớp 5B</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 1A">Lớp 1A</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 1B">Lớp 1B</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 2A" selected>Lớp 2A</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 2B">Lớp 2B</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 3A">Lớp 3A</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 3B">Lớp 3B</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 4A">Lớp 4A</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 4B">Lớp 4B</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 5A">Lớp 5A</option>
+            <option class="bg-slate-800 text-slate-100" value="Lớp 5B">Lớp 5B</option>
           </select>
         </div>
         <div>
           <label class="block text-slate-300 font-medium mb-1">Phân Hiệu Trực Thuộc:</label>
           <select id="batchBranchSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500">
-            <option value="Điểm Trung Tâm" selected>Điểm Trung Tâm</option>
-            <option value="Điểm 1">Điểm 1</option>
-            <option value="Điểm 2">Điểm 2</option>
-            <option value="Điểm 3">Điểm 3</option>
-            <option value="Điểm 4">Điểm 4</option>
+            <option class="bg-slate-800 text-slate-100" value="Điểm Trung Tâm" selected>Điểm Trung Tâm</option>
+            <option class="bg-slate-800 text-slate-100" value="Điểm 1">Điểm 1</option>
+            <option class="bg-slate-800 text-slate-100" value="Điểm 2">Điểm 2</option>
+            <option class="bg-slate-800 text-slate-100" value="Điểm 3">Điểm 3</option>
+            <option class="bg-slate-800 text-slate-100" value="Điểm 4">Điểm 4</option>
           </select>
         </div>
         <div>
@@ -1718,10 +1752,10 @@
           <div>
             <label class="block text-slate-300 font-medium mb-1">Phạm Vi Rà Soát:</label>
             <select id="newCampaignScope" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
-              <option value="Toàn trường (32 Lớp / 5 Phân hiệu)" selected>Toàn trường (32 Lớp)</option>
-              <option value="Khối 1 & 2">Khối 1 & 2</option>
-              <option value="Khối 3, 4 & 5">Khối 3, 4 & 5</option>
-              <option value="Các điểm trường lẻ (Điểm 1, 2, 3, 4)">Các điểm trường lẻ</option>
+              <option class="bg-slate-800 text-slate-100" value="Toàn trường (32 Lớp / 5 Phân hiệu)" selected>Toàn trường (32 Lớp)</option>
+              <option class="bg-slate-800 text-slate-100" value="Khối 1 & 2">Khối 1 & 2</option>
+              <option class="bg-slate-800 text-slate-100" value="Khối 3, 4 & 5">Khối 3, 4 & 5</option>
+              <option class="bg-slate-800 text-slate-100" value="Các điểm trường lẻ (Điểm 1, 2, 3, 4)">Các điểm trường lẻ</option>
             </select>
           </div>
           <div>
@@ -2532,8 +2566,8 @@
           </td>
           <td class="p-2">
             <select class="batch-gender w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500">
-              <option value="Nam" ${genderVal === 'Nam' ? 'selected' : ''}>Nam</option>
-              <option value="Nữ" ${genderVal === 'Nữ' ? 'selected' : ''}>Nữ</option>
+              <option class="bg-slate-800 text-slate-100" value="Nam" ${genderVal === 'Nam' ? 'selected' : ''}>Nam</option>
+              <option class="bg-slate-800 text-slate-100" value="Nữ" ${genderVal === 'Nữ' ? 'selected' : ''}>Nữ</option>
             </select>
           </td>
           <td class="p-2">

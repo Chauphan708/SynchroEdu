@@ -153,8 +153,20 @@ assert(parsedStudents[0].name === 'Nguyễn Văn An' && parsedStudents[0].gender
 assert(parsedStudents[1].name === 'Lê Thị Bình' && parsedStudents[1].gender === 'Nữ', 'HS 2: Họ tên và giới tính Nữ chuẩn xác');
 assert(parsedStudents[2].name === 'Trần Quốc Tuấn' && parsedStudents[2].reason === 'Khuyết tật hòa nhập', 'HS 3: Nhận diện lý do/diện rà soát chuẩn xác');
 
-// 7. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
-console.log('\n7. Kiểm tra máy chủ HTTP cục bộ:');
+// 7. Kiểm tra Đồng bộ Giao diện Tối Toàn diện (Dark Mode Native Dropdowns & Form Controls):
+console.log('\n7. Kiểm tra Đồng bộ Giao diện Tối Toàn diện (Dark Mode Native Dropdowns & Form Controls):');
+assert(htmlContent.includes('color-scheme: dark;'), 'Chính sách color-scheme: dark được áp dụng cho toàn bộ :root, html');
+assert(htmlContent.includes('select, option, optgroup') && htmlContent.includes('#1e293b') && htmlContent.includes('#f8fafc'), 'CSS định kiểu nền tối (#1e293b) và chữ sáng (#f8fafc) cho select và option');
+assert(htmlContent.includes('select option:checked') && htmlContent.includes('#065f46'), 'Tùy chọn đang chọn (checked) có màu nền emerald thương hiệu (#065f46)');
+assert(htmlContent.includes('id="schoolSelector"') && htmlContent.includes('bg-slate-900'), 'Dropdown chọn trường #schoolSelector có nền tối đồng bộ');
+assert(htmlContent.includes('id="roleSelector"') && htmlContent.includes('bg-slate-800'), 'Dropdown chuyển vai trò #roleSelector có nền tối đồng bộ');
+
+const allOptions = htmlContent.match(/<option[^>]*>/g) || [];
+const unstyledOptions = allOptions.filter(opt => !opt.includes('bg-slate-800') && !opt.includes('class='));
+assert(unstyledOptions.length === 0, `100% các thẻ option (${allOptions.length}/${allOptions.length}) đều có lớp giao diện tối bg-slate-800 text-slate-100`);
+
+// 8. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
+console.log('\n8. Kiểm tra máy chủ HTTP cục bộ:');
 
 async function testHttpServer() {
   const testPort = process.env.TEST_PORT || 3099;
