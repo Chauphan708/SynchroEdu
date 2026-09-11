@@ -830,36 +830,103 @@
                 <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
                 Hàng Đợi Nhiệm Vụ & Thu Thập Dữ Liệu Đột Xuất (Phản Hồi 30 Giây)
               </h2>
-              <p class="text-xs text-slate-400 mt-1">Giáo viên phản hồi siêu tốc 1-chạm • BGH theo dõi bảng dồn số liệu trực tiếp</p>
+              <p class="text-xs text-slate-400 mt-1">Giáo viên phản hồi siêu tốc 1-chạm • Nhập nhiều HS cùng lúc • Tự động dồn số liệu & xuất Excel</p>
             </div>
-            <button onclick="openCreateCampaignModal()" class="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow transition-colors">
-              <i data-lucide="plus" class="w-4 h-4"></i>
-              <span>+ Tạo Yêu Cầu Đột Xuất Mới (BGH)</span>
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="exportCampaignExcel()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center gap-1.5 transition-colors" title="Xuất toàn bộ danh sách học sinh ra Excel">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
+                <span>Xuất Excel Đợt Này</span>
+              </button>
+              <button onclick="openCreateCampaignModal()" class="px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow transition-colors">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>+ Tạo Yêu Cầu Mới (BGH)</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Campaign Card / Empty State Container -->
-          <div id="noCampaignState" class="p-8 rounded-xl bg-slate-850 border border-slate-800 text-center space-y-3">
-            <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-amber-400">
-              <i data-lucide="zap" class="w-6 h-6"></i>
+          <!-- Active Campaign Overview Card -->
+          <div class="p-4 rounded-xl bg-slate-850 border border-slate-800 space-y-4">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="space-y-1 max-w-2xl">
+                <div class="flex items-center gap-2">
+                  <span id="activeCampaignCode" class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 text-[11px] font-mono font-bold">REQ-2026-001</span>
+                  <span class="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Đang mở thu thập (Live)
+                  </span>
+                </div>
+                <h3 id="activeCampaignTitle" class="text-base font-bold text-white">Rà soát học sinh có hoàn cảnh khó khăn & cần hỗ trợ đột xuất đầu năm học</h3>
+                <p id="activeCampaignDesc" class="text-xs text-slate-400 leading-relaxed">
+                  Thực hiện công tác chăm lo học sinh theo chỉ đạo của Phòng GD&ĐT và BGH: Rà soát học sinh thuộc diện hộ nghèo, cận nghèo, mồ côi, khuyết tật hoặc gặp khó khăn đột xuất để nhà trường trao học bổng, hỗ trợ sách giáo khoa và dụng cụ học tập.
+                </p>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 pt-1">
+                  <span>Phạm vi: <strong id="activeCampaignScope" class="text-slate-300">Toàn trường (32 Lớp / 5 Phân hiệu)</strong></span>
+                  <span>•</span>
+                  <span>Hạn chót: <strong id="activeCampaignDeadline" class="text-amber-300">17:00 Hôm nay</strong></span>
+                </div>
+              </div>
+
+              <!-- Quick Action Box -->
+              <div class="flex flex-col sm:flex-row gap-2">
+                <button onclick="openQuickStudentModal()" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition-all" title="Mở biểu mẫu nhập nhiều học sinh cùng lúc (bảng dòng, dán text, excel)">
+                  <i data-lucide="user-plus" class="w-4 h-4"></i>
+                  <span>+ Nhập Danh Sách HS (Nhiều Em)</span>
+                </button>
+                <button onclick="quickSubmitNoTargetStudent()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-2 transition-colors" title="Báo cáo nhanh nếu lớp không có đối tượng thuộc diện rà soát">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                  <span>Phản Hồi 5s: 0 Đối Tượng</span>
+                </button>
+              </div>
             </div>
-            <div class="space-y-1">
-              <h3 class="font-bold text-sm text-slate-200">Hàng Đợi Nhiệm Vụ & Báo Cáo Đột Xuất</h3>
-              <p class="text-xs text-slate-400 max-w-lg mx-auto leading-relaxed">
-                Hiện chưa có yêu cầu thu thập dữ liệu đột xuất nào từ Ban Giám Hiệu. Khi có yêu cầu mới phát đi, giáo viên có thể phản hồi siêu tốc 1-chạm (5 giây hoặc 30 giây) ngay tại đây.
-              </p>
+
+            <!-- Campaign Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800/80">
+              <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Tiến độ báo cáo các lớp</div>
+                <div class="text-xl font-bold text-white mt-0.5"><span id="campaignStatClasses">0</span> / 32 lớp</div>
+                <div class="text-[11px] text-slate-500 mt-0.5"><span id="campaignStatPercent">0</span>% hoàn thành</div>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Tổng số học sinh ghi nhận</div>
+                <div id="campaignStatStudents" class="text-xl font-bold text-amber-300 mt-0.5">0 em</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">Cần hỗ trợ & rà soát</div>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+                <div class="text-[11px] text-slate-400">Số lớp báo không có đối tượng</div>
+                <div id="campaignStatNoTarget" class="text-xl font-bold text-emerald-400 mt-0.5">0 lớp</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">Đã hoàn thành phản hồi 5s</div>
+              </div>
             </div>
-            
-            <!-- Quick 1-Touch Buttons Demo / Readiness -->
-            <div class="pt-3 flex flex-wrap justify-center items-center gap-3">
-              <button onclick="quickSubmitNoTargetStudent()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 flex items-center gap-2 transition-colors" title="Báo cáo không có đối tượng cần rà soát trong 5s">
-                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
-                <span>Thử phản hồi 5s: Không có đối tượng</span>
-              </button>
-              <button onclick="openQuickStudentModal()" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-2 shadow transition-colors" title="Nhập nhanh danh sách học sinh trong 30s">
-                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                <span>Thử nhập nhanh học sinh (30s)</span>
-              </button>
+          </div>
+
+          <!-- Realtime Submissions Table -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                <i data-lucide="table" class="w-4 h-4 text-brand-400"></i>
+                <span>Bảng Dồn Số Liệu & Danh Sách Báo Cáo Theo Lớp</span>
+              </h3>
+              <span class="text-xs text-slate-400">Dữ liệu được lưu trữ tự động trên máy và sẵn sàng xuất Excel</span>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-850">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-800/90 text-slate-300 font-semibold border-b border-slate-700/80">
+                  <tr>
+                    <th class="p-3">STT</th>
+                    <th class="p-3">Lớp Báo Cáo</th>
+                    <th class="p-3">Phân Hiệu</th>
+                    <th class="p-3">Giáo Viên Phụ Trách</th>
+                    <th class="p-3">Tình Trạng & Số Lượng HS</th>
+                    <th class="p-3">Danh Sách Tóm Tắt</th>
+                    <th class="p-3">Thời Gian Gửi</th>
+                    <th class="p-3 text-right">Thao Tác</th>
+                  </tr>
+                </thead>
+                <tbody id="campaignSubmissionsTableBody" class="divide-y divide-slate-800/60">
+                  <!-- Injected dynamically via JS -->
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -1392,6 +1459,292 @@
     </div>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- MODAL: NHẬP DANH SÁCH NHIỀU HỌC SINH (BATCH STUDENT INPUT) -->
+  <!-- ========================================================================= -->
+  <div id="quickStudentBatchModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full p-4 sm:p-6 space-y-4 shadow-2xl max-h-[92vh] flex flex-col">
+      <!-- Header -->
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-xl bg-amber-950/80 border border-amber-800/80 text-amber-400">
+            <i data-lucide="users" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <span>Nhập Danh Sách Học Sinh (Nhiều HS Cùng Lúc)</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800 font-semibold">30 Giây • Excel Ready</span>
+            </h3>
+            <p class="text-xs text-slate-400">Nhập trực tiếp bảng dòng, dán từ Word/Zalo hoặc tải file Excel có sẵn</p>
+          </div>
+        </div>
+        <button onclick="closeQuickStudentModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors" title="Đóng">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Context Info Form: Campaign, Class, Branch, Teacher -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs bg-slate-850 p-3 rounded-xl border border-slate-800">
+        <div class="sm:col-span-2 lg:col-span-1">
+          <label class="block text-slate-300 font-medium mb-1">Nhiệm Vụ / Đợt Rà Soát:</label>
+          <input type="text" id="batchCampaignTitle" value="Rà soát học sinh có hoàn cảnh khó khăn & cần hỗ trợ đột xuất" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Lớp Báo Cáo <span class="text-amber-400">*</span>:</label>
+          <select id="batchClassSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500">
+            <option value="Lớp 1A">Lớp 1A</option>
+            <option value="Lớp 1B">Lớp 1B</option>
+            <option value="Lớp 2A" selected>Lớp 2A</option>
+            <option value="Lớp 2B">Lớp 2B</option>
+            <option value="Lớp 3A">Lớp 3A</option>
+            <option value="Lớp 3B">Lớp 3B</option>
+            <option value="Lớp 4A">Lớp 4A</option>
+            <option value="Lớp 4B">Lớp 4B</option>
+            <option value="Lớp 5A">Lớp 5A</option>
+            <option value="Lớp 5B">Lớp 5B</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Phân Hiệu Trực Thuộc:</label>
+          <select id="batchBranchSelect" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500">
+            <option value="Điểm Trung Tâm" selected>Điểm Trung Tâm</option>
+            <option value="Điểm 1">Điểm 1</option>
+            <option value="Điểm 2">Điểm 2</option>
+            <option value="Điểm 3">Điểm 3</option>
+            <option value="Điểm 4">Điểm 4</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Giáo Viên Phụ Trách:</label>
+          <input type="text" id="batchTeacherName" value="Nguyễn Thị Mai (GVCN)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+        </div>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div class="flex items-center gap-2 border-b border-slate-800 pb-2 text-xs">
+        <span class="text-slate-400 font-medium hidden sm:inline">Phương thức nhập:</span>
+        <button type="button" id="btnModeTable" onclick="switchBatchInputMode('table')" class="px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold flex items-center gap-1.5 shadow-sm transition-colors">
+          <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+          <span>Bảng Nhập Dòng Động</span>
+        </button>
+        <button type="button" id="btnModePaste" onclick="switchBatchInputMode('paste')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium flex items-center gap-1.5 border border-slate-700 transition-colors">
+          <i data-lucide="clipboard-paste" class="w-3.5 h-3.5"></i>
+          <span>Dán Danh Sách Từ Word/Zalo</span>
+        </button>
+        <button type="button" id="btnModeExcel" onclick="switchBatchInputMode('excel')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium flex items-center gap-1.5 border border-slate-700 transition-colors">
+          <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Nhập Từ Tệp Excel (.xlsx)</span>
+        </button>
+      </div>
+
+      <!-- Panel 1: Bảng dòng động -->
+      <div id="batchModeTablePanel" class="flex-1 flex flex-col space-y-2.5 min-h-[260px] overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="addBatchStudentRow(1)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>+ Thêm 1 dòng</span>
+            </button>
+            <button type="button" onclick="addBatchStudentRow(5)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1">
+              <i data-lucide="list-plus" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>+ Thêm 5 dòng</span>
+            </button>
+            <button type="button" onclick="clearBatchStudentRows()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-red-950/60 text-slate-400 hover:text-red-300 border border-slate-700 hover:border-red-800 text-xs transition-colors">
+              Xóa sạch bảng
+            </button>
+          </div>
+          <div class="text-xs text-slate-300">
+            Tổng số: <strong id="batchCountBadge" class="text-amber-400 font-bold">0</strong> học sinh
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto overflow-x-auto border border-slate-800 rounded-xl bg-slate-850/60">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead class="sticky top-0 bg-slate-800 text-slate-300 font-semibold border-b border-slate-700 z-10">
+              <tr>
+                <th class="p-2 w-10 text-center">STT</th>
+                <th class="p-2 min-w-[180px]">Họ và Tên Học Sinh <span class="text-red-400">*</span></th>
+                <th class="p-2 min-w-[90px]">Giới Tính</th>
+                <th class="p-2 min-w-[110px]">Ngày Sinh</th>
+                <th class="p-2 min-w-[180px]">Hoàn Cảnh / Diện Rà Soát <span class="text-red-400">*</span></th>
+                <th class="p-2 min-w-[160px]">Ghi Chú / Đề Xuất</th>
+                <th class="p-2 w-10 text-center">Xóa</th>
+              </tr>
+            </thead>
+            <tbody id="batchStudentTableBody" class="divide-y divide-slate-800/60">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel 2: Dán văn bản từ Word/Zalo -->
+      <div id="batchModePastePanel" class="hidden flex-1 flex flex-col space-y-3">
+        <div class="p-3 bg-slate-850 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+          <div class="font-bold text-slate-200 flex items-center gap-1.5">
+            <i data-lucide="info" class="w-4 h-4 text-amber-400"></i>
+            <span>Quy cách dán nhanh:</span>
+          </div>
+          <p>Dán danh sách học sinh từ Word hoặc tin nhắn Zalo, mỗi học sinh trên 1 dòng. Hệ thống tự nhận diện các định dạng:</p>
+          <ul class="list-disc list-inside text-[11px] text-slate-300 pl-1 space-y-0.5 font-mono">
+            <li>Nguyễn Văn An - Nam - 15/04/2016 - Hộ nghèo - Cần hỗ trợ sách vở</li>
+            <li>1. Lê Thị Bình - Nữ - 20/09/2016 - Hộ cận nghèo</li>
+            <li>Trần Quốc Tuấn (Khuyết tật hòa nhập)</li>
+          </ul>
+        </div>
+
+        <textarea id="batchPasteInput" rows="7" placeholder="Dán danh sách học sinh vào đây..." class="w-full flex-1 bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 leading-relaxed"></textarea>
+
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] text-slate-400">Bấm nút bên cạnh để chuyển văn bản thành bảng dữ liệu:</span>
+          <button type="button" onclick="parsePasteBatchStudents()" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-1.5 shadow">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>⚡ Phân Tích & Điền Vào Bảng (1-Click Parse)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 3: Tải file Excel -->
+      <div id="batchModeExcelPanel" class="hidden flex-1 flex flex-col justify-center items-center p-6 space-y-3">
+        <input type="file" id="batchExcelFileInput" accept=".xlsx, .xls, .csv" onchange="handleBatchExcelUpload(event)" class="hidden" />
+        <div onclick="document.getElementById('batchExcelFileInput').click()" class="border-2 border-dashed border-slate-700 hover:border-amber-500 rounded-2xl p-8 w-full max-w-lg text-center space-y-3 bg-slate-850/60 cursor-pointer transition-colors">
+          <div class="w-12 h-12 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400 flex items-center justify-center mx-auto">
+            <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">Chọn hoặc kéo thả tệp Excel vào đây</h4>
+            <p class="text-xs text-slate-400 mt-1">Hỗ trợ định dạng .xlsx, .xls, .csv</p>
+          </div>
+          <p class="text-[11px] text-slate-500">Tự động nhận diện các cột: Họ và tên, Giới tính, Ngày sinh, Hoàn cảnh, Ghi chú</p>
+          <button type="button" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold">
+            Duyệt tìm tệp trên máy...
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-800">
+        <button type="button" onclick="exportCurrentBatchModalExcel()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 font-semibold text-xs border border-slate-700 flex items-center gap-1.5 transition-colors" title="Xuất danh sách học sinh hiện có trong bảng ra file Excel">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
+          <span>Xuất Excel Danh Sách Này</span>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeQuickStudentModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors">
+            Hủy
+          </button>
+          <button type="button" onclick="submitBatchStudents()" class="px-5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg transition-colors">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Lưu & Gửi Báo Cáo (< 30s)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: XEM CHI TIẾT DANH SÁCH HỌC SINH CỦA LỚP ĐÃ GỬI -->
+  <!-- ========================================================================= -->
+  <div id="viewStudentSubmissionModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full p-4 sm:p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <h3 id="viewSubModalTitle" class="font-bold text-base text-white flex items-center gap-2">
+            <i data-lucide="users" class="w-5 h-5 text-amber-400"></i>
+            <span>Chi Tiết Báo Cáo Học Sinh Lớp 2A</span>
+          </h3>
+          <p id="viewSubModalMeta" class="text-xs text-slate-400 mt-0.5">Điểm Trung Tâm • Giáo viên: Nguyễn Thị Mai</p>
+        </div>
+        <button onclick="closeViewSubmissionModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto border border-slate-800 rounded-xl bg-slate-850">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-800 text-slate-300 font-semibold border-b border-slate-700 sticky top-0">
+            <tr>
+              <th class="p-2.5 w-10 text-center">STT</th>
+              <th class="p-2.5">Họ và Tên Học Sinh</th>
+              <th class="p-2.5">Giới Tính</th>
+              <th class="p-2.5">Ngày Sinh</th>
+              <th class="p-2.5">Hoàn Cảnh / Diện Khó Khăn</th>
+              <th class="p-2.5">Ghi Chú / Đề Xuất</th>
+            </tr>
+          </thead>
+          <tbody id="viewSubTableBody" class="divide-y divide-slate-800/60">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" id="btnExportSingleClassExcel" onclick="" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 font-semibold text-xs border border-slate-700 flex items-center gap-1.5 transition-colors">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
+          <span>Xuất Excel Lớp Này</span>
+        </button>
+        <button type="button" onclick="closeViewSubmissionModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: TẠO YÊU CẦU THU THẬP ĐỘT XUẤT MỚI (BGH) -->
+  <!-- ========================================================================= -->
+  <div id="createCampaignModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+          <span>Khởi Tạo Yêu Cầu Thu Thập Đột Xuất Mới (BGH)</span>
+        </h3>
+        <button onclick="closeCreateCampaignModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Mã Yêu Cầu / Nhiệm Vụ:</label>
+          <input type="text" id="newCampaignCode" value="REQ-2026-002" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Tiêu Đề Nhiệm Vụ <span class="text-red-400">*</span>:</label>
+          <input type="text" id="newCampaignTitle" placeholder="Ví dụ: Rà soát học sinh có nguy cơ chưa đạt chuẩn kiến thức..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Phạm Vi Rà Soát:</label>
+            <select id="newCampaignScope" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+              <option value="Toàn trường (32 Lớp / 5 Phân hiệu)" selected>Toàn trường (32 Lớp)</option>
+              <option value="Khối 1 & 2">Khối 1 & 2</option>
+              <option value="Khối 3, 4 & 5">Khối 3, 4 & 5</option>
+              <option value="Các điểm trường lẻ (Điểm 1, 2, 3, 4)">Các điểm trường lẻ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">Thời Hạn Báo Cáo:</label>
+            <input type="text" id="newCampaignDeadline" value="16:30 Ngày mai" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Hướng Dẫn Thực Hiện Cho Giáo Viên:</label>
+          <textarea id="newCampaignDesc" rows="3" placeholder="Nhập hướng dẫn chi tiết về tiêu chí rà soát..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+        <button type="button" onclick="closeCreateCampaignModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium">Hủy</button>
+        <button type="button" onclick="saveNewCampaign()" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-1.5 shadow">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Kích Hoạt Yêu Cầu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification Overlay -->
   <div id="toastContainer" class="fixed top-14 right-4 z-50 space-y-2 pointer-events-none"></div>
 
@@ -1463,6 +1816,14 @@
       ],
       notifications: [],
       users: [],
+      studentSubmissions: [],
+      activeCampaign: {
+        code: 'REQ-2026-001',
+        title: 'Rà soát học sinh có hoàn cảnh khó khăn & cần hỗ trợ đột xuất đầu năm học',
+        scope: 'Toàn trường (32 Lớp / 5 Phân hiệu)',
+        deadline: '17:00 Hôm nay',
+        description: 'Thực hiện công tác chăm lo học sinh theo chỉ đạo của Phòng GD&ĐT và BGH: Rà soát học sinh thuộc diện hộ nghèo, cận nghèo, mồ côi, khuyết tật hoặc gặp khó khăn đột xuất để nhà trường trao học bổng, hỗ trợ sách giáo khoa và dụng cụ học tập.'
+      },
       cloudConfig: {
         supabaseUrl: '',
         supabaseKey: '',
@@ -1474,6 +1835,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       loadUsersFromStorage();
+      loadStudentSubmissionsFromStorage();
       loadCloudConfig();
       updateRbacNavigation();
       initMatrixTable();
@@ -1913,45 +2275,803 @@
       showTab('tab-master-matrix');
     }
 
-    // Quick Data Collection
-    function quickSubmitNoTargetStudent() {
-      showToast('Xác nhận: Lớp không có đối tượng thuộc diện rà soát đợt này. Hoàn thành trong 5 giây!', 'success');
-      // Add to live aggregation
-      const liveList = document.getElementById('liveAggregationList');
-      if (liveList) {
-        if (liveList.querySelector('td[colspan]')) {
-          liveList.innerHTML = '';
+    // =========================================================================
+    // QUICK CAMPAIGN & BATCH STUDENT SUBMISSION ENGINE (NHẬP NHIỀU HS & LƯU TRỮ EXCEL)
+    // =========================================================================
+    const STUDENT_SUBMISSIONS_KEY = 'synchroedu_student_submissions';
+    const ACTIVE_CAMPAIGN_KEY = 'synchroedu_active_campaign';
+
+    function loadStudentSubmissionsFromStorage() {
+      try {
+        const rawCampaign = localStorage.getItem(ACTIVE_CAMPAIGN_KEY);
+        if (rawCampaign) {
+          AppState.activeCampaign = { ...AppState.activeCampaign, ...JSON.parse(rawCampaign) };
         }
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
-          <td class="py-1.5 px-2.5 text-slate-300">Giáo viên phụ trách</td>
-          <td class="py-1.5 px-2.5 text-emerald-400 font-medium">Không có đối tượng (0)</td>
-          <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
+        const rawSubs = localStorage.getItem(STUDENT_SUBMISSIONS_KEY);
+        if (rawSubs) {
+          const parsed = JSON.parse(rawSubs);
+          if (Array.isArray(parsed)) {
+            AppState.studentSubmissions = parsed;
+          }
+        } else {
+          AppState.studentSubmissions = []; // Clean initial state
+        }
+      } catch (e) {
+        console.warn('Lỗi đọc dữ liệu học sinh từ LocalStorage:', e);
+        AppState.studentSubmissions = [];
+      }
+      updateCampaignInfoUI();
+      renderCampaignSubmissions();
+      renderLiveAggregationList();
+    }
+
+    function saveStudentSubmissionsToStorage() {
+      try {
+        localStorage.setItem(STUDENT_SUBMISSIONS_KEY, JSON.stringify(AppState.studentSubmissions));
+      } catch (e) {
+        console.error('Lỗi lưu submissions vào LocalStorage:', e);
+      }
+      renderCampaignSubmissions();
+      renderLiveAggregationList();
+    }
+
+    function updateCampaignInfoUI() {
+      const camp = AppState.activeCampaign;
+      if (!camp) return;
+
+      const codeEl = document.getElementById('activeCampaignCode');
+      const titleEl = document.getElementById('activeCampaignTitle');
+      const descEl = document.getElementById('activeCampaignDesc');
+      const scopeEl = document.getElementById('activeCampaignScope');
+      const deadlineEl = document.getElementById('activeCampaignDeadline');
+      const batchTitleInput = document.getElementById('batchCampaignTitle');
+
+      if (codeEl) codeEl.textContent = camp.code || 'REQ-2026-001';
+      if (titleEl) titleEl.textContent = camp.title || '';
+      if (descEl) descEl.textContent = camp.description || '';
+      if (scopeEl) scopeEl.textContent = camp.scope || 'Toàn trường';
+      if (deadlineEl) deadlineEl.textContent = camp.deadline || '17:00 Hôm nay';
+      if (batchTitleInput && camp.title) batchTitleInput.value = camp.title;
+    }
+
+    function renderCampaignSubmissions() {
+      const tbody = document.getElementById('campaignSubmissionsTableBody');
+      if (!tbody) return;
+
+      const subs = AppState.studentSubmissions || [];
+      const reportedClasses = new Set(subs.map(s => s.className));
+      const totalStudents = subs.reduce((sum, s) => sum + (s.studentsCount || 0), 0);
+      const noTargetCount = subs.filter(s => !s.hasTargetStudents).length;
+      const percent = Math.round((reportedClasses.size / 32) * 100);
+
+      const classesEl = document.getElementById('campaignStatClasses');
+      const percentEl = document.getElementById('campaignStatPercent');
+      const studentsEl = document.getElementById('campaignStatStudents');
+      const noTargetEl = document.getElementById('campaignStatNoTarget');
+
+      if (classesEl) classesEl.textContent = reportedClasses.size;
+      if (percentEl) percentEl.textContent = percent;
+      if (studentsEl) studentsEl.textContent = `${totalStudents} em`;
+      if (noTargetEl) noTargetEl.textContent = `${noTargetCount} lớp`;
+
+      tbody.innerHTML = '';
+
+      if (subs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-10 text-slate-400">
+              <div class="flex flex-col items-center justify-center gap-2">
+                <i data-lucide="inbox" class="w-8 h-8 text-slate-600"></i>
+                <p class="font-medium text-slate-300">Chưa có lớp nào gửi báo cáo rà soát đợt này</p>
+                <p class="text-[11px] text-slate-500">Giáo viên bấm <b>"+ Nhập Danh Sách HS (Nhiều Em)"</b> hoặc <b>"Phản Hồi 5s: 0 Đối Tượng"</b> để bắt đầu báo cáo.</p>
+              </div>
+            </td>
+          </tr>
         `;
-        liveList.prepend(tr);
+        lucide.createIcons();
+        return;
+      }
+
+      subs.forEach((sub, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition-colors';
+
+        const timeStr = sub.submittedAt ? new Date(sub.submittedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : 'Vừa xong';
+        const dateStr = sub.submittedAt ? new Date(sub.submittedAt).toLocaleDateString('vi-VN') : '';
+
+        let statusBadge = '';
+        let summaryText = '';
+
+        if (sub.hasTargetStudents && sub.students && sub.students.length > 0) {
+          statusBadge = `<span class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 text-[11px] font-bold">${sub.studentsCount} học sinh</span>`;
+          const names = sub.students.map(s => s.name).slice(0, 3).join(', ');
+          summaryText = `<span class="text-slate-300">${names}${sub.students.length > 3 ? '...' : ''}</span>`;
+        } else {
+          statusBadge = `<span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[11px] font-medium">Không có đối tượng (0)</span>`;
+          summaryText = `<span class="text-slate-500 italic">Không có học sinh cần hỗ trợ</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="p-3 text-slate-400 font-mono">${idx + 1}</td>
+          <td class="p-3 font-bold text-white">${sub.className}</td>
+          <td class="p-3 text-slate-300">${sub.branch || 'Điểm Trung Tâm'}</td>
+          <td class="p-3 text-slate-300">${sub.teacherName || 'Giáo viên phụ trách'}</td>
+          <td class="p-3">${statusBadge}</td>
+          <td class="p-3">${summaryText}</td>
+          <td class="p-3 text-slate-400 text-[11px]">${timeStr} <span class="text-slate-500 text-[10px]">${dateStr}</span></td>
+          <td class="p-3 text-right">
+            <div class="inline-flex items-center gap-1">
+              ${sub.hasTargetStudents ? `
+                <button onclick="viewSubmissionDetails('${sub.id}')" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-medium border border-slate-700 transition-colors" title="Xem chi tiết danh sách">
+                  Chi tiết (${sub.studentsCount})
+                </button>
+                <button onclick="exportSingleClassExcel('${sub.id}')" class="p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition-colors" title="Xuất Excel lớp này">
+                  <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                </button>
+              ` : ''}
+              <button onclick="deleteSubmission('${sub.id}')" class="p-1.5 rounded bg-slate-800 hover:bg-red-900/60 text-slate-400 hover:text-red-300 border border-slate-700 transition-colors" title="Xóa báo cáo này">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function renderLiveAggregationList() {
+      const tbody = document.getElementById('liveAggregationList');
+      if (!tbody) return;
+
+      const subs = AppState.studentSubmissions || [];
+      tbody.innerHTML = '';
+
+      if (subs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="py-6 text-center text-slate-500 italic">Chưa có phản hồi nào từ các lớp.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      subs.slice(0, 10).forEach(sub => {
+        const tr = document.createElement('tr');
+        const timeStr = sub.submittedAt ? new Date(sub.submittedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : 'Vừa xong';
+
+        let contentHtml = '';
+        if (sub.hasTargetStudents && sub.students && sub.students.length > 0) {
+          const names = sub.students.map(s => s.name).slice(0, 2).join(', ');
+          contentHtml = `<span class="text-amber-300 font-bold">${sub.studentsCount} HS:</span> <span class="text-slate-300 text-[11px]">${names}${sub.students.length > 2 ? '...' : ''}</span>`;
+        } else {
+          contentHtml = `<span class="text-emerald-400 font-medium">Không có đối tượng (0)</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="py-1.5 px-2.5 font-bold text-white">${sub.className}</td>
+          <td class="py-1.5 px-2.5 text-slate-300">${sub.teacherName || 'Giáo viên phụ trách'}</td>
+          <td class="py-1.5 px-2.5">${contentHtml}</td>
+          <td class="py-1.5 px-2.5 text-slate-400 font-mono text-[11px]">${timeStr}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Modal Control: Batch Student Input
+    function openQuickStudentModal() {
+      const modal = document.getElementById('quickStudentBatchModal');
+      if (!modal) return;
+
+      const tbody = document.getElementById('batchStudentTableBody');
+      if (tbody && tbody.children.length === 0) {
+        // Initialize with 3 clean rows
+        addBatchStudentRow(3);
+      }
+      switchBatchInputMode('table');
+      updateCampaignInfoUI();
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeQuickStudentModal() {
+      const modal = document.getElementById('quickStudentBatchModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchBatchInputMode(mode) {
+      const panelTable = document.getElementById('batchModeTablePanel');
+      const panelPaste = document.getElementById('batchModePastePanel');
+      const panelExcel = document.getElementById('batchModeExcelPanel');
+
+      const btnTable = document.getElementById('btnModeTable');
+      const btnPaste = document.getElementById('btnModePaste');
+      const btnExcel = document.getElementById('btnModeExcel');
+
+      [panelTable, panelPaste, panelExcel].forEach(p => p && p.classList.add('hidden'));
+      [btnTable, btnPaste, btnExcel].forEach(b => {
+        if (b) {
+          b.className = 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium flex items-center gap-1.5 border border-slate-700 transition-colors';
+        }
+      });
+
+      if (mode === 'table') {
+        if (panelTable) panelTable.classList.remove('hidden');
+        if (btnTable) btnTable.className = 'px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold flex items-center gap-1.5 shadow-sm transition-colors';
+      } else if (mode === 'paste') {
+        if (panelPaste) panelPaste.classList.remove('hidden');
+        if (btnPaste) btnPaste.className = 'px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold flex items-center gap-1.5 shadow-sm transition-colors';
+        const pasteInput = document.getElementById('batchPasteInput');
+        if (pasteInput) pasteInput.focus();
+      } else if (mode === 'excel') {
+        if (panelExcel) panelExcel.classList.remove('hidden');
+        if (btnExcel) btnExcel.className = 'px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold flex items-center gap-1.5 shadow-sm transition-colors';
+      }
+      lucide.createIcons();
+    }
+
+    // Dynamic Row Helpers
+    function addBatchStudentRow(count = 1, defaultData = null) {
+      const tbody = document.getElementById('batchStudentTableBody');
+      if (!tbody) return;
+
+      for (let i = 0; i < count; i++) {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition-colors batch-student-row';
+
+        const nameVal = defaultData?.name || '';
+        const genderVal = defaultData?.gender || 'Nam';
+        const dobVal = defaultData?.birthDate || '';
+        const reasonVal = defaultData?.reason || '';
+        const notesVal = defaultData?.notes || '';
+
+        tr.innerHTML = `
+          <td class="p-2 text-center text-slate-400 font-mono row-stt">1</td>
+          <td class="p-2">
+            <input type="text" class="batch-name w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-amber-500" placeholder="Nguyễn Văn A..." value="${nameVal}" oninput="updateBatchRowCount()" />
+          </td>
+          <td class="p-2">
+            <select class="batch-gender w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs focus:outline-none focus:ring-1 focus:ring-amber-500">
+              <option value="Nam" ${genderVal === 'Nam' ? 'selected' : ''}>Nam</option>
+              <option value="Nữ" ${genderVal === 'Nữ' ? 'selected' : ''}>Nữ</option>
+            </select>
+          </td>
+          <td class="p-2">
+            <input type="text" class="batch-dob w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs placeholder-slate-500 font-mono focus:outline-none focus:ring-1 focus:ring-amber-500" placeholder="dd/mm/yyyy" value="${dobVal}" />
+          </td>
+          <td class="p-2">
+            <input type="text" class="batch-reason w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-amber-500" placeholder="Hộ nghèo, Mồ côi..." value="${reasonVal}" />
+          </td>
+          <td class="p-2">
+            <input type="text" class="batch-notes w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-amber-500" placeholder="Sách giáo khoa, áo ấm..." value="${notesVal}" />
+          </td>
+          <td class="p-2 text-center">
+            <button type="button" onclick="removeBatchStudentRow(this)" class="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-slate-800 transition-colors" title="Xóa dòng này">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      reindexBatchStudentRows();
+      updateBatchRowCount();
+      lucide.createIcons();
+    }
+
+    function removeBatchStudentRow(button) {
+      const tr = button.closest('tr');
+      if (tr) tr.remove();
+      reindexBatchStudentRows();
+      updateBatchRowCount();
+    }
+
+    function clearBatchStudentRows() {
+      const tbody = document.getElementById('batchStudentTableBody');
+      if (tbody) tbody.innerHTML = '';
+      addBatchStudentRow(3);
+    }
+
+    function reindexBatchStudentRows() {
+      const rows = document.querySelectorAll('#batchStudentTableBody tr');
+      rows.forEach((r, idx) => {
+        const sttCell = r.querySelector('.row-stt');
+        if (sttCell) sttCell.textContent = idx + 1;
+      });
+    }
+
+    function updateBatchRowCount() {
+      const students = getBatchStudentsFromTable();
+      const badge = document.getElementById('batchCountBadge');
+      if (badge) badge.textContent = students.length;
+    }
+
+    function getBatchStudentsFromTable() {
+      const rows = document.querySelectorAll('#batchStudentTableBody tr');
+      const list = [];
+      rows.forEach(r => {
+        const name = r.querySelector('.batch-name')?.value.trim() || '';
+        const gender = r.querySelector('.batch-gender')?.value || 'Nam';
+        const birthDate = r.querySelector('.batch-dob')?.value.trim() || '';
+        const reason = r.querySelector('.batch-reason')?.value.trim() || 'Thuộc diện rà soát';
+        const notes = r.querySelector('.batch-notes')?.value.trim() || '';
+
+        if (name) {
+          list.push({ name, gender, birthDate, reason, notes });
+        }
+      });
+      return list;
+    }
+
+    // Mode 2: Multi-line text parser
+    function parsePasteBatchStudents() {
+      const text = (document.getElementById('batchPasteInput')?.value || '').trim();
+      if (!text) {
+        showToast('Vui lòng dán nội dung danh sách học sinh vào ô trước!', 'error');
+        return;
+      }
+
+      const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length === 0) {
+        showToast('Không tìm thấy dòng hợp lệ nào!', 'error');
+        return;
+      }
+
+      const parsedList = [];
+
+      lines.forEach(line => {
+        // Strip leading numbers e.g. "1.", "1/", "1 -", "-", "•"
+        let clean = line.replace(/^(\d+[\.\/\)\-:]\s*|[\-•*]\s*)/, '').trim();
+        if (!clean) return;
+
+        // Try splitting by hyphen (-), comma (,), tab (\t), or semicolon (;)
+        const parts = clean.split(/[-–—,\t;]+/).map(p => p.trim()).filter(Boolean);
+
+        let name = parts[0] || clean;
+        let gender = 'Nam';
+        let birthDate = '';
+        let reason = 'Thuộc diện rà soát';
+        let notes = '';
+
+        // Inspect subsequent parts
+        for (let i = 1; i < parts.length; i++) {
+          const part = parts[i];
+          const partLower = part.toLowerCase();
+
+          if (partLower === 'nam') {
+            gender = 'Nam';
+          } else if (partLower === 'nữ' || partLower === 'nu') {
+            gender = 'Nữ';
+          } else if (/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/.test(part) || /^(19|20)\d{2}$/.test(part)) {
+            birthDate = part;
+          } else if (!reason || reason === 'Thuộc diện rà soát') {
+            reason = part;
+          } else {
+            notes += (notes ? ' - ' : '') + part;
+          }
+        }
+
+        parsedList.push({ name, gender, birthDate, reason, notes });
+      });
+
+      if (parsedList.length === 0) {
+        showToast('Không phân tích được học sinh nào từ văn bản đã dán!', 'error');
+        return;
+      }
+
+      // Populate into table
+      const tbody = document.getElementById('batchStudentTableBody');
+      if (tbody) tbody.innerHTML = '';
+
+      parsedList.forEach(s => addBatchStudentRow(1, s));
+      switchBatchInputMode('table');
+      showToast(`Đã phân tích thành công ${parsedList.length} học sinh và điền vào bảng!`, 'success');
+    }
+
+    // Mode 3: Excel File Upload Parser
+    function handleBatchExcelUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+          if (!rows || rows.length === 0) {
+            showToast('Tệp Excel không có dữ liệu!', 'error');
+            return;
+          }
+
+          // Detect header index
+          let headerIdx = -1;
+          for (let i = 0; i < Math.min(rows.length, 10); i++) {
+            const rowStr = rows[i].map(c => String(c || '').toLowerCase()).join(' ');
+            if (rowStr.includes('họ') || rowStr.includes('tên') || rowStr.includes('học sinh')) {
+              headerIdx = i;
+              break;
+            }
+          }
+
+          const dataRows = headerIdx !== -1 ? rows.slice(headerIdx + 1) : rows;
+          const parsedList = [];
+
+          dataRows.forEach(row => {
+            if (!row || row.length === 0) return;
+            // Filter non-empty cells
+            const cells = row.map(c => String(c !== undefined && c !== null ? c : '').trim());
+            const rowText = cells.join(' ').trim();
+            if (!rowText) return;
+
+            // Find name column (first cell that looks like a name and is not a number)
+            let name = '';
+            let gender = 'Nam';
+            let birthDate = '';
+            let reason = 'Thuộc diện rà soát';
+            let notes = '';
+
+            // Find name: cell that is not numeric STT
+            const nonSttCells = cells.filter(c => c && !/^\d+$/.test(c));
+            if (nonSttCells.length > 0) {
+              name = nonSttCells[0];
+              for (let i = 1; i < nonSttCells.length; i++) {
+                const c = nonSttCells[i];
+                const clow = c.toLowerCase();
+                if (clow === 'nam') gender = 'Nam';
+                else if (clow === 'nữ' || clow === 'nu') gender = 'Nữ';
+                else if (/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/.test(c) || /^(19|20)\d{2}$/.test(c)) birthDate = c;
+                else if (!reason || reason === 'Thuộc diện rà soát') reason = c;
+                else notes += (notes ? ' - ' : '') + c;
+              }
+            }
+
+            if (name) {
+              parsedList.push({ name, gender, birthDate, reason, notes });
+            }
+          });
+
+          if (parsedList.length === 0) {
+            showToast('Không tìm thấy bản ghi học sinh nào trong tệp Excel!', 'error');
+            return;
+          }
+
+          const tbody = document.getElementById('batchStudentTableBody');
+          if (tbody) tbody.innerHTML = '';
+          parsedList.forEach(s => addBatchStudentRow(1, s));
+          switchBatchInputMode('table');
+          showToast(`Đã nạp thành công ${parsedList.length} học sinh từ file Excel!`, 'success');
+        } catch (err) {
+          showToast('Lỗi đọc tệp Excel: ' + err.message, 'error');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // Submit Batch Students
+    function submitBatchStudents() {
+      const students = getBatchStudentsFromTable();
+      if (students.length === 0) {
+        showToast('Vui lòng nhập ít nhất 1 học sinh có họ và tên!', 'error');
+        return;
+      }
+
+      const campaignTitle = (document.getElementById('batchCampaignTitle')?.value || '').trim() || AppState.activeCampaign?.title || 'Thu thập dữ liệu đột xuất';
+      const className = document.getElementById('batchClassSelect')?.value || 'Lớp 2A';
+      const branch = document.getElementById('batchBranchSelect')?.value || 'Điểm Trung Tâm';
+      const teacherName = (document.getElementById('batchTeacherName')?.value || '').trim() || 'Giáo viên phụ trách';
+
+      const newSub = {
+        id: 'SUB_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        campaignTitle,
+        className,
+        branch,
+        teacherName,
+        hasTargetStudents: true,
+        studentsCount: students.length,
+        students: students,
+        submittedAt: new Date().toISOString()
+      };
+
+      AppState.studentSubmissions.unshift(newSub);
+      saveStudentSubmissionsToStorage();
+      closeQuickStudentModal();
+      showToast(`Đã gửi thành công danh sách ${students.length} học sinh của [${className}] lên BGH!`, 'success');
+    }
+
+    // Quick Submit: 0 Target Students in 5s
+    function quickSubmitNoTargetStudent() {
+      const className = prompt('Nhập tên lớp báo cáo không có đối tượng cần rà soát (Ví dụ: Lớp 2A):', 'Lớp 2A');
+      if (!className) return;
+
+      const newSub = {
+        id: 'SUB_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        campaignTitle: AppState.activeCampaign?.title || 'Thu thập dữ liệu đột xuất',
+        className: className.trim(),
+        branch: 'Điểm Trung Tâm',
+        teacherName: 'Giáo viên phụ trách',
+        hasTargetStudents: false,
+        studentsCount: 0,
+        students: [],
+        submittedAt: new Date().toISOString()
+      };
+
+      AppState.studentSubmissions.unshift(newSub);
+      saveStudentSubmissionsToStorage();
+      showToast(`Xác nhận thành công: [${className}] không có đối tượng rà soát (Hoàn tất trong 5s)!`, 'success');
+    }
+
+    // Export Excel: Comprehensive Campaign Workbook
+    function exportCampaignExcel() {
+      const subs = AppState.studentSubmissions || [];
+      if (subs.length === 0) {
+        showToast('Chưa có dữ liệu học sinh nào được gửi để xuất file Excel!', 'error');
+        return;
+      }
+
+      try {
+        const campTitle = AppState.activeCampaign?.title || 'Thu Thập & Rà Soát Học Sinh Đột Xuất';
+        const exportTime = new Date().toLocaleString('vi-VN');
+
+        // Sheet 1: Consolidated Student Details
+        const sheet1Data = [
+          ['PHÒNG GIÁO DỤC VÀ ĐÀO TẠO - TRƯỜNG TIỂU HỌC'],
+          ['BÁO CÁO TỔNG HỢP DANH SÁCH HỌC SINH RÀ SOÁT / THU THẬP ĐỘT XUẤT'],
+          ['Nhiệm vụ / Đợt rà soát:', campTitle],
+          ['Thời gian xuất dữ liệu:', exportTime],
+          [''],
+          ['STT', 'PHÂN HIỆU', 'LỚP BÁO CÁO', 'GIÁO VIÊN PHỤ TRÁCH', 'HỌ VÀ TÊN HỌC SINH', 'GIỚI TÍNH', 'NGÀY SINH', 'HOÀN CẢNH / DIỆN KHÓ KHĂN', 'GHI CHÚ / ĐỀ XUẤT', 'THỜI GIAN NỘP']
+        ];
+
+        let stt = 1;
+        subs.forEach(sub => {
+          const subTime = sub.submittedAt ? new Date(sub.submittedAt).toLocaleString('vi-VN') : '';
+          if (sub.hasTargetStudents && sub.students && sub.students.length > 0) {
+            sub.students.forEach(st => {
+              sheet1Data.push([
+                stt++,
+                sub.branch || 'Điểm Trung Tâm',
+                sub.className,
+                sub.teacherName || 'GV Phụ trách',
+                st.name || '',
+                st.gender || 'Nam',
+                st.birthDate || '',
+                st.reason || '',
+                st.notes || '',
+                subTime
+              ]);
+            });
+          } else {
+            sheet1Data.push([
+              stt++,
+              sub.branch || 'Điểm Trung Tâm',
+              sub.className,
+              sub.teacherName || 'GV Phụ trách',
+              '-- Không có đối tượng --',
+              '-',
+              '-',
+              'Lớp báo cáo không có học sinh thuộc diện',
+              '-',
+              subTime
+            ]);
+          }
+        });
+
+        // Sheet 2: Class Submission Progress
+        const sheet2Data = [
+          ['TIẾN ĐỘ BÁO CÁO THU THẬP SỐ LIỆU THEO TỪNG LỚP'],
+          ['Nhiệm vụ:', campTitle],
+          [''],
+          ['STT', 'PHÂN HIỆU', 'LỚP', 'GIÁO VIÊN PHỤ TRÁCH', 'TÌNH TRẠNG', 'SỐ LƯỢNG HS GHI NHẬN', 'THỜI GIAN BÁO CÁO']
+        ];
+
+        subs.forEach((sub, idx) => {
+          const subTime = sub.submittedAt ? new Date(sub.submittedAt).toLocaleString('vi-VN') : '';
+          sheet2Data.push([
+            idx + 1,
+            sub.branch || 'Điểm Trung Tâm',
+            sub.className,
+            sub.teacherName || 'GV Phụ trách',
+            sub.hasTargetStudents ? 'Có đối tượng cần rà soát' : 'Không có đối tượng (0)',
+            sub.studentsCount || 0,
+            subTime
+          ]);
+        });
+
+        const wb = XLSX.utils.book_new();
+        const ws1 = XLSX.utils.aoa_to_sheet(sheet1Data);
+        const ws2 = XLSX.utils.aoa_to_sheet(sheet2Data);
+
+        // Auto-fit column widths
+        ws1['!cols'] = [
+          { wch: 6 }, { wch: 18 }, { wch: 14 }, { wch: 22 },
+          { wch: 26 }, { wch: 10 }, { wch: 14 }, { wch: 30 },
+          { wch: 28 }, { wch: 20 }
+        ];
+
+        XLSX.utils.book_append_sheet(wb, ws1, 'DanhSach_ChiTiet_HS');
+        XLSX.utils.book_append_sheet(wb, ws2, 'TienDo_BaoCao_Lop');
+
+        XLSX.writeFile(wb, 'SynchroEdu_BaoCao_ThuThap_HocSinh_DotXuat.xlsx');
+        showToast('Xuất toàn bộ danh sách học sinh ra file Excel thành công!', 'success');
+      } catch (err) {
+        showToast('Lỗi xuất Excel: ' + err.message, 'error');
       }
     }
 
-    function openQuickStudentModal() {
-      const studentName = prompt('Nhập họ tên học sinh và thông tin (Ví dụ: Họ và tên - Diện khó khăn):');
-      if (studentName) {
-        showToast(`Đã thêm học sinh [${studentName}] vào danh sách gửi BGH!`, 'success');
-        const liveList = document.getElementById('liveAggregationList');
-        if (liveList) {
-          if (liveList.querySelector('td[colspan]')) {
-            liveList.innerHTML = '';
-          }
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td class="py-1.5 px-2.5 font-bold text-white">Lớp 2A</td>
-            <td class="py-1.5 px-2.5 text-slate-300">Giáo viên phụ trách</td>
-            <td class="py-1.5 px-2.5 text-amber-300 font-medium">${studentName}</td>
-            <td class="py-1.5 px-2.5 text-slate-400">Vừa xong</td>
-          `;
-          liveList.prepend(tr);
+    // Export current modal table to Excel
+    function exportCurrentBatchModalExcel() {
+      const students = getBatchStudentsFromTable();
+      if (students.length === 0) {
+        showToast('Chưa có học sinh nào trong bảng để xuất Excel!', 'error');
+        return;
+      }
+
+      try {
+        const className = document.getElementById('batchClassSelect')?.value || 'Lop';
+        const campTitle = document.getElementById('batchCampaignTitle')?.value || 'Rà soát đột xuất';
+
+        const rows = [
+          ['PHÒNG GIÁO DỤC VÀ ĐÀO TẠO - TRƯỜNG TIỂU HỌC'],
+          [`DANH SÁCH HỌC SINH RÀ SOÁT - ${className.toUpperCase()}`],
+          ['Đợt rà soát:', campTitle],
+          ['Ngày lập:', new Date().toLocaleDateString('vi-VN')],
+          [''],
+          ['STT', 'HỌ VÀ TÊN HỌC SINH', 'GIỚI TÍNH', 'NGÀY SINH', 'HOÀN CẢNH / DIỆN KHÓ KHĂN', 'GHI CHÚ / ĐỀ XUẤT']
+        ];
+
+        students.forEach((s, idx) => {
+          rows.push([idx + 1, s.name, s.gender, s.birthDate, s.reason, s.notes]);
+        });
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols'] = [{ wch: 6 }, { wch: 26 }, { wch: 10 }, { wch: 14 }, { wch: 30 }, { wch: 28 }];
+        XLSX.utils.book_append_sheet(wb, ws, className);
+        XLSX.writeFile(wb, `SynchroEdu_DS_HocSinh_${className}.xlsx`);
+        showToast(`Đã xuất file Excel cho [${className}] thành công!`, 'success');
+      } catch (err) {
+        showToast('Lỗi xuất Excel: ' + err.message, 'error');
+      }
+    }
+
+    // Export Single Class Excel from table
+    function exportSingleClassExcel(submissionId) {
+      const sub = (AppState.studentSubmissions || []).find(s => s.id === submissionId);
+      if (!sub || !sub.students || sub.students.length === 0) {
+        showToast('Lớp này không có danh sách học sinh để xuất!', 'info');
+        return;
+      }
+
+      try {
+        const rows = [
+          ['PHÒNG GIÁO DỤC VÀ ĐÀO TẠO - TRƯỜNG TIỂU HỌC'],
+          [`DANH SÁCH HỌC SINH - ${sub.className.toUpperCase()} (${sub.branch})`],
+          ['Giáo viên phụ trách:', sub.teacherName],
+          ['Nhiệm vụ rà soát:', sub.campaignTitle],
+          ['Thời gian nộp:', sub.submittedAt ? new Date(sub.submittedAt).toLocaleString('vi-VN') : ''],
+          [''],
+          ['STT', 'HỌ VÀ TÊN HỌC SINH', 'GIỚI TÍNH', 'NGÀY SINH', 'HOÀN CẢNH / DIỆN KHÓ KHĂN', 'GHI CHÚ / ĐỀ XUẤT']
+        ];
+
+        sub.students.forEach((s, idx) => {
+          rows.push([idx + 1, s.name, s.gender, s.birthDate, s.reason, s.notes]);
+        });
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols'] = [{ wch: 6 }, { wch: 26 }, { wch: 10 }, { wch: 14 }, { wch: 30 }, { wch: 28 }];
+        XLSX.utils.book_append_sheet(wb, ws, sub.className);
+        XLSX.writeFile(wb, `SynchroEdu_${sub.className}_HocSinh.xlsx`);
+        showToast(`Đã tải Excel học sinh lớp [${sub.className}] thành công!`, 'success');
+      } catch (err) {
+        showToast('Lỗi xuất Excel: ' + err.message, 'error');
+      }
+    }
+
+    // View Submission Details Modal
+    function viewSubmissionDetails(submissionId) {
+      const sub = (AppState.studentSubmissions || []).find(s => s.id === submissionId);
+      if (!sub) return;
+
+      const modal = document.getElementById('viewStudentSubmissionModal');
+      const title = document.getElementById('viewSubModalTitle');
+      const meta = document.getElementById('viewSubModalMeta');
+      const tbody = document.getElementById('viewSubTableBody');
+      const btnExport = document.getElementById('btnExportSingleClassExcel');
+
+      if (!modal) return;
+
+      if (title) title.innerHTML = `<i data-lucide="users" class="w-5 h-5 text-amber-400"></i><span>Chi Tiết Báo Cáo Học Sinh ${sub.className}</span>`;
+      if (meta) meta.textContent = `${sub.branch} • Giáo viên: ${sub.teacherName} • ${sub.studentsCount} học sinh • Nộp lúc: ${new Date(sub.submittedAt).toLocaleTimeString('vi-VN')}`;
+      if (btnExport) btnExport.setAttribute('onclick', `exportSingleClassExcel('${sub.id}')`);
+
+      if (tbody) {
+        tbody.innerHTML = '';
+        if (sub.students && sub.students.length > 0) {
+          sub.students.forEach((s, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td class="p-2.5 text-center text-slate-400 font-mono">${idx + 1}</td>
+              <td class="p-2.5 font-bold text-white">${s.name}</td>
+              <td class="p-2.5 text-slate-300">${s.gender}</td>
+              <td class="p-2.5 text-slate-300 font-mono">${s.birthDate || '-'}</td>
+              <td class="p-2.5 text-amber-300 font-medium">${s.reason}</td>
+              <td class="p-2.5 text-slate-400">${s.notes || '-'}</td>
+            `;
+            tbody.appendChild(tr);
+          });
         }
       }
+
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeViewSubmissionModal() {
+      const modal = document.getElementById('viewStudentSubmissionModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function deleteSubmission(submissionId) {
+      const sub = (AppState.studentSubmissions || []).find(s => s.id === submissionId);
+      if (!sub) return;
+      if (!confirm(`Bạn có chắc chắn muốn xóa báo cáo của [${sub.className}]?`)) return;
+
+      AppState.studentSubmissions = AppState.studentSubmissions.filter(s => s.id !== submissionId);
+      saveStudentSubmissionsToStorage();
+      showToast(`Đã xóa báo cáo của [${sub.className}].`, 'info');
+    }
+
+    // Campaign Creation Modal (BGH)
+    function openCreateCampaignModal() {
+      const modal = document.getElementById('createCampaignModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        lucide.createIcons();
+      }
+    }
+
+    function closeCreateCampaignModal() {
+      const modal = document.getElementById('createCampaignModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveNewCampaign() {
+      const code = (document.getElementById('newCampaignCode')?.value || 'REQ-2026-002').trim();
+      const title = (document.getElementById('newCampaignTitle')?.value || '').trim();
+      const scope = document.getElementById('newCampaignScope')?.value || 'Toàn trường (32 Lớp / 5 Phân hiệu)';
+      const deadline = (document.getElementById('newCampaignDeadline')?.value || '17:00 Ngày mai').trim();
+      const desc = (document.getElementById('newCampaignDesc')?.value || '').trim();
+
+      if (!title) {
+        showToast('Vui lòng nhập tiêu đề nhiệm vụ rà soát!', 'error');
+        return;
+      }
+
+      AppState.activeCampaign = {
+        code,
+        title,
+        scope,
+        deadline,
+        description: desc || 'Thực hiện chỉ đạo chuyên môn đột xuất từ Ban Giám Hiệu.',
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem(ACTIVE_CAMPAIGN_KEY, JSON.stringify(AppState.activeCampaign));
+      } catch (e) {
+        console.error(e);
+      }
+
+      updateCampaignInfoUI();
+      closeCreateCampaignModal();
+      showToast(`Đã phát động thành công nhiệm vụ rà soát [${title}]!`, 'success');
     }
 
     // Export Master Matrix to Excel using SheetJS

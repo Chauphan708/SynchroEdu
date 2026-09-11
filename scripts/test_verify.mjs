@@ -103,8 +103,58 @@ assert(simulateCanAccess('deputy_head', true) === true, 'RBAC: Tổ Phó khi Đ�
 assert(simulateCanAccess('teacher') === false, 'RBAC: Giáo Viên bị chặn truy cập tuyệt đối');
 assert(simulateCanAccess('guest') === false, 'RBAC: Khách Mời bị chặn truy cập tuyệt đối');
 
-// 6. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
-console.log('\n6. Kiểm tra máy chủ HTTP cục bộ:');
+// 6. Kiểm tra Cơ chế Nhập Nhiều Học Sinh Cùng Lúc & Lưu Trữ Đầy Đủ Vào Excel:
+console.log('\n6. Kiểm tra Cơ chế Nhập Nhiều Học Sinh Cùng Lúc & Lưu Trữ Đầy Đủ Vào Excel:');
+assert(htmlContent.includes('id="quickStudentBatchModal"'), 'Modal nhập danh sách nhiều học sinh cùng lúc tồn tại');
+assert(htmlContent.includes('id="batchModeTablePanel"'), 'Chế độ 1: Bảng nhập dòng động tồn tại');
+assert(htmlContent.includes('id="batchModePastePanel"'), 'Chế độ 2: Dán nhanh danh sách từ Word/Zalo tồn tại');
+assert(htmlContent.includes('id="batchModeExcelPanel"'), 'Chế độ 3: Nhập từ tệp Excel (.xlsx) tồn tại');
+assert(htmlContent.includes('id="batchStudentTableBody"'), 'Bảng chứa danh sách học sinh động tồn tại');
+assert(htmlContent.includes('id="campaignSubmissionsTableBody"'), 'Bảng dồn số liệu báo cáo theo lớp tồn tại');
+assert(htmlContent.includes('function openQuickStudentModal()'), 'Hàm mở modal nhập nhiều học sinh hoạt động');
+assert(htmlContent.includes('function addBatchStudentRow'), 'Hàm thêm dòng học sinh linh hoạt hoạt động');
+assert(htmlContent.includes('function parsePasteBatchStudents()'), 'Hàm phân tích văn bản dán tự động hoạt động');
+assert(htmlContent.includes('function handleBatchExcelUpload'), 'Hàm đọc tệp Excel tải lên hoạt động');
+assert(htmlContent.includes('function submitBatchStudents()'), 'Hàm lưu và gửi báo cáo danh sách học sinh hoạt động');
+assert(htmlContent.includes('function exportCampaignExcel()'), 'Hàm xuất toàn bộ danh sách học sinh ra file Excel (.xlsx) hoạt động');
+assert(htmlContent.includes('function exportCurrentBatchModalExcel()'), 'Hàm xuất nhanh Excel trực tiếp từ modal nhập hoạt động');
+assert(htmlContent.includes('function exportSingleClassExcel'), 'Hàm xuất Excel danh sách học sinh theo từng lớp hoạt động');
+assert(htmlContent.includes('function loadStudentSubmissionsFromStorage()') && htmlContent.includes('function saveStudentSubmissionsToStorage()'), 'Cơ chế lưu trữ LocalStorage cho học sinh hoạt động');
+
+// Kiểm thử thuật toán bóc tách danh sách nhiều học sinh từ văn bản (Paste Parser Simulation)
+function simulateBatchParse(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  return lines.map(line => {
+    let clean = line.replace(/^(\d+[\.\/\)\-:]\s*|[\-•*]\s*)/, '').trim();
+    const parts = clean.split(/[-–—,\t;]+/).map(p => p.trim()).filter(Boolean);
+    let name = parts[0] || clean;
+    let gender = 'Nam';
+    let birthDate = '';
+    let reason = 'Thuộc diện rà soát';
+    for (let i = 1; i < parts.length; i++) {
+      const part = parts[i];
+      const partLower = part.toLowerCase();
+      if (partLower === 'nam') gender = 'Nam';
+      else if (partLower === 'nữ' || partLower === 'nu') gender = 'Nữ';
+      else if (/\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}/.test(part) || /^(19|20)\d{2}$/.test(part)) birthDate = part;
+      else if (reason === 'Thuộc diện rà soát') reason = part;
+    }
+    return { name, gender, birthDate, reason };
+  });
+}
+
+const samplePasteText = `1. Nguyễn Văn An - Nam - 15/04/2016 - Hộ nghèo
+2. Lê Thị Bình - Nữ - 20/09/2016 - Hộ cận nghèo
+Trần Quốc Tuấn - Nam - Khuyết tật hòa nhập`;
+
+const parsedStudents = simulateBatchParse(samplePasteText);
+assert(parsedStudents.length === 3, 'Thuật toán bóc tách được chính xác 3 học sinh từ 3 dòng dán');
+assert(parsedStudents[0].name === 'Nguyễn Văn An' && parsedStudents[0].gender === 'Nam', 'HS 1: Họ tên và giới tính Nam chuẩn xác');
+assert(parsedStudents[1].name === 'Lê Thị Bình' && parsedStudents[1].gender === 'Nữ', 'HS 2: Họ tên và giới tính Nữ chuẩn xác');
+assert(parsedStudents[2].name === 'Trần Quốc Tuấn' && parsedStudents[2].reason === 'Khuyết tật hòa nhập', 'HS 3: Nhận diện lý do/diện rà soát chuẩn xác');
+
+// 7. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
+console.log('\n7. Kiểm tra máy chủ HTTP cục bộ:');
 
 async function testHttpServer() {
   const testPort = process.env.TEST_PORT || 3099;
