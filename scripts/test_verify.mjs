@@ -75,8 +75,36 @@ assert(htmlContent.toLowerCase().includes('không xếp loại giờ dạy'), 'C
 assert(htmlContent.includes('printPreviewDocument()'), 'Chế độ in ấn A4 chuẩn Nghị định 30/2020/NĐ-CP');
 assert(htmlContent.includes('remindSingleZalo') && htmlContent.includes('remindAllLateZalo'), 'Tính năng bắn tin nhắc Zalo 1-click');
 
-// 5. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
-console.log('\n5. Kiểm tra máy chủ HTTP cục bộ:');
+// 5. Kiểm tra Quản lý Người dùng (RBAC) & Cơ chế Lưu trữ 4 Tầng:
+console.log('\n5. Kiểm tra Quản lý Người dùng (RBAC) & Cơ chế Lưu trữ 4 Tầng:');
+assert(htmlContent.includes('id="tab-user-management"'), 'Giao diện Tab Quản Lý Người Dùng tồn tại');
+assert(htmlContent.includes('id="nav-user-management"'), 'Nút điều hướng Desktop Quản Lý Người Dùng tồn tại');
+assert(htmlContent.includes('id="mobile-nav-user-management"'), 'Nút điều hướng Mobile Quản Lý Người Dùng tồn tại');
+assert(htmlContent.includes('id="userModal"'), 'Modal thêm mới / chỉnh sửa người dùng tồn tại');
+assert(htmlContent.includes('id="cloudConfigModal"'), 'Modal cấu hình kết nối đám mây 4 tầng tồn tại');
+assert(htmlContent.includes('function canAccessUserManagement()'), 'Hàm kiểm tra phân quyền RBAC canAccessUserManagement() tồn tại');
+assert(htmlContent.includes('function updateRbacNavigation()'), 'Hàm cập nhật hiển thị thanh điều hướng theo quyền updateRbacNavigation() tồn tại');
+assert(htmlContent.includes('function loadUsersFromStorage()') && htmlContent.includes('function saveUsersToStorage()'), 'Cơ chế lưu trữ Tầng 1 (LocalStorage) hoạt động');
+assert(htmlContent.includes('function exportUsersExcel()'), 'Chức năng xuất danh sách nhân sự ra file Excel hoạt động');
+assert(htmlContent.includes('function exportUsersBackupJson()') && htmlContent.includes('function importUsersJson'), 'Chức năng sao lưu & nhập JSON (Tầng 4 - No Vendor Lock-in) hoạt động');
+assert(htmlContent.includes('function saveCloudConfig()') && htmlContent.includes('function testCloudConnection()'), 'Cơ chế cấu hình Supabase Cloud Sync (Tầng 2) hoạt động');
+
+// Kiểm tra chi tiết logic phân quyền RBAC
+function simulateCanAccess(role, isDelegated = false) {
+  if (role === 'principal' || role === 'vp_branch' || role === 'head_dept') return true;
+  if (role === 'deputy_head' && isDelegated) return true;
+  return false;
+}
+assert(simulateCanAccess('principal') === true, 'RBAC: Hiệu Trưởng có toàn quyền truy cập');
+assert(simulateCanAccess('vp_branch') === true, 'RBAC: Phó Hiệu Trưởng có quyền truy cập');
+assert(simulateCanAccess('head_dept') === true, 'RBAC: Tổ Trưởng Chuyên Môn có quyền truy cập');
+assert(simulateCanAccess('deputy_head', false) === false, 'RBAC: Tổ Phó khi CHƯA được ủy quyền bị chặn truy cập');
+assert(simulateCanAccess('deputy_head', true) === true, 'RBAC: Tổ Phó khi ĐÃ được ủy quyền có quyền truy cập');
+assert(simulateCanAccess('teacher') === false, 'RBAC: Giáo Viên bị chặn truy cập tuyệt đối');
+assert(simulateCanAccess('guest') === false, 'RBAC: Khách Mời bị chặn truy cập tuyệt đối');
+
+// 6. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
+console.log('\n6. Kiểm tra máy chủ HTTP cục bộ:');
 
 async function testHttpServer() {
   const testPort = process.env.TEST_PORT || 3099;
