@@ -1,6 +1,6 @@
-# HƯỚNG DẪN SỬ DỤNG: NỀN TẢNG SYNCHROEDU
+# HƯỚNG DẪN SỬ DỤNG: NỀN TẢNG SYNCHROEDU - TRƯỜNG TIỂU HỌC TRUNG NHỨT
 ## HỆ THỐNG QUẢN TRỊ CHUYÊN MÔN SỐ & BÁO CÁO MA TRẬN 2D CẤP TIỂU HỌC
-*(Ban hành bám sát Công văn số 4069/BGDĐT-GDPT và Thông tư số 27/2020/TT-BGDĐT)*
+*(Đơn vị chủ quản: UBND Phường Trung Nhứt | Bám sát Công văn số 4069/BGDĐT-GDPT và Thông tư số 27/2020/TT-BGDĐT)*
 
 ---
 
@@ -26,7 +26,7 @@
 ### 1. 🏫 Dành Cho Hiệu Trưởng (Bàn Chỉ Đạo Vĩ Mô)
 * **Bảng Ma trận 5×6**: Quan sát toàn cảnh 5 Phân hiệu $\times$ 6 Tổ/Khối. Ô màu xanh là bình thường, ô màu đỏ/vàng là có vướng mắc hoặc trễ hạn.
 * **Phát thông báo khẩn 🚨**: Nhấp vào nút *"Phát thông báo khẩn"* để gửi chỉ đạo hỏa tốc (nghỉ học do mưa bão, dịch bệnh) đến tất cả 32 giáo viên dưới 1 giây.
-* **Thu thập dữ liệu đột xuất (REQ Engine)**: Bấm *"Tạo yêu cầu đột xuất REQ (+)"*, nhập nội dung (ví dụ: *Rà soát học sinh khó khăn nhận học bổng*), theo dõi danh sách dồn về trực tiếp từ 32 lớp và bấm nút **Tải Excel** nộp Phòng GD&ĐT.
+* **Thu thập dữ liệu đột xuất (REQ Engine)**: Bấm *"Tạo yêu cầu đột xuất REQ (+)"*, nhập nội dung (ví dụ: *Rà soát học sinh khó khăn nhận học bổng*), theo dõi danh sách dồn về trực tiếp từ 32 lớp và bấm nút **Tải Excel** nộp UBND Phường Trung Nhứt.
 * **Xuất báo cáo cấp trên**:
   * Bấm nút **"Xuất file Word (.docx)"** để tải về văn bản hành chính theo chuẩn **Nghị định 30/2020/NĐ-CP**.
   * Bấm nút **"Xuất file Excel (.xlsx)"** để tải bảng tổng hợp số liệu.

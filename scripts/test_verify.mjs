@@ -165,8 +165,16 @@ const allOptions = htmlContent.match(/<option[^>]*>/g) || [];
 const unstyledOptions = allOptions.filter(opt => !opt.includes('bg-slate-800') && !opt.includes('class='));
 assert(unstyledOptions.length === 0, `100% các thẻ option (${allOptions.length}/${allOptions.length}) đều có lớp giao diện tối bg-slate-800 text-slate-100`);
 
-// 8. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
-console.log('\n8. Kiểm tra máy chủ HTTP cục bộ:');
+// 8. Kiểm tra Chuẩn hóa Tên Đơn vị & Cơ quan chủ quản (UBND Phường Trung Nhứt & Trường Tiểu học Trung Nhứt):
+console.log('\n8. Kiểm tra Chuẩn hóa Tên Đơn vị (UBND Phường Trung Nhứt & Trường Tiểu học Trung Nhứt):');
+assert(htmlContent.includes('UBND PHƯỜNG TRUNG NHỨT'), 'Tiêu ngữ/Cơ quan cấp trên là UBND PHƯỜNG TRUNG NHỨT');
+assert(htmlContent.includes('Trường Tiểu học Trung Nhứt'), 'Tên trường chuẩn xác: Trường Tiểu học Trung Nhứt');
+assert(htmlContent.includes('UBND PHƯỜNG TRUNG NHỨT - TRƯỜNG TIỂU HỌC TRUNG NHỨT'), 'Tiêu đề tệp xuất Excel/Word mang tên UBND Phường Trung Nhứt và Trường TH Trung Nhứt');
+assert(!/Phòng\s+Giáo\s+dục\s+và\s+Đào\s+tạo/i.test(htmlContent), 'Đã xóa bỏ hoàn toàn cụm từ "Phòng Giáo dục và Đào tạo" trong index.html');
+assert(!/Phòng\s+GD&ĐT/i.test(htmlContent), 'Đã xóa bỏ hoàn toàn cụm từ viết tắt "Phòng GD&ĐT" trong index.html');
+
+// 9. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
+console.log('\n9. Kiểm tra máy chủ HTTP cục bộ:');
 
 async function testHttpServer() {
   const testPort = process.env.TEST_PORT || 3099;

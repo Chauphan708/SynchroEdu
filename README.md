@@ -1,5 +1,6 @@
 # SynchroEdu 🎓🏫
 ### Nền Tảng Quản Trị Sinh Hoạt Chuyên Môn Số & Báo Cáo Ma Trận 2D Cấp Tiểu Học
+#### Đơn vị triển khai: Trường Tiểu học Trung Nhứt (UBND Phường Trung Nhứt)
 
 [![SynchroEdu CI](https://github.com/Chauphan708/SynchroEdu/actions/workflows/ci.yml/badge.svg)](https://github.com/Chauphan708/SynchroEdu/actions/workflows/ci.yml)
 [![Deploy to GitHub Pages](https://github.com/Chauphan708/SynchroEdu/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/Chauphan708/SynchroEdu/actions/workflows/deploy-pages.yml)
@@ -12,7 +13,7 @@
 
 ## 📖 GIỚI THIỆU TỔNG QUAN
 
-**SynchroEdu** là giải pháp chuyển đổi số toàn diện cho trường Tiểu học có quy mô nhiều phân hiệu (1 Điểm trung tâm + 4 Điểm lẻ; 32 lớp học, 32 giáo viên). Hệ thống hợp nhất trọn vẹn hai trụ cột chiến lược:
+**SynchroEdu** là giải pháp chuyển đổi số toàn diện cho **Trường Tiểu học Trung Nhứt** (quy mô nhiều phân hiệu: 1 Điểm trung tâm + 4 Điểm lẻ; 32 lớp học, 32 giáo viên) thuộc địa bàn **UBND Phường Trung Nhứt**. Hệ thống hợp nhất trọn vẹn hai trụ cột chiến lược:
 1. **Sổ tay Quản trị Sinh hoạt Chuyên môn Số (E-EduSHCM)** bám sát [Công văn số 4069/BGDĐT-GDPT](https://moet.gov.vn) & [Thông tư số 27/2020/TT-BGDĐT](https://moet.gov.vn).
 2. **Kiến trúc Báo cáo Ma trận 2D & Thông báo Tức thì (School Matrix Reporting Architecture)**: Giáo viên chỉ nhập liệu **1 lần**, hệ thống tự động phân tách thành **2 luồng đồng bộ** (ngang cho Tổ trưởng, dọc cho Hiệu phó điểm) và **hội tụ tại Ma trận 5x6** cho Ban Giám Hiệu.
 
