@@ -798,23 +798,36 @@
             </span>
           </div>
 
-          <!-- 4-Step Progress Bar -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">1</span>
-              <span>Soạn KHBD Minh Họa</span>
+          <!-- 4-Step Progress Bar & Step Selector -->
+          <div class="space-y-2">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <button type="button" onclick="selectLessonStudyStep(1)" id="step-btn-1" class="lesson-step-btn text-left p-3 rounded-lg bg-brand-800 border-2 border-brand-400 text-white font-medium flex items-center gap-2 transition-all shadow-sm">
+                <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">1</span>
+                <span>Soạn KHBD Minh Họa</span>
+              </button>
+              <button type="button" onclick="selectLessonStudyStep(2)" id="step-btn-2" class="lesson-step-btn text-left p-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium flex items-center gap-2 transition-all">
+                <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-[11px]">2</span>
+                <span>Dự Giờ Quan Sát HS</span>
+              </button>
+              <button type="button" onclick="selectLessonStudyStep(3)" id="step-btn-3" class="lesson-step-btn text-left p-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium flex items-center gap-2 transition-all">
+                <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-[11px]">3</span>
+                <span>Thảo Luận Minh Chứng</span>
+              </button>
+              <button type="button" onclick="selectLessonStudyStep(4)" id="step-btn-4" class="lesson-step-btn text-left p-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium flex items-center gap-2 transition-all">
+                <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-[11px]">4</span>
+                <span>Áp Dụng Thực Tiễn</span>
+              </button>
             </div>
-            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">2</span>
-              <span>Dự Giờ Quan Sát HS</span>
-            </div>
-            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">3</span>
-              <span>Thảo Luận Minh Chứng</span>
-            </div>
-            <div class="p-3 rounded-lg bg-brand-900/60 border border-brand-700 text-white font-medium flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]">4</span>
-              <span>Áp Dụng Thực Tiễn</span>
+
+            <!-- Step Guidance Card -->
+            <div id="stepGuidanceBox" class="p-2.5 rounded-lg bg-slate-850 border border-slate-800 flex flex-wrap items-center justify-between text-xs gap-2">
+              <div class="flex items-center gap-2">
+                <span id="stepGuidanceBadge" class="px-2 py-0.5 rounded bg-brand-900 text-brand-300 font-bold text-[11px]">BƯỚC 1</span>
+                <span id="stepGuidanceText" class="text-slate-300">Cả tổ chuyên môn cùng thiết kế Kế hoạch bài dạy minh họa, xác định rõ mục tiêu YCCĐ, phân công 1 giáo viên dạy thể nghiệm.</span>
+              </div>
+              <button type="button" onclick="insertStepTemplate()" class="text-xs text-brand-400 hover:text-brand-300 font-semibold flex items-center gap-1">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Chèn gợi ý bước này vào biên bản
+              </button>
             </div>
           </div>
 
@@ -824,28 +837,64 @@
             <div class="lg:col-span-2 space-y-4">
               <div class="flex items-center justify-between">
                 <label class="font-bold text-xs sm:text-sm text-slate-200">Nội dung biên bản sinh hoạt tổ chuyên môn:</label>
-                <button onclick="aiSummarizeMeeting()" class="text-xs px-2.5 py-1 rounded bg-brand-900 hover:bg-brand-800 text-brand-300 border border-brand-700/60 flex items-center gap-1.5 transition-colors">
-                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
-                  <span>Tóm tắt bằng AI</span>
-                </button>
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="loadSampleMeetingMinutes()" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center gap-1 transition-colors" title="Nạp mẫu biên bản đầy đủ 4 bước chuẩn CV 4069">
+                    <i data-lucide="file-code" class="w-3.5 h-3.5 text-blue-400"></i>
+                    <span>Nạp mẫu chuẩn</span>
+                  </button>
+                  <button type="button" onclick="aiSummarizeMeeting()" class="text-xs px-2.5 py-1 rounded bg-brand-900 hover:bg-brand-800 text-brand-300 border border-brand-700/60 flex items-center gap-1.5 transition-colors">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+                    <span>Tóm tắt bằng AI</span>
+                  </button>
+                </div>
               </div>
-              <textarea id="meetingMinutesContent" rows="9" placeholder="Nhập nội dung biên bản sinh hoạt chuyên môn theo nghiên cứu bài học 4 bước (Quy định tại Công văn số 4069/BGDĐT-GDPT)..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-200 font-mono focus:ring-1 focus:ring-brand-500 leading-relaxed"></textarea>
+              <textarea id="meetingMinutesContent" rows="11" placeholder="Nhập nội dung biên bản sinh hoạt chuyên môn theo nghiên cứu bài học 4 bước (Quy định tại Công văn số 4069/BGDĐT-GDPT)..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-slate-200 font-mono focus:ring-1 focus:ring-brand-500 leading-relaxed"></textarea>
             </div>
 
             <!-- Right: Student Evidence Photos & Discussion -->
-            <div class="space-y-3 bg-slate-850 p-4 rounded-xl border border-slate-800">
-              <h3 class="font-bold text-xs sm:text-sm text-slate-200 flex items-center gap-2">
-                <i data-lucide="camera" class="w-4 h-4 text-brand-400"></i>
-                Minh Chứng Hoạt Động Học Của HS
-              </h3>
-              <div class="border-2 border-dashed border-slate-700 rounded-xl p-6 text-center space-y-2 bg-slate-900/60 hover:border-brand-500 transition-colors cursor-pointer">
-                <i data-lucide="image-plus" class="w-8 h-8 text-slate-500 mx-auto"></i>
-                <p class="text-xs text-slate-300 font-medium">Tải lên hình ảnh minh chứng hoạt động học của HS</p>
-                <p class="text-[11px] text-slate-500">Chụp khoảnh khắc học sinh thao tác, lúng túng hoặc hợp tác nhóm</p>
+            <div class="space-y-3 bg-slate-850 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-bold text-xs sm:text-sm text-slate-200 flex items-center gap-2">
+                    <i data-lucide="camera" class="w-4 h-4 text-brand-400"></i>
+                    Minh Chứng Hoạt Động Học Của HS
+                  </h3>
+                  <span id="evidencePhotoCount" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">0 ảnh</span>
+                </div>
+
+                <!-- Hidden file input for camera/photos -->
+                <input type="file" id="evidenceFileInput" accept="image/*" multiple class="hidden" onchange="handleEvidenceUpload(event)" />
+
+                <!-- Upload Area -->
+                <div onclick="document.getElementById('evidenceFileInput').click()" class="border-2 border-dashed border-slate-700 rounded-xl p-4 text-center space-y-2 bg-slate-900/60 hover:border-brand-500 transition-colors cursor-pointer group">
+                  <i data-lucide="image-plus" class="w-7 h-7 text-slate-500 group-hover:text-brand-400 transition-colors mx-auto"></i>
+                  <p class="text-xs text-slate-300 font-medium">Tải lên hình ảnh minh chứng hoạt động học của HS</p>
+                  <p class="text-[11px] text-slate-500">Chụp khoảnh khắc học sinh thao tác, lúng túng hoặc hợp tác nhóm</p>
+                </div>
+
+                <!-- Photos Container -->
+                <div id="evidencePhotosContainer" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1"></div>
+
+                <!-- Discussion List -->
+                <div class="pt-2 text-xs space-y-2">
+                  <div class="flex items-center justify-between text-[11px] text-slate-400">
+                    <span>Ý kiến trao đổi minh chứng (Liên điểm trường):</span>
+                  </div>
+                  <div id="evidenceCommentsList" class="space-y-1.5 max-h-40 overflow-y-auto">
+                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-[11px] text-slate-400 italic text-center" id="emptyCommentsPlaceholder">
+                      Chưa có ý kiến thảo luận nào từ các điểm trường.
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="pt-2 text-xs space-y-2">
-                <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-[11px] text-slate-500 text-center italic">
-                  Chưa có ý kiến thảo luận nào từ các điểm trường.
+
+              <!-- Add Comment Input -->
+              <div class="pt-2 border-t border-slate-800">
+                <div class="flex gap-1.5">
+                  <input type="text" id="evidenceCommentInput" onkeypress="if(event.key==='Enter')addEvidenceComment()" placeholder="Nhập ý kiến phân tích việc học..." class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+                  <button type="button" onclick="addEvidenceComment()" class="px-3 py-1.5 bg-brand-800 hover:bg-brand-700 text-white rounded-lg text-xs font-semibold shrink-0 transition-colors">
+                    Gửi
+                  </button>
                 </div>
               </div>
             </div>
@@ -3183,9 +3232,327 @@
       showToast('Đã tải văn bản Word (.docx) chuẩn mẫu Bộ GD&ĐT!', 'success');
     }
 
-    // Export Meeting Minutes to Word
+    // =========================================================================
+    // TAB 5: NGHIÊN CỨU BÀI HỌC 4 BƯỚC & BIÊN BẢN SHCM (CV 4069)
+    // =========================================================================
+    AppState.activeLessonStep = 1;
+    AppState.lessonEvidencePhotos = [];
+    AppState.lessonComments = [];
+
+    const LESSON_STEP_DATA = {
+      1: {
+        badge: 'BƯỚC 1',
+        title: 'Soạn Kế hoạch bài dạy (KHBD) minh họa',
+        guide: 'Cả tổ chuyên môn cùng thảo luận, thống nhất mục tiêu YCCĐ, thiết kế chuỗi hoạt động học và phân công 1 giáo viên đại diện dạy minh họa.',
+        template: `[BƯỚC 1: XÂY DỰNG KHBD MINH HỌA]
+- Bài dạy minh họa: Toán lớp 2 - Bài: Phép cộng có nhớ trong phạm vi 100.
+- Người thực hiện dạy minh họa: Cô Nguyễn Thị Mai (Điểm 1).
+- Mục tiêu YCCĐ cần đạt: Học sinh thực hiện được thao tác gộp, tách que tính và viết đúng kết quả phép tính có nhớ.
+- Phân công dự giờ: Toàn thể giáo viên khối 2 tại 5 phân hiệu quan sát việc học của học sinh.`
+      },
+      2: {
+        badge: 'BƯỚC 2',
+        title: 'Tổ chức dạy học và dự giờ quan sát học sinh',
+        guide: 'Giáo viên dự giờ tập trung quan sát nét mặt, thao tác, hành vi, sự hợp tác và những khó khăn của học sinh. Chụp ảnh minh chứng, không đánh giá người dạy.',
+        template: `[BƯỚC 2: TIẾN HÀNH DẠY MINH HỌA & QUAN SÁT HS]
+- Không gian lớp học: Lớp 2A - Điểm 1.
+- Người dự: Ban Giám Hiệu, Tổ trưởng chuyên môn và 7 giáo viên cụm.
+- Vị trí quan sát: Đứng hai bên và phía trước lớp để nhìn rõ nét mặt, ánh mắt và thao tác tay của học sinh.
+- Minh chứng ghi nhận: Học sinh bàn 3 còn lúng túng khi bó 10 que tính thành 1 chục; nhóm 2 thảo luận sôi nổi và hoàn thành trước thời gian.`
+      },
+      3: {
+        badge: 'BƯỚC 3',
+        title: 'Phân tích bài học dựa trên minh chứng thực tế',
+        guide: 'Người dạy chia sẻ cảm nhận trước. Đồng nghiệp chia sẻ các minh chứng cụ thể đã quan sát, tìm nguyên nhân và đề xuất giải pháp. Tuyệt đối không xếp loại giờ dạy.',
+        template: `[BƯỚC 3: PHÂN TÍCH BÀI HỌC DỰA TRÊN MINH CHỨNG]
+- Ý kiến người dạy (Cô Mai): Học sinh nắm được quy tắc cơ bản nhưng ở hoạt động nhóm một số em còn ỷ lại vào nhóm trưởng.
+- Ý kiến đồng nghiệp (Thầy Tuấn - Điểm Trung Tâm): Quan sát thấy em Hoàng ở góc trái chưa theo kịp do đồ dùng que tính bị thiếu; đề xuất chuẩn bị thừa đồ dùng.
+- Tinh thần sư phạm: Cởi mở, nhân văn, tuyệt đối không xếp loại giờ dạy theo đúng Công văn số 4069/BGDĐT-GDPT.`
+      },
+      4: {
+        badge: 'BƯỚC 4',
+        title: 'Vận dụng bài học vào thực tiễn giảng dạy',
+        guide: 'Rút ra các bài học kinh nghiệm sư phạm, điều chỉnh lại phương án dạy học để tất cả giáo viên áp dụng cho các lớp và các phân hiệu khác.',
+        template: `[BƯỚC 4: VẬN DỤNG VÀO THỰC TIỄN GIẢNG DẠY]
+- Điều chỉnh chung: Kéo dài thời gian thao tác đồ dùng thêm 3 phút trước khi ghi bài vào vở.
+- Triển khai đại trà: Áp dụng phương pháp sử dụng que tính trực quan cho toàn bộ các lớp 2 tại Điểm Trung Tâm, Điểm 1, Điểm 2, Điểm 3, Điểm 4 trong tuần tới.
+- Phụ trách theo dõi: Tổ trưởng chuyên môn Khối 2.`
+      }
+    };
+
+    function selectLessonStudyStep(stepNum) {
+      AppState.activeLessonStep = stepNum;
+      const data = LESSON_STEP_DATA[stepNum];
+
+      for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById(`step-btn-${i}`);
+        if (btn) {
+          if (i === stepNum) {
+            btn.className = 'lesson-step-btn text-left p-3 rounded-lg bg-brand-800 border-2 border-brand-400 text-white font-medium flex items-center gap-2 transition-all shadow-sm';
+            const firstSpan = btn.querySelector('span:first-child');
+            if (firstSpan) firstSpan.className = 'w-5 h-5 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-[11px]';
+            const lastSpan = btn.querySelector('span:last-child');
+            if (lastSpan) lastSpan.className = 'text-white font-semibold';
+          } else {
+            btn.className = 'lesson-step-btn text-left p-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-medium flex items-center gap-2 transition-all';
+            const firstSpan = btn.querySelector('span:first-child');
+            if (firstSpan) firstSpan.className = 'w-5 h-5 rounded-full bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-[11px]';
+            const lastSpan = btn.querySelector('span:last-child');
+            if (lastSpan) lastSpan.className = 'text-slate-300';
+          }
+        }
+      }
+
+      const badge = document.getElementById('stepGuidanceBadge');
+      const text = document.getElementById('stepGuidanceText');
+      if (badge && text && data) {
+        badge.textContent = data.badge;
+        text.textContent = data.guide;
+      }
+    }
+
+    function insertStepTemplate() {
+      const stepNum = AppState.activeLessonStep || 1;
+      const data = LESSON_STEP_DATA[stepNum];
+      if (!data) return;
+
+      const textarea = document.getElementById('meetingMinutesContent');
+      if (textarea) {
+        const currentVal = textarea.value.trim();
+        textarea.value = currentVal ? currentVal + '\n\n' + data.template : data.template;
+        textarea.scrollTop = textarea.scrollHeight;
+        showToast(`Đã chèn gợi ý [${data.badge}] vào biên bản!`, 'success');
+      }
+    }
+
+    function loadSampleMeetingMinutes() {
+      const textarea = document.getElementById('meetingMinutesContent');
+      if (textarea) {
+        textarea.value = `BIÊN BẢN SINH HOẠT CHUYÊN MÔN THEO NGHIÊN CỨU BÀI HỌC (CV 4069)
+Thời gian: 14:00 Thứ Năm, Tuần 4
+Địa điểm: Phòng Hội Đồng - Trường Tiểu học Trung Nhứt (Liên kết trực tuyến 5 Phân hiệu)
+Chủ trì: Tổ trưởng Chuyên môn Khối 2
+Thành phần tham dự: 100% giáo viên Khối 2 và Ban Giám Hiệu phụ trách
+
+--------------------------------------------------------------------------------
+1. BƯỚC 1: XÂY DỰNG BÀI HỌC MINH HỌA
+- Môn: Toán lớp 2 - Bài: "Phép cộng có nhớ trong phạm vi 100".
+- Giáo viên dạy thể nghiệm: Cô Nguyễn Thị Mai (Lớp 2A - Điểm 1).
+- Thống nhất YCCĐ: Giúp học sinh tự khám phá cách cộng qua thao tác que tính và thực hành bảng cộng.
+
+2. BƯỚC 2: TIẾN HÀNH DẠY MINH HỌA VÀ DỰ GIỜ QUAN SÁT
+- Cả tổ tập trung quan sát học sinh hoạt động cá nhân và hợp tác nhóm.
+- Ghi nhận minh chứng: Đa số các em tích cực; em Hoàng (bàn 3) còn lúng túng khi gộp bó chục; nhóm 4 phối hợp ăn ý và giải thích rõ ràng.
+
+3. BƯỚC 3: PHÂN TÍCH BÀI HỌC DỰA TRÊN MINH CHỨNG
+- Cô Mai chia sẻ cảm nhận: Học sinh hào hứng, thời lượng bài vừa vặn.
+- Thảo luận tổ: Tập trung phân tích vì sao em Hoàng còn lúng túng và giải pháp hỗ trợ kịp thời từ bạn cùng bàn.
+- Cam kết: Không xếp loại giờ dạy minh họa, tạo tâm lý tự tin và thân thiện cho giáo viên.
+
+4. BƯỚC 4: VẬN DỤNG VÀO THỰC TIỄN
+- Thống nhất bổ sung 1 trò chơi củng cố que tính vào đầu tiết 2.
+- Triển khai áp dụng đồng bộ tại 5 phân hiệu: Điểm Trung Tâm, Điểm 1, Điểm 2, Điểm 3, Điểm 4.`;
+        showToast('Đã nạp mẫu biên bản đầy đủ 4 bước chuẩn CV 4069!', 'success');
+      }
+    }
+
+    function handleEvidenceUpload(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      Array.from(files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const photoObj = {
+            id: Date.now() + '_' + index,
+            url: e.target.result,
+            caption: `Minh chứng việc học #${(AppState.lessonEvidencePhotos?.length || 0) + 1} (${file.name})`,
+            time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+          };
+          if (!AppState.lessonEvidencePhotos) AppState.lessonEvidencePhotos = [];
+          AppState.lessonEvidencePhotos.push(photoObj);
+          renderEvidencePhotos();
+        };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = '';
+      showToast('Đã tải lên ảnh minh chứng hoạt động học của học sinh!', 'success');
+    }
+
+    function renderEvidencePhotos() {
+      const container = document.getElementById('evidencePhotosContainer');
+      const countBadge = document.getElementById('evidencePhotoCount');
+      if (!container) return;
+
+      const photos = AppState.lessonEvidencePhotos || [];
+      if (countBadge) countBadge.textContent = `${photos.length} ảnh`;
+
+      container.innerHTML = '';
+      photos.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = 'relative group rounded-lg overflow-hidden border border-slate-700 bg-slate-900';
+        item.innerHTML = `
+          <img src="${p.url}" alt="${p.caption}" class="w-full h-24 object-cover" />
+          <div class="p-1.5 text-[10px] text-slate-300 truncate" title="${p.caption}">${p.caption}</div>
+          <button type="button" onclick="removeEvidencePhoto(${idx})" class="absolute top-1 right-1 p-1 rounded-full bg-slate-900/80 hover:bg-red-600 text-white transition-colors" title="Xóa ảnh này">
+            <i data-lucide="x" class="w-3 h-3"></i>
+          </button>
+        `;
+        container.appendChild(item);
+      });
+      lucide.createIcons();
+    }
+
+    function removeEvidencePhoto(idx) {
+      if (AppState.lessonEvidencePhotos && AppState.lessonEvidencePhotos[idx]) {
+        AppState.lessonEvidencePhotos.splice(idx, 1);
+        renderEvidencePhotos();
+        showToast('Đã xóa ảnh minh chứng.');
+      }
+    }
+
+    function addEvidenceComment() {
+      const input = document.getElementById('evidenceCommentInput');
+      const text = input?.value.trim();
+      if (!text) {
+        showToast('Vui lòng nhập ý kiến trao đổi việc học!', 'error');
+        return;
+      }
+
+      const roleLabels = {
+        principal: 'Hiệu Trưởng',
+        vp_branch: 'PHT (Điểm trường)',
+        head_dept: 'Tổ Trưởng',
+        deputy_head: 'Tổ Phó',
+        teacher: 'Giáo Viên'
+      };
+      const senderRole = roleLabels[AppState.currentRole] || 'Giáo Viên';
+      const commentObj = {
+        sender: senderRole,
+        text: text,
+        time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      if (!AppState.lessonComments) AppState.lessonComments = [];
+      AppState.lessonComments.push(commentObj);
+
+      renderEvidenceComments();
+      if (input) input.value = '';
+      showToast('Đã gửi ý kiến thảo luận minh chứng!', 'success');
+    }
+
+    function renderEvidenceComments() {
+      const list = document.getElementById('evidenceCommentsList');
+      if (!list) return;
+
+      const comments = AppState.lessonComments || [];
+      if (comments.length === 0) {
+        list.innerHTML = `
+          <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-[11px] text-slate-400 italic text-center">
+            Chưa có ý kiến thảo luận nào từ các điểm trường.
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = '';
+      comments.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'p-2 rounded-lg bg-slate-900 border border-slate-800 text-xs space-y-0.5';
+        row.innerHTML = `
+          <div class="flex items-center justify-between text-[11px]">
+            <strong class="text-brand-300 font-semibold">${c.sender}</strong>
+            <span class="text-slate-500 font-mono text-[10px]">${c.time}</span>
+          </div>
+          <p class="text-slate-300 text-[11px] leading-snug">${c.text}</p>
+        `;
+        list.appendChild(row);
+      });
+      list.scrollTop = list.scrollHeight;
+    }
+
+    // Export Meeting Minutes to Word (.docx)
     function exportMeetingMinutesWord() {
-      exportMatrixWord();
+      const content = document.getElementById('meetingMinutesContent')?.value.trim() || 
+        'Chưa có nội dung biên bản chi tiết.';
+      const activeStep = AppState.activeLessonStep || 1;
+      const stepNames = [
+        'Bước 1: Soạn KHBD Minh Họa',
+        'Bước 2: Dự Giờ Quan Sát Học Sinh',
+        'Bước 3: Thảo Luận Minh Chứng Việc Học',
+        'Bước 4: Vận Dụng Bài Học Vào Thực Tiễn'
+      ];
+
+      const header = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>Biên Bản SHCM Nghiên Cứu Bài Học</title>
+        <style>
+          body { font-family: "Times New Roman", serif; font-size: 13pt; line-height: 1.5; }
+          .center { text-align: center; }
+          table { width: 100%; border-collapse: collapse; }
+        </style>
+        </head><body>
+      `;
+
+      const body = `
+        <table style="width: 100%; border: none; margin-bottom: 20px;">
+          <tr style="border: none;">
+            <td style="text-align: center; width: 45%; vertical-align: top; border: none;">
+              <b>UBND PHƯỜNG TRUNG NHỨT</b><br/>
+              <b>TRƯỜNG TIỂU HỌC TRUNG NHỨT</b><br/>
+              <b>TỔ CHUYÊN MÔN</b>
+            </td>
+            <td style="text-align: center; width: 55%; vertical-align: top; border: none;">
+              <b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b><br/>
+              <b><u>Độc lập - Tự do - Hạnh phúc</u></b><br/><br/>
+              <i>Trung Nhứt, ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}</i>
+            </td>
+          </tr>
+        </table>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+          <p style="font-size: 15pt;"><b>BIÊN BẢN SINH HOẠT CHUYÊN MÔN THEO NGHIÊN CỨU BÀI HỌC</b></p>
+          <p><i>(Thực hiện theo Công văn số 4069/BGDĐT-GDPT và Thông tư 27/2020/TT-BGDĐT)</i></p>
+          <p><b>Giai đoạn trọng tâm: ${stepNames[activeStep - 1]}</b></p>
+        </div>
+
+        <p><b>I. ĐỊA ĐIỂM, THỜI GIAN & THÀNH PHẦN:</b></p>
+        <p>- Địa điểm: Trường Tiểu học Trung Nhứt (Hội trường Điểm Trung Tâm & kết nối 4 điểm trường lẻ).</p>
+        <p>- Thời gian: Ngày ${new Date().toLocaleDateString('vi-VN')}.</p>
+        <p>- Thành phần: Ban Giám Hiệu, Tổ trưởng chuyên môn và các giáo viên tham dự.</p>
+
+        <p><b>II. NỘI DUNG VÀ DIỄN BIẾN PHIÊN HỌP:</b></p>
+        <div style="white-space: pre-wrap; margin-left: 20px; line-height: 1.6;">${content}</div>
+
+        <p style="margin-top: 15px;"><b>III. KẾT LUẬN & ĐỀ XUẤT ÁP DỤNG:</b></p>
+        <p>- Thực hiện đúng tinh thần Công văn số 4069/BGDĐT-GDPT: Sinh hoạt chuyên môn vì sự tiến bộ của học sinh; <b>tuyệt đối không xếp loại giờ dạy minh họa</b>.</p>
+        <p>- Thống nhất kế hoạch điều chỉnh và tổ chức dạy học đại trà tại các điểm trường.</p>
+
+        <br/><br/>
+        <table style="width: 100%; border: none; margin-top: 30px;">
+          <tr style="border: none;">
+            <td style="border: none; text-align: center; width: 50%;">
+              <b>THƯ KÝ LẬP BIÊN BẢN</b><br/><i>(Ký và ghi rõ họ tên)</i><br/><br/><br/><br/>
+              .............................................
+            </td>
+            <td style="border: none; text-align: center; width: 50%;">
+              <b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/><i>(Ký và ghi rõ họ tên)</i><br/><br/><br/><br/>
+              .............................................
+            </td>
+          </tr>
+        </table>
+      `;
+
+      const footer = "</body></html>";
+      const blob = new Blob(['\ufeff' + header + body + footer], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'SynchroEdu_BienBan_SHCM_CV4069.docx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Đã tải Biên bản SHCM Word (.docx) chuẩn mẫu CV 4069!', 'success');
     }
 
     // Export Compliance Excel
@@ -3200,8 +3567,58 @@
       document.getElementById('printable-area').classList.add('hidden');
     }
 
+    // Print Meeting Minutes A4
     function printMeetingMinutes() {
-      printPreviewDocument();
+      const content = document.getElementById('meetingMinutesContent')?.value.trim() || 
+        'Chưa có nội dung biên bản chi tiết.';
+      const printContainer = document.getElementById('printable-area');
+      if (!printContainer) return;
+
+      printContainer.innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; text-align: center;">
+            <div style="width: 45%;">
+              <div style="font-size: 12pt; font-weight: bold;">UBND PHƯỜNG TRUNG NHỨT</div>
+              <div style="font-size: 13pt; font-weight: bold; text-decoration: underline;">TRƯỜNG TIỂU HỌC TRUNG NHỨT</div>
+            </div>
+            <div style="width: 55%;">
+              <div style="font-size: 12pt; font-weight: bold;">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+              <div style="font-size: 12pt; font-weight: bold; text-decoration: underline;">Độc lập - Tự do - Hạnh phúc</div>
+              <div style="font-style: italic; font-size: 11pt; margin-top: 5px;">Trung Nhứt, ngày ${new Date().getDate()} tháng ${new Date().getMonth() + 1} năm ${new Date().getFullYear()}</div>
+            </div>
+          </div>
+          <div style="margin-top: 25px; font-size: 15pt; font-weight: bold;">BIÊN BẢN SINH HOẠT CHUYÊN MÔN THEO NGHIÊN CỨU BÀI HỌC</div>
+          <div style="font-style: italic; font-size: 11pt;">(Thực hiện chuẩn hóa theo Công văn số 4069/BGDĐT-GDPT)</div>
+        </div>
+
+        <div style="font-size: 13pt; line-height: 1.6; text-align: justify;">
+          <p><b>I. ĐỊA ĐIỂM & THÀNH PHẦN THAM DỰ:</b></p>
+          <p>- Địa điểm: Hội trường Trường Tiểu học Trung Nhứt (Kết nối các phân hiệu).</p>
+          <p>- Thành phần: Ban Giám Hiệu, Tổ trưởng chuyên môn và các giáo viên.</p>
+
+          <p style="margin-top: 15px;"><b>II. DIỄN BIẾN PHIÊN HỌP & PHÂN TÍCH MINH CHỨNG:</b></p>
+          <div style="white-space: pre-wrap; margin-left: 15px; font-family: 'Times New Roman', Times, serif;">${content}</div>
+
+          <p style="margin-top: 15px;"><b>III. KẾT LUẬN & ĐỀ XUẤT ÁP DỤNG:</b></p>
+          <p>- Thống nhất điều chỉnh kế hoạch dạy học, triển khai đồng bộ cho các phân hiệu.</p>
+          <p>- Tinh thần: Tuyệt đối không xếp loại giờ dạy minh họa, tập trung hỗ trợ học sinh.</p>
+        </div>
+
+        <div style="margin-top: 40px; display: flex; justify-content: space-between; font-size: 13pt;">
+          <div style="text-align: center; width: 45%;">
+            <b>THƯ KÝ LẬP BIÊN BẢN</b><br/><i>(Ký và ghi rõ họ tên)</i><br/><br/><br/><br/>
+            .............................................
+          </div>
+          <div style="text-align: center; width: 45%;">
+            <b>TỔ TRƯỞNG CHUYÊN MÔN</b><br/><i>(Ký và ghi rõ họ tên)</i><br/><br/><br/><br/>
+            .............................................
+          </div>
+        </div>
+      `;
+
+      printContainer.classList.remove('hidden');
+      window.print();
+      printContainer.classList.add('hidden');
     }
 
     // AI Assistant Simulation
