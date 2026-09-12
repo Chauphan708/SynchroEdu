@@ -2005,6 +2005,10 @@
             </button>
             <span id="resFileAttachedName" class="text-xs text-slate-400 italic">Chưa chọn tệp (hoặc dùng link Google Drive ở trên)</span>
           </div>
+          <p class="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1.5">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+            <span>Tệp văn bản/giáo án (≤ 2.5MB) lưu trực tiếp vào bộ nhớ cục bộ; tệp video/PowerPoint nặng nên dán link Google Drive của trường để xem trực tiếp 0đ.</span>
+          </p>
         </div>
 
         <!-- Tác giả, Phân hiệu, Chia sẻ cụm -->
@@ -2500,7 +2504,7 @@
             <a href="${item.driveLink || '#'}" target="_blank" rel="noopener noreferrer" class="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-medium transition-colors">
               <i data-lucide="eye" class="w-3.5 h-3.5"></i> Xem Trực Tiếp
             </a>
-            <button onclick="downloadResourceFile('${item.title.replace(/'/g, "\\'")}', '${item.format || 'DOCX'}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-colors">
+            <button onclick="downloadResourceFile(${item.id}, '${item.format || 'DOCX'}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-colors">
               <i data-lucide="download" class="w-3.5 h-3.5 text-slate-400"></i> Tải ${item.format || 'DOCX'}
             </button>
           </div>
@@ -2568,16 +2572,43 @@
       applyResourceFilters();
     }
 
-    function downloadResourceFile(title, format) {
-      showToast(`Đang tải học liệu [${title}] định dạng .${(format || 'docx').toLowerCase()} (0 đồng)...`, 'success');
+    function downloadResourceFile(resourceIdOrTitle, format) {
+      const item = mockResources.find(r => r.id === resourceIdOrTitle || r.title === resourceIdOrTitle);
+      const title = item ? item.title : resourceIdOrTitle;
+      const fmt = (item ? item.format : format) || 'DOCX';
+
+      showToast(`Đang tải học liệu [${title}] định dạng .${fmt.toLowerCase()} (0 đồng)...`, 'success');
+
+      // 1. Tải chính xác file gốc người dùng đã đính kèm (nếu có dữ liệu Base64)
+      if (item && item.fileData) {
+        try {
+          const a = document.createElement('a');
+          a.href = item.fileData;
+          a.download = item.fileName || `${title.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1EA0-\u1EF9]/g, '_')}.${fmt.toLowerCase()}`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          return;
+        } catch (e) {
+          console.warn('Lỗi tải tệp Base64 trực tiếp', e);
+        }
+      }
+
+      // 2. Mở tải nếu có link fileUrl đám mây
+      if (item && item.fileUrl) {
+        window.open(item.fileUrl, '_blank');
+        return;
+      }
+
+      // 3. Dự phòng: Xuất file văn bản chuẩn hóa kèm thông tin bản quyền trường
       try {
-        const dummyContent = `HỌC LIỆU SỐ TRƯỜNG TIỂU HỌC TRUNG NHỨT - UBND PHƯỜNG TRUNG NHỨT\nTên tài liệu: ${title}\nĐịnh dạng: ${format}\nNgày tải: ${new Date().toLocaleString('vi-VN')}\nKho học liệu dùng chung phục vụ giáo viên thực hiện Chương trình GDPT 2018.`;
+        const dummyContent = `HỌC LIỆU SỐ TRƯỜNG TIỂU HỌC TRUNG NHỨT - UBND PHƯỜNG TRUNG NHỨT\nTên tài liệu: ${title}\nĐịnh dạng: ${fmt}\nNgày tải: ${new Date().toLocaleString('vi-VN')}\nKho học liệu dùng chung phục vụ giáo viên thực hiện Chương trình GDPT 2018.`;
         const blob = new Blob(['\ufeff' + dummyContent], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         const cleanName = title.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1EA0-\u1EF9]/g, '_').substring(0, 40);
-        a.download = `${cleanName}.${(format || 'docx').toLowerCase()}`;
+        a.download = `${cleanName}.${fmt.toLowerCase()}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -2625,13 +2656,28 @@
       }
     }
 
+    let currentAttachedResourceFile = {
+      name: '',
+      size: 0,
+      format: '',
+      dataUrl: null
+    };
+
     function handleResourceFileAttach(event) {
       const file = event.target.files[0];
       const label = document.getElementById('resFileAttachedName');
       if (!label) return;
+
+      currentAttachedResourceFile = {
+        name: '',
+        size: 0,
+        format: '',
+        dataUrl: null
+      };
+
       if (file) {
-        label.textContent = `Đã đính kèm: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-        label.className = 'text-xs text-emerald-400 font-semibold';
+        const sizeKb = (file.size / 1024).toFixed(1);
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
         
         // Auto select format based on file extension
         const ext = file.name.split('.').pop().toUpperCase();
@@ -2642,6 +2688,24 @@
           else if (ext === 'PDF') fmtSelect.value = 'PDF';
           else if (['XLSX', 'XLS'].includes(ext)) fmtSelect.value = 'XLSX';
           else if (ext === 'MP4') fmtSelect.value = 'MP4';
+        }
+
+        currentAttachedResourceFile.name = file.name;
+        currentAttachedResourceFile.size = file.size;
+        currentAttachedResourceFile.format = ext;
+
+        // Tệp <= 2.5MB: Đọc dưới dạng Base64 Data URL để lưu trực tiếp vào LocalStorage/Offline
+        if (file.size <= 2.5 * 1024 * 1024) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            currentAttachedResourceFile.dataUrl = e.target.result;
+            label.textContent = `✓ Đã sẵn sàng lưu trực tiếp: ${file.name} (${sizeKb} KB)`;
+            label.className = 'text-xs text-emerald-400 font-semibold';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          label.textContent = `Tệp lớn: ${file.name} (${sizeMb} MB) — Khuyên dùng thêm link Google Drive để xem trực tiếp 0đ`;
+          label.className = 'text-xs text-amber-400 font-medium';
         }
       } else {
         label.textContent = 'Chưa chọn tệp (hoặc dùng link Google Drive ở trên)';
@@ -2723,7 +2787,9 @@
 
       const fileInput = document.getElementById('resFormFileInput');
       let fileName = '';
-      if (fileInput && fileInput.files && fileInput.files[0]) {
+      if (currentAttachedResourceFile && currentAttachedResourceFile.name) {
+        fileName = currentAttachedResourceFile.name;
+      } else if (fileInput && fileInput.files && fileInput.files[0]) {
         fileName = fileInput.files[0].name;
       } else {
         const cleanTitle = title.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1EA0-\u1EF9]/g, '_').substring(0, 30);
@@ -2744,6 +2810,8 @@
         format: format,
         driveLink: driveLink,
         fileName: fileName,
+        fileData: currentAttachedResourceFile.dataUrl,
+        fileSize: currentAttachedResourceFile.size,
         createdAt: new Date().toLocaleDateString('vi-VN')
       };
 
@@ -2757,6 +2825,7 @@
       // Reset form
       const form = document.getElementById('contributeResourceForm');
       if (form) form.reset();
+      currentAttachedResourceFile = { name: '', size: 0, format: '', dataUrl: null };
       const fileLabel = document.getElementById('resFileAttachedName');
       if (fileLabel) {
         fileLabel.textContent = 'Chưa chọn tệp (hoặc dùng link Google Drive ở trên)';
@@ -2765,7 +2834,6 @@
 
       closeContributeModal();
       applyResourceFilters();
-      showToast(`Đã đóng góp học liệu "${title}" vào Kho dùng chung thành công!`, 'success');
     }
 
     // Horizontal Stream (Khối 2 at 5 branches)
