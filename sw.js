@@ -1,18 +1,10 @@
 // Service Worker - SynchroEdu
-const CACHE_NAME = 'synchroedu-v1';
+const CACHE_NAME = 'synchroedu-v2026-09-12';
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
   './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Caching core assets');
-      return cache.addAll(ASSETS_TO_CACHE).catch(() => Promise.resolve());
-    })
-  );
   self.skipWaiting();
 });
 
@@ -33,17 +25,21 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Always use Network-First for HTML/navigation to ensure users see latest code
+  if (event.request.mode === 'navigate' || event.request.destination === 'document' || event.request.url.includes('index.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => {
-        // Fallback to cache for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+      return cachedResponse || fetch(event.request);
     })
   );
 });
