@@ -1,5 +1,5 @@
 // Service Worker - SynchroEdu
-const CACHE_NAME = 'synchroedu-v2026-09-12-file-storage';
+const CACHE_NAME = 'synchroedu-v2026-09-12-gdrive-first';
 const ASSETS_TO_CACHE = [
   './manifest.json'
 ];

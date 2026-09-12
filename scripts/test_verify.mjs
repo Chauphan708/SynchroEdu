@@ -186,6 +186,9 @@ assert(htmlContent.includes('function submitContributeResource()'), 'Hàm xử l
 assert(htmlContent.includes('function fillSampleResource'), 'Hàm nạp nhanh dữ liệu mẫu học liệu hoạt động');
 assert(htmlContent.includes('function handleResourceFileAttach'), 'Hàm xử lý đính kèm tệp từ máy tính hoạt động');
 assert(htmlContent.includes('synchroedu_resource_hub'), 'Cơ chế lưu trữ LocalStorage cho kho học liệu số hoạt động');
+assert(htmlContent.includes('function openSchoolDriveFolder()'), 'Hàm mở thư mục Google Drive dùng chung của trường hoạt động');
+assert(htmlContent.includes('function openGoogleDriveNewTab()'), 'Hàm mở Google Drive trực tiếp hoạt động');
+assert(htmlContent.includes('id="driveGuideBox"'), 'Hộp hướng dẫn 3 bước lưu tệp lên Google Drive an toàn tồn tại');
 
 // 10. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
 console.log('\n10. Kiểm tra máy chủ HTTP cục bộ:');

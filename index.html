@@ -703,10 +703,36 @@
               </h2>
               <p class="text-xs text-slate-400 mt-1">Chuẩn hóa 13 môn học, ngân hàng câu hỏi 3 mức độ (TT 27), xem trực tiếp qua Google Drive 0đ</p>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="openSchoolDriveFolder()" class="px-3.5 py-2 rounded-xl bg-blue-900/60 hover:bg-blue-800 text-blue-200 text-xs font-bold flex items-center gap-1.5 border border-blue-700 transition-colors shadow-sm" title="Mở thư mục Google Drive dùng chung của Trường Tiểu học Trung Nhứt">
+                <i data-lucide="folder-git-2" class="w-4 h-4 text-blue-300"></i>
+                <span>Thư Mục Drive Trường</span>
+              </button>
               <button id="btnOpenContributeModal" onclick="openContributeModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md border border-emerald-400 transition-all hover:scale-[1.02] active:scale-[0.98]">
                 <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-100"></i>
-                <span>+ Đóng Góp Học Liệu</span>
+                <span>+ Đóng Góp Lên Drive</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Google Drive Cloud Safety Banner -->
+          <div class="p-3.5 rounded-xl bg-blue-950/40 border border-blue-800/60 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-blue-900/80 border border-blue-700 flex items-center justify-center shrink-0 text-blue-200">
+                <i data-lucide="cloud" class="w-5 h-5 text-emerald-400"></i>
+              </div>
+              <div>
+                <div class="font-bold text-white flex flex-wrap items-center gap-2">
+                  <span>Chính sách lưu trữ an toàn 100% trên Google Drive</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 font-semibold">An Toàn Tuyệt Đối</span>
+                </div>
+                <p class="text-slate-300 text-[11px] mt-0.5">Toàn bộ tệp bài giảng PowerPoint, giáo án Word, đề kiểm tra và video được lưu trữ an toàn trên Google Drive của Trường Tiểu học Trung Nhứt; giáo viên 5 phân hiệu có thể xem và trình chiếu trực tiếp 0đ không lo mất file khi cài lại máy.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="openSchoolDriveFolder()" class="px-3 py-1.5 rounded-lg bg-blue-800 hover:bg-blue-700 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors border border-blue-600 shadow-sm">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>Mở Drive Của Trường</span>
               </button>
             </div>
           </div>
@@ -1858,10 +1884,10 @@
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
         <div>
           <h3 class="font-bold text-base text-white flex items-center gap-2">
-            <i data-lucide="book-plus" class="w-5 h-5 text-emerald-400"></i>
-            <span>Đóng Góp Học Liệu Số & Kế Hoạch Bài Dạy</span>
+            <i data-lucide="cloud" class="w-5 h-5 text-emerald-400"></i>
+            <span>Đóng Góp Học Liệu Số (Lưu Trữ Google Drive An Toàn)</span>
           </h3>
-          <p class="text-xs text-slate-400 mt-0.5">Chia sẻ bài giảng điện tử, đề kiểm tra TT 27, kế hoạch STEM hoặc tài liệu Buổi 2</p>
+          <p class="text-xs text-slate-300 mt-0.5">Bảo toàn dữ liệu vĩnh viễn trên Google Drive của Trường Tiểu học Trung Nhứt • Trình chiếu 0đ cho 5 phân hiệu</p>
         </div>
         <button onclick="closeContributeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors" title="Đóng">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -1872,17 +1898,17 @@
       <div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-800/60 flex flex-wrap items-center justify-between gap-2 text-xs">
         <span class="text-emerald-300 flex items-center gap-1.5 font-medium">
           <i data-lucide="sparkles" class="w-4 h-4 text-amber-400 shrink-0"></i>
-          <span>Nạp nhanh mẫu thực tế của Trường TH Trung Nhứt:</span>
+          <span>Nạp nhanh mẫu học liệu Drive của Trường TH Trung Nhứt:</span>
         </span>
         <div class="flex items-center gap-1.5 flex-wrap">
           <button type="button" onclick="fillSampleResource('toan')" class="px-2.5 py-1 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-medium text-[11px] transition-colors shadow-xs">
-            + Mẫu Toán 2 (Canva)
+            + Mẫu Toán 2 (Canva/Drive)
           </button>
           <button type="button" onclick="fillSampleResource('stem')" class="px-2.5 py-1 rounded bg-amber-800 hover:bg-amber-700 text-white font-medium text-[11px] transition-colors shadow-xs">
-            + Mẫu STEM Buổi 2
+            + Mẫu STEM Buổi 2 (Drive)
           </button>
           <button type="button" onclick="fillSampleResource('tt27')" class="px-2.5 py-1 rounded bg-purple-800 hover:bg-purple-700 text-white font-medium text-[11px] transition-colors shadow-xs">
-            + Mẫu Đề TT 27
+            + Mẫu Đề TT 27 (Drive)
           </button>
         </div>
       </div>
@@ -1968,46 +1994,74 @@
           <textarea id="resFormYccd" required rows="2" placeholder="Nêu rõ YCCĐ cốt lõi theo Chương trình GDPT 2018 (ví dụ: Học sinh nắm được kỹ thuật thực hiện phép tính, hợp tác giải quyết vấn đề...)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
         </div>
 
-        <!-- Đường link Google Drive / Canva & Định dạng tệp -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="sm:col-span-2">
-            <label class="block text-slate-200 font-semibold mb-1">Liên kết xem trực tiếp (Google Drive / Canva / OneDriver / YouTube) <span class="text-red-400">*</span></label>
-            <div class="relative">
-              <input type="url" id="resFormDriveLink" required placeholder="https://drive.google.com/... hoặc link chia sẻ" class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-3 pr-20 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
-              <button type="button" onclick="insertSampleDriveLink()" class="absolute right-1.5 top-1.5 px-2 py-0.5 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 text-[10px] font-medium transition-colors">
-                Mẫu Link
+        <!-- KHỐI LƯU TRỮ GOOGLE DRIVE TRUNG TÂM (CHÍNH SÁCH AN TOÀN TUYỆT ĐỐI) -->
+        <div class="p-3.5 rounded-xl bg-slate-850 border border-blue-800/70 space-y-3 shadow-inner">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <label class="block text-white font-bold flex items-center gap-1.5 text-xs">
+              <i data-lucide="cloud" class="w-4 h-4 text-emerald-400"></i>
+              <span>Liên kết tệp trên Google Drive (Lưu an toàn vĩnh viễn) <span class="text-red-400">*</span></span>
+            </label>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" onclick="openGoogleDriveNewTab()" class="px-2.5 py-1 rounded bg-blue-900/80 hover:bg-blue-800 text-blue-200 text-[11px] font-semibold flex items-center gap-1 border border-blue-700 transition-colors shadow-xs" title="Mở trang Google Drive trong tab mới để tải tệp lên">
+                <i data-lucide="external-link" class="w-3 h-3"></i> Mở Google Drive
+              </button>
+              <button type="button" onclick="insertSampleDriveLink()" class="px-2.5 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 text-[11px] font-medium transition-colors">
+                Mẫu Link Drive
+              </button>
+              <button type="button" onclick="toggleDriveGuide()" class="px-2.5 py-1 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[11px] font-semibold flex items-center gap-1 hover:bg-emerald-900 transition-colors">
+                <i data-lucide="help-circle" class="w-3 h-3"></i> Hướng Dẫn 3 Bước
               </button>
             </div>
-            <p class="text-[11px] text-slate-400 mt-0.5">Giáo viên toàn trường có thể xem và trình chiếu trực tiếp 0 đồng qua trình duyệt.</p>
           </div>
 
-          <div>
-            <label class="block text-slate-200 font-semibold mb-1">Định dạng tải về</label>
-            <select id="resFormFormat" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
-              <option class="bg-slate-800 text-slate-100" value="CANVA">Canva Link</option>
-              <option class="bg-slate-800 text-slate-100" value="PPTX">PowerPoint (.pptx)</option>
-              <option class="bg-slate-800 text-slate-100" value="DOCX" selected>Word (.docx)</option>
-              <option class="bg-slate-800 text-slate-100" value="PDF">Tài liệu PDF (.pdf)</option>
-              <option class="bg-slate-800 text-slate-100" value="XLSX">Bảng tính Excel (.xlsx)</option>
-              <option class="bg-slate-800 text-slate-100" value="MP4">Video (.mp4)</option>
-            </select>
+          <!-- 3-step Guide Accordion -->
+          <div id="driveGuideBox" class="p-3 rounded-lg bg-blue-950/60 border border-blue-800/50 text-[11px] text-blue-200 space-y-1.5">
+            <div class="font-bold text-emerald-300 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>3 Bước lưu tệp lên Google Drive để an toàn 100%:</span>
+            </div>
+            <ol class="list-decimal list-inside space-y-1 text-slate-300 ml-1 leading-relaxed">
+              <li>Mở Google Drive &rarr; Kéo thả tệp bài giảng (Word, PowerPoint, PDF, Video) vào thư mục của bạn hoặc thư mục trường.</li>
+              <li>Bấm chuột phải vào tệp &rarr; Chọn <strong>Chia sẻ (Share)</strong> &rarr; Chọn quyền: <strong>"Bất kỳ ai có đường liên kết đều có thể xem"</strong>.</li>
+              <li>Bấm <strong>"Sao chép đường liên kết"</strong> rồi dán vào ô nhập bên dưới.</li>
+            </ol>
           </div>
-        </div>
 
-        <!-- Đính kèm tệp trực tiếp từ máy (tùy chọn) -->
-        <div>
-          <label class="block text-slate-200 font-semibold mb-1">Đính kèm tệp bài học từ máy tính (Tùy chọn):</label>
-          <div class="flex items-center gap-2 flex-wrap">
-            <input type="file" id="resFormFileInput" onchange="handleResourceFileAttach(event)" class="hidden" accept=".docx,.doc,.pptx,.ppt,.pdf,.xlsx,.mp4,.zip" />
-            <button type="button" onclick="document.getElementById('resFormFileInput').click()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors">
-              <i data-lucide="paperclip" class="w-4 h-4 text-emerald-400"></i>
-              <span>Chọn Tệp Đính Kèm...</span>
-            </button>
-            <span id="resFileAttachedName" class="text-xs text-slate-400 italic">Chưa chọn tệp (hoặc dùng link Google Drive ở trên)</span>
+          <div class="relative">
+            <input type="url" id="resFormDriveLink" required placeholder="https://drive.google.com/file/d/.../view?usp=sharing hoặc link Canva" class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-3 pr-28 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono text-xs" />
+            <div class="absolute right-2.5 top-2.5 text-[10px] text-emerald-400 font-bold flex items-center gap-1 pointer-events-none">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> An toàn 100%
+            </div>
           </div>
-          <p class="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1.5">
-            <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
-            <span>Tệp văn bản/giáo án (≤ 2.5MB) lưu trực tiếp vào bộ nhớ cục bộ; tệp video/PowerPoint nặng nên dán link Google Drive của trường để xem trực tiếp 0đ.</span>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-slate-800">
+            <div>
+              <label class="block text-slate-300 font-medium mb-1">Định dạng hiển thị của tệp trên Drive:</label>
+              <select id="resFormFormat" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                <option class="bg-slate-800 text-slate-100" value="DOCX" selected>Tài liệu Word (.docx / Google Docs)</option>
+                <option class="bg-slate-800 text-slate-100" value="PPTX">Bài giảng PowerPoint (.pptx / Google Slides)</option>
+                <option class="bg-slate-800 text-slate-100" value="CANVA">Liên kết bài giảng Canva</option>
+                <option class="bg-slate-800 text-slate-100" value="PDF">Tài liệu / Đề thi PDF (.pdf)</option>
+                <option class="bg-slate-800 text-slate-100" value="XLSX">Bảng tính Excel (.xlsx / Google Sheets)</option>
+                <option class="bg-slate-800 text-slate-100" value="MP4">Video tiết dạy (.mp4 / Drive Video)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 font-medium mb-1">Tự nhận diện từ tệp trên máy (Tùy chọn):</label>
+              <div class="flex items-center gap-2">
+                <input type="file" id="resFormFileInput" onchange="handleResourceFileAttach(event)" class="hidden" accept=".docx,.doc,.pptx,.ppt,.pdf,.xlsx,.mp4,.zip" />
+                <button type="button" onclick="document.getElementById('resFormFileInput').click()" class="w-full px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+                  <i data-lucide="file-up" class="w-3.5 h-3.5 text-blue-400"></i>
+                  <span>Chọn tệp để tự điền thông tin</span>
+                </button>
+              </div>
+              <span id="resFileAttachedName" class="text-[11px] text-slate-400 italic block mt-1 truncate">Chưa chọn tệp trên máy</span>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-400 flex items-center gap-1">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+            <span>Giáo viên toàn trường và 5 phân hiệu có thể xem và trình chiếu trực tiếp 0đ ngay trên trình duyệt qua Google Drive mà không cần cài phần mềm Office.</span>
           </p>
         </div>
 
@@ -2493,19 +2547,30 @@
               <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-950 text-brand-300 border border-brand-700">
                 ${item.subject} • Khối ${item.grade}
               </span>
-              ${item.cluster ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 font-semibold">Chia sẻ Cụm</span>' : '<span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Nội bộ trường</span>'}
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-800 font-medium flex items-center gap-1">
+                  <i data-lucide="cloud" class="w-3 h-3 text-emerald-400"></i>
+                  <span>Lưu trên Drive</span>
+                </span>
+                ${item.cluster ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-semibold">Cụm</span>' : ''}
+              </div>
             </div>
             <h4 class="font-bold text-sm text-white leading-snug">${item.title}</h4>
             <p class="text-xs text-slate-300"><strong class="text-slate-200">YCCĐ:</strong> ${item.yccd}</p>
-            <div class="text-[11px] text-slate-400">Tác giả: <span class="text-slate-200 font-medium">${item.author}</span> • ⭐ ${item.rating || '5.0'}</div>
+            <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1">
+              <span>Tác giả: <strong class="text-slate-200">${item.author}</strong></span>
+              <span class="text-amber-300 font-semibold">⭐ ${item.rating || '5.0'}</span>
+            </div>
           </div>
 
-          <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-            <a href="${item.driveLink || '#'}" target="_blank" rel="noopener noreferrer" class="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-medium transition-colors">
-              <i data-lucide="eye" class="w-3.5 h-3.5"></i> Xem Trực Tiếp
+          <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
+            <a href="${item.driveLink || '#'}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              <span>Xem Trên Drive (0đ)</span>
             </a>
-            <button onclick="downloadResourceFile(${item.id}, '${item.format || 'DOCX'}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-colors">
-              <i data-lucide="download" class="w-3.5 h-3.5 text-slate-400"></i> Tải ${item.format || 'DOCX'}
+            <button onclick="downloadResourceFile(${item.id}, '${item.format || 'DOCX'}')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 flex items-center gap-1 transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-slate-400"></i>
+              <span>Tải ${item.format || 'DOCX'}</span>
             </button>
           </div>
         `;
@@ -2618,6 +2683,25 @@
       }
     }
 
+    // Google Drive School Folder Actions
+    function openSchoolDriveFolder() {
+      const url = localStorage.getItem('synchroedu_school_drive_url') || 'https://drive.google.com/drive/folders/synchroedu-trung-nhut-resources';
+      window.open(url, '_blank');
+      showToast('Đang mở Thư mục Google Drive dùng chung của Trường TH Trung Nhứt...');
+    }
+
+    function openGoogleDriveNewTab() {
+      window.open('https://drive.google.com', '_blank');
+      showToast('Đã mở Google Drive để bạn tải tệp lên và lấy liên kết chia sẻ!');
+    }
+
+    function toggleDriveGuide() {
+      const box = document.getElementById('driveGuideBox');
+      if (box) {
+        box.classList.toggle('hidden');
+      }
+    }
+
     // Modal Control: Đóng Góp Học Liệu (Contribute Resource Modal)
     function openContributeModal() {
       const modal = document.getElementById('contributeModal');
@@ -2690,25 +2774,30 @@
           else if (ext === 'MP4') fmtSelect.value = 'MP4';
         }
 
+        // Tự động điền tiêu đề bài dạy nếu ô tiêu đề đang trống
+        const titleInput = document.getElementById('resFormTitle');
+        if (titleInput && !titleInput.value.trim()) {
+          const rawName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+          titleInput.value = rawName;
+        }
+
         currentAttachedResourceFile.name = file.name;
         currentAttachedResourceFile.size = file.size;
         currentAttachedResourceFile.format = ext;
 
-        // Tệp <= 2.5MB: Đọc dưới dạng Base64 Data URL để lưu trực tiếp vào LocalStorage/Offline
+        // Đọc Base64 nếu tệp <= 2.5MB làm dự phòng offline
         if (file.size <= 2.5 * 1024 * 1024) {
           const reader = new FileReader();
           reader.onload = (e) => {
             currentAttachedResourceFile.dataUrl = e.target.result;
-            label.textContent = `✓ Đã sẵn sàng lưu trực tiếp: ${file.name} (${sizeKb} KB)`;
-            label.className = 'text-xs text-emerald-400 font-semibold';
           };
           reader.readAsDataURL(file);
-        } else {
-          label.textContent = `Tệp lớn: ${file.name} (${sizeMb} MB) — Khuyên dùng thêm link Google Drive để xem trực tiếp 0đ`;
-          label.className = 'text-xs text-amber-400 font-medium';
         }
+
+        label.textContent = `✓ Đã nhận diện: ${file.name} (${sizeMb > 1 ? sizeMb + ' MB' : sizeKb + ' KB'}) — Nhớ dán link Google Drive ở trên để an toàn 100%!`;
+        label.className = 'text-xs text-emerald-400 font-semibold';
       } else {
-        label.textContent = 'Chưa chọn tệp (hoặc dùng link Google Drive ở trên)';
+        label.textContent = 'Chưa chọn tệp trên máy';
         label.className = 'text-xs text-slate-400 italic';
       }
     }
