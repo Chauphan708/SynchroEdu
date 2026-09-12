@@ -704,8 +704,8 @@
               <p class="text-xs text-slate-400 mt-1">Chuẩn hóa 13 môn học, ngân hàng câu hỏi 3 mức độ (TT 27), xem trực tiếp qua Google Drive 0đ</p>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="openContributeModal()" class="px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow transition-colors">
-                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <button id="btnOpenContributeModal" onclick="openContributeModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md border border-emerald-400 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-100"></i>
                 <span>+ Đóng Góp Học Liệu</span>
               </button>
             </div>
@@ -1849,6 +1849,202 @@
     </div>
   </div>
 
+  <!-- ========================================================================= -->
+  <!-- MODAL: ĐÓNG GÓP HỌC LIỆU SỐ DÙNG CHUNG & BÀI GIẢNG BUỔI 2 -->
+  <!-- ========================================================================= -->
+  <div id="contributeModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <!-- Header -->
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="font-bold text-base text-white flex items-center gap-2">
+            <i data-lucide="book-plus" class="w-5 h-5 text-emerald-400"></i>
+            <span>Đóng Góp Học Liệu Số & Kế Hoạch Bài Dạy</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">Chia sẻ bài giảng điện tử, đề kiểm tra TT 27, kế hoạch STEM hoặc tài liệu Buổi 2</p>
+        </div>
+        <button onclick="closeContributeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors" title="Đóng">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Quick Action / Sample Button Bar -->
+      <div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-800/60 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <span class="text-emerald-300 flex items-center gap-1.5 font-medium">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400 shrink-0"></i>
+          <span>Nạp nhanh mẫu thực tế của Trường TH Trung Nhứt:</span>
+        </span>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button type="button" onclick="fillSampleResource('toan')" class="px-2.5 py-1 rounded bg-emerald-800 hover:bg-emerald-700 text-white font-medium text-[11px] transition-colors shadow-xs">
+            + Mẫu Toán 2 (Canva)
+          </button>
+          <button type="button" onclick="fillSampleResource('stem')" class="px-2.5 py-1 rounded bg-amber-800 hover:bg-amber-700 text-white font-medium text-[11px] transition-colors shadow-xs">
+            + Mẫu STEM Buổi 2
+          </button>
+          <button type="button" onclick="fillSampleResource('tt27')" class="px-2.5 py-1 rounded bg-purple-800 hover:bg-purple-700 text-white font-medium text-[11px] transition-colors shadow-xs">
+            + Mẫu Đề TT 27
+          </button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="contributeResourceForm" onsubmit="event.preventDefault(); submitContributeResource();" class="space-y-3.5 text-xs">
+        
+        <!-- Tiêu đề học liệu -->
+        <div>
+          <label class="block text-slate-200 font-semibold mb-1">Tên tài liệu / Tên bài dạy / Chủ đề <span class="text-red-400">*</span></label>
+          <input type="text" id="resFormTitle" required placeholder="Ví dụ: Bài 15: Phép cộng có nhớ trong phạm vi 100 (Tiết 1) - Toán 2 Kết Nối Tri Thức" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+        </div>
+
+        <!-- Môn học, Khối lớp, Phân loại -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-200 font-semibold mb-1">Môn học / Hoạt động <span class="text-red-400">*</span></label>
+            <select id="resFormSubject" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option class="bg-slate-800 text-slate-100" value="Toán">Toán</option>
+              <option class="bg-slate-800 text-slate-100" value="Tiếng Việt">Tiếng Việt</option>
+              <option class="bg-slate-800 text-slate-100" value="Tiếng Anh">Tiếng Anh</option>
+              <option class="bg-slate-800 text-slate-100" value="Tự nhiên và Xã hội">Tự nhiên và Xã hội</option>
+              <option class="bg-slate-800 text-slate-100" value="Khoa học">Khoa học</option>
+              <option class="bg-slate-800 text-slate-100" value="Lịch sử & Địa lí">Lịch sử & Địa lí</option>
+              <option class="bg-slate-800 text-slate-100" value="Tin học">Tin học</option>
+              <option class="bg-slate-800 text-slate-100" value="Công nghệ">Công nghệ</option>
+              <option class="bg-slate-800 text-slate-100" value="Đạo đức">Đạo đức</option>
+              <option class="bg-slate-800 text-slate-100" value="Âm nhạc">Âm nhạc</option>
+              <option class="bg-slate-800 text-slate-100" value="Mĩ thuật">Mĩ thuật</option>
+              <option class="bg-slate-800 text-slate-100" value="GD thể chất">GD thể chất</option>
+              <option class="bg-slate-800 text-slate-100" value="HĐ trải nghiệm">HĐ trải nghiệm</option>
+              <option class="bg-slate-800 text-slate-100" value="Dạy học Buổi 2 (STEM)">Dạy học Buổi 2 (STEM)</option>
+              <option class="bg-slate-800 text-slate-100" value="Dạy học Buổi 2 (Văn hóa đọc)">Dạy học Buổi 2 (Văn hóa đọc)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-200 font-semibold mb-1">Khối lớp <span class="text-red-400">*</span></label>
+            <select id="resFormGrade" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option class="bg-slate-800 text-slate-100" value="1">Khối 1</option>
+              <option class="bg-slate-800 text-slate-100" value="2" selected>Khối 2</option>
+              <option class="bg-slate-800 text-slate-100" value="3">Khối 3</option>
+              <option class="bg-slate-800 text-slate-100" value="4">Khối 4</option>
+              <option class="bg-slate-800 text-slate-100" value="5">Khối 5</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-200 font-semibold mb-1">Loại học liệu <span class="text-red-400">*</span></label>
+            <select id="resFormType" required onchange="onResourceTypeChange(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option class="bg-slate-800 text-slate-100" value="CANVA">Bài giảng Canva / PPT</option>
+              <option class="bg-slate-800 text-slate-100" value="KHBD">Kế hoạch bài dạy (CV 2345)</option>
+              <option class="bg-slate-800 text-slate-100" value="TT27">Đề KT 3 mức độ (TT 27)</option>
+              <option class="bg-slate-800 text-slate-100" value="STEM">Kế hoạch STEM Buổi 2</option>
+              <option class="bg-slate-800 text-slate-100" value="READING">Dự án Văn hóa đọc Buổi 2</option>
+              <option class="bg-slate-800 text-slate-100" value="VIDEO">Video / Tư liệu thực tế</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Mức độ TT 27 (Hiển thị khi loại là TT 27) -->
+        <div id="resFormDifficultyRow" class="hidden p-3 rounded-lg bg-slate-850 border border-slate-800">
+          <label class="block text-slate-200 font-semibold mb-1">Mức độ nhận thức (Theo Thông tư 27/2020/TT-BGDĐT):</label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+              <input type="radio" name="resDifficulty" value="1" class="text-emerald-500 focus:ring-emerald-500" />
+              <span>Mức 1: Nhận biết</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+              <input type="radio" name="resDifficulty" value="2" checked class="text-emerald-500 focus:ring-emerald-500" />
+              <span>Mức 2: Kết nối/Thông hiểu</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+              <input type="radio" name="resDifficulty" value="3" class="text-emerald-500 focus:ring-emerald-500" />
+              <span>Mức 3: Vận dụng</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Yêu cầu cần đạt (YCCĐ) -->
+        <div>
+          <label class="block text-slate-200 font-semibold mb-1">Yêu cầu cần đạt (YCCĐ) / Mục tiêu chính <span class="text-red-400">*</span></label>
+          <textarea id="resFormYccd" required rows="2" placeholder="Nêu rõ YCCĐ cốt lõi theo Chương trình GDPT 2018 (ví dụ: Học sinh nắm được kỹ thuật thực hiện phép tính, hợp tác giải quyết vấn đề...)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
+        </div>
+
+        <!-- Đường link Google Drive / Canva & Định dạng tệp -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-slate-200 font-semibold mb-1">Liên kết xem trực tiếp (Google Drive / Canva / OneDriver / YouTube) <span class="text-red-400">*</span></label>
+            <div class="relative">
+              <input type="url" id="resFormDriveLink" required placeholder="https://drive.google.com/... hoặc link chia sẻ" class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-3 pr-20 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+              <button type="button" onclick="insertSampleDriveLink()" class="absolute right-1.5 top-1.5 px-2 py-0.5 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 text-[10px] font-medium transition-colors">
+                Mẫu Link
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Giáo viên toàn trường có thể xem và trình chiếu trực tiếp 0 đồng qua trình duyệt.</p>
+          </div>
+
+          <div>
+            <label class="block text-slate-200 font-semibold mb-1">Định dạng tải về</label>
+            <select id="resFormFormat" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option class="bg-slate-800 text-slate-100" value="CANVA">Canva Link</option>
+              <option class="bg-slate-800 text-slate-100" value="PPTX">PowerPoint (.pptx)</option>
+              <option class="bg-slate-800 text-slate-100" value="DOCX" selected>Word (.docx)</option>
+              <option class="bg-slate-800 text-slate-100" value="PDF">Tài liệu PDF (.pdf)</option>
+              <option class="bg-slate-800 text-slate-100" value="XLSX">Bảng tính Excel (.xlsx)</option>
+              <option class="bg-slate-800 text-slate-100" value="MP4">Video (.mp4)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Đính kèm tệp trực tiếp từ máy (tùy chọn) -->
+        <div>
+          <label class="block text-slate-200 font-semibold mb-1">Đính kèm tệp bài học từ máy tính (Tùy chọn):</label>
+          <div class="flex items-center gap-2 flex-wrap">
+            <input type="file" id="resFormFileInput" onchange="handleResourceFileAttach(event)" class="hidden" accept=".docx,.doc,.pptx,.ppt,.pdf,.xlsx,.mp4,.zip" />
+            <button type="button" onclick="document.getElementById('resFormFileInput').click()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="paperclip" class="w-4 h-4 text-emerald-400"></i>
+              <span>Chọn Tệp Đính Kèm...</span>
+            </button>
+            <span id="resFileAttachedName" class="text-xs text-slate-400 italic">Chưa chọn tệp (hoặc dùng link Google Drive ở trên)</span>
+          </div>
+        </div>
+
+        <!-- Tác giả, Phân hiệu, Chia sẻ cụm -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-slate-800">
+          <div>
+            <label class="block text-slate-200 font-semibold mb-1">Tác giả / Giáo viên đóng góp <span class="text-red-400">*</span></label>
+            <input type="text" id="resFormAuthor" required placeholder="Ví dụ: Nguyễn Thị Mai (GV Khối 2)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+          </div>
+
+          <div>
+            <label class="block text-slate-200 font-semibold mb-1">Đơn vị công tác</label>
+            <input type="text" id="resFormSchool" value="Trường Tiểu học Trung Nhứt" readonly class="w-full bg-slate-800/80 border border-slate-700 text-slate-300 rounded-lg px-3 py-2 cursor-not-allowed text-xs" />
+          </div>
+        </div>
+
+        <!-- Chia sẻ liên trường / Cụm chuyên môn -->
+        <div class="p-3 rounded-lg bg-blue-950/40 border border-blue-800/60 flex items-center justify-between">
+          <div>
+            <div class="font-semibold text-blue-200 text-xs">Chia sẻ toàn Cụm chuyên môn liên trường</div>
+            <div class="text-[11px] text-slate-400">Cho phép các trường tiểu học trong cụm chuyên môn tham khảo và sử dụng</div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="resFormClusterShared" checked class="sr-only peer">
+            <div class="w-10 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+          </label>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeContributeModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors">Hủy</button>
+          
+          <button type="submit" class="px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg transition-colors border border-emerald-500">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>Lưu & Đóng Góp Học Liệu</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification Overlay -->
   <div id="toastContainer" class="fixed top-14 right-4 z-50 space-y-2 pointer-events-none"></div>
 
@@ -2128,43 +2324,155 @@
     }
 
     // 13 Subjects Tree Explorer
+    let currentResourceSubjectFilter = 'ALL';
+
     function initSubjectsTree() {
       const container = document.getElementById('subjectsTree');
+      if (!container) return;
       container.innerHTML = '';
+
+      // All subjects button
+      const allBtn = document.createElement('button');
+      allBtn.onclick = () => selectSubjectCategory('ALL');
+      const isAllActive = currentResourceSubjectFilter === 'ALL';
+      allBtn.className = `w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between text-xs font-semibold ${isAllActive ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`;
+      allBtn.innerHTML = `
+        <span class="flex items-center gap-1.5">
+          <i data-lucide="layers" class="w-3.5 h-3.5 ${isAllActive ? 'text-emerald-400' : 'text-slate-400'}"></i>
+          <span>Tất cả các môn</span>
+        </span>
+        ${isAllActive ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>' : '<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>'}
+      `;
+      container.appendChild(allBtn);
 
       AppState.subjects13.forEach((sub, idx) => {
         const btn = document.createElement('button');
         btn.onclick = () => selectSubjectCategory(sub);
-        btn.className = 'w-full text-left px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors flex items-center justify-between text-xs';
+        const isActive = currentResourceSubjectFilter === sub;
+        btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg transition-colors flex items-center justify-between text-xs ${isActive ? 'bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`;
         btn.innerHTML = `
           <span class="truncate">${sub}</span>
-          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+          ${isActive ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>' : '<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>'}
         `;
         container.appendChild(btn);
       });
+      lucide.createIcons();
     }
 
     function selectSubjectCategory(catName) {
-      showToast(`Đã lọc danh mục: ${catName}`);
+      currentResourceSubjectFilter = catName;
+      initSubjectsTree();
+      applyResourceFilters();
+      if (catName === 'ALL') {
+        showToast('Đang hiển thị tất cả các môn học');
+      } else if (catName === 'BUOI_2') {
+        showToast('Đang lọc chuyên đề Dạy học Buổi 2 (STEM & Văn hóa đọc)');
+      } else {
+        showToast(`Đã lọc học liệu: ${catName}`);
+      }
     }
 
-    // Resource Hub Data
-    const mockResources = [];
+    // Seed default sample educational resources for Truong Tieu hoc Trung Nhut
+    const defaultSampleResources = [
+      {
+        id: 1,
+        title: 'Bài 15: Phép cộng có nhớ trong phạm vi 100 (Tiết 1) - Toán 2 Kết Nối Tri Thức',
+        subject: 'Toán',
+        grade: 2,
+        type: 'CANVA',
+        yccd: 'Học sinh thực hiện thành thạo phép cộng có nhớ dạng 28 + 5, rèn tư duy tính toán nhanh và vận dụng giải quyết bài toán thực tế.',
+        author: 'Nguyễn Thị Mai (GV Khối 2)',
+        school: 'Trường Tiểu học Trung Nhứt',
+        rating: '5.0',
+        cluster: true,
+        format: 'CANVA',
+        driveLink: 'https://www.canva.com/design/sample-math-grade2-kntt/view',
+        fileName: 'Toan2_Bai15_PhepCongCoNho.pptx',
+        createdAt: '10/09/2026'
+      },
+      {
+        id: 2,
+        title: 'Chuyên đề STEM Buổi 2: Chế tạo đồng hồ học thời gian & thực hành xem giờ',
+        subject: 'Dạy học Buổi 2 (STEM)',
+        grade: 2,
+        type: 'STEM',
+        yccd: 'Vận dụng kiến thức giờ - phút chế tạo mô hình đồng hồ từ vật liệu tái chế (bìa carton, nắp chai); rèn kỹ năng hợp tác nhóm và thuyết trình.',
+        author: 'Trần Hoàng Nam (GV Khối 2)',
+        school: 'Trường Tiểu học Trung Nhứt',
+        rating: '4.9',
+        cluster: true,
+        format: 'DOCX',
+        driveLink: 'https://drive.google.com/file/d/synchroedu-stem-dong-ho-thoi-gian/view',
+        fileName: 'KHBD_STEM2_DongHoThoiGian.docx',
+        createdAt: '08/09/2026'
+      },
+      {
+        id: 3,
+        title: 'Ma trận & Ngân hàng đề kiểm tra môn Tiếng Việt 2 định kỳ (3 mức độ TT 27)',
+        subject: 'Tiếng Việt',
+        grade: 2,
+        type: 'TT27',
+        yccd: 'Đánh giá học sinh chuẩn Thông tư 27/2020: Mức 1 (Nhận biết từ ngữ), Mức 2 (Đọc hiểu ý đoạn văn), Mức 3 (Viết câu sáng tạo liên hệ bản thân).',
+        author: 'Phan Kim Oanh (Tổ trưởng Khối 2)',
+        school: 'Trường Tiểu học Trung Nhứt',
+        rating: '5.0',
+        cluster: false,
+        format: 'DOCX',
+        driveLink: 'https://drive.google.com/file/d/synchroedu-tt27-tieng-viet-2/view',
+        fileName: 'NganHangDe_KT_TiengViet2_TT27.docx',
+        createdAt: '05/09/2026'
+      },
+      {
+        id: 4,
+        title: 'Sổ tay đọc sách thông minh & Kể chuyện theo tranh (Văn hóa đọc Buổi 2)',
+        subject: 'Dạy học Buổi 2 (Văn hóa đọc)',
+        grade: 2,
+        type: 'READING',
+        yccd: 'Xây dựng thói quen đọc sách hàng tuần cho học sinh tiểu học; rèn kỹ năng tóm tắt nội dung câu chuyện và chia sẻ cảm xúc trước lớp.',
+        author: 'Lê Thị Hồng (Thư viện & Khối 2)',
+        school: 'Trường Tiểu học Trung Nhứt',
+        rating: '4.8',
+        cluster: true,
+        format: 'PDF',
+        driveLink: 'https://drive.google.com/file/d/synchroedu-van-hoa-doc-buoi2/view',
+        fileName: 'SoTay_VanHoaDoc_TieuHoc.pdf',
+        createdAt: '02/09/2026'
+      }
+    ];
+
+    let mockResources = [];
 
     function initResourceHub() {
-      renderResourceCards(mockResources);
+      try {
+        const saved = localStorage.getItem('synchroedu_resource_hub');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          mockResources = Array.isArray(parsed) && parsed.length > 0 ? parsed : [...defaultSampleResources];
+        } else {
+          mockResources = [...defaultSampleResources];
+          localStorage.setItem('synchroedu_resource_hub', JSON.stringify(mockResources));
+        }
+      } catch (e) {
+        mockResources = [...defaultSampleResources];
+      }
+      applyResourceFilters();
     }
 
     function renderResourceCards(items) {
       const grid = document.getElementById('resourceCardsGrid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       if (!items || items.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full p-8 text-center bg-slate-850 rounded-xl border border-slate-800 text-slate-400 text-xs">
             <i data-lucide="folder-open" class="w-8 h-8 text-slate-500 mx-auto mb-2"></i>
-            <p class="font-medium text-slate-300">Kho học liệu số hiện chưa có tài liệu nào.</p>
-            <p class="text-[11px] text-slate-500 mt-1">Bấm "+ Đóng Góp Học Liệu" để chia sẻ bài giảng hoặc kế hoạch bài dạy đầu tiên.</p>
+            <p class="font-medium text-slate-300">Không tìm thấy học liệu nào phù hợp với bộ lọc hiện tại.</p>
+            <p class="text-[11px] text-slate-400 mt-1">Bấm "+ Đóng Góp Học Liệu" để chia sẻ bài giảng hoặc kế hoạch bài dạy mới.</p>
+            <button onclick="openContributeModal()" class="mt-3 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs inline-flex items-center gap-1.5 shadow transition-colors border border-emerald-400">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>+ Đóng Góp Học Liệu Ngay</span>
+            </button>
           </div>
         `;
         lucide.createIcons();
@@ -2173,7 +2481,7 @@
 
       items.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'p-4 rounded-xl bg-slate-850 border border-slate-800 space-y-3 shadow-sm hover:border-brand-600 transition-colors flex flex-col justify-between';
+        card.className = 'p-4 rounded-xl bg-slate-850 border border-slate-800 space-y-3 shadow-sm hover:border-emerald-500/80 transition-colors flex flex-col justify-between';
         
         card.innerHTML = `
           <div class="space-y-2">
@@ -2181,19 +2489,19 @@
               <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-950 text-brand-300 border border-brand-700">
                 ${item.subject} • Khối ${item.grade}
               </span>
-              ${item.cluster ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 font-semibold">Chia sẻ Cụm</span>' : ''}
+              ${item.cluster ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 font-semibold">Chia sẻ Cụm</span>' : '<span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Nội bộ trường</span>'}
             </div>
             <h4 class="font-bold text-sm text-white leading-snug">${item.title}</h4>
-            <p class="text-xs text-slate-400"><strong class="text-slate-300">YCCĐ:</strong> ${item.yccd}</p>
-            <div class="text-[11px] text-slate-500">Tác giả: ${item.author} • ⭐ ${item.rating}</div>
+            <p class="text-xs text-slate-300"><strong class="text-slate-200">YCCĐ:</strong> ${item.yccd}</p>
+            <div class="text-[11px] text-slate-400">Tác giả: <span class="text-slate-200 font-medium">${item.author}</span> • ⭐ ${item.rating || '5.0'}</div>
           </div>
 
           <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-            <a href="${item.driveLink}" target="_blank" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1 font-medium">
-              <i data-lucide="eye" class="w-3.5 h-3.5"></i> Xem Google Drive
+            <a href="${item.driveLink || '#'}" target="_blank" rel="noopener noreferrer" class="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-medium transition-colors">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i> Xem Trực Tiếp
             </a>
-            <button onclick="downloadResourceFile('${item.title}', '${item.format}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i> Tải ${item.format}
+            <button onclick="downloadResourceFile('${item.title.replace(/'/g, "\\'")}', '${item.format || 'DOCX'}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-1 transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-slate-400"></i> Tải ${item.format || 'DOCX'}
             </button>
           </div>
         `;
@@ -2202,28 +2510,262 @@
       lucide.createIcons();
     }
 
-    function searchResources(query) {
-      const q = query.toLowerCase();
-      const filtered = mockResources.filter(r => 
-        r.title.toLowerCase().includes(q) || 
-        r.subject.toLowerCase().includes(q) || 
-        r.yccd.toLowerCase().includes(q)
-      );
+    function applyResourceFilters() {
+      const q = (document.getElementById('resourceSearchInput')?.value || '').trim().toLowerCase();
+      const grade = document.getElementById('resourceGradeFilter')?.value || 'ALL';
+      const type = document.getElementById('resourceTypeFilter')?.value || 'ALL';
+
+      let filtered = mockResources.filter(item => {
+        // Search text
+        if (q) {
+          const matchQ = (item.title && item.title.toLowerCase().includes(q)) ||
+                         (item.subject && item.subject.toLowerCase().includes(q)) ||
+                         (item.yccd && item.yccd.toLowerCase().includes(q)) ||
+                         (item.author && item.author.toLowerCase().includes(q));
+          if (!matchQ) return false;
+        }
+
+        // Grade
+        if (grade !== 'ALL' && item.grade !== parseInt(grade)) {
+          return false;
+        }
+
+        // Type
+        if (type !== 'ALL' && item.type !== type) {
+          return false;
+        }
+
+        // Subject filter from tree
+        if (currentResourceSubjectFilter !== 'ALL') {
+          if (currentResourceSubjectFilter === 'BUOI_2') {
+            const isBuoi2 = item.subject.includes('Buổi 2') || item.type === 'STEM' || item.type === 'READING';
+            if (!isBuoi2) return false;
+          } else {
+            // Strip index like "1. Toán" -> "Toán"
+            const cleanSub = currentResourceSubjectFilter.replace(/^[0-9]+\.\s*/, '').trim().toLowerCase();
+            const itemSub = (item.subject || '').toLowerCase();
+            if (!itemSub.includes(cleanSub) && !cleanSub.includes(itemSub)) {
+              return false;
+            }
+          }
+        }
+
+        return true;
+      });
+
       renderResourceCards(filtered);
     }
 
+    function searchResources(query) {
+      applyResourceFilters();
+    }
+
     function filterResourceGrade(grade) {
-      if (grade === 'ALL') renderResourceCards(mockResources);
-      else renderResourceCards(mockResources.filter(r => r.grade === parseInt(grade)));
+      applyResourceFilters();
     }
 
     function filterResourceType(type) {
-      if (type === 'ALL') renderResourceCards(mockResources);
-      else renderResourceCards(mockResources.filter(r => r.type === type));
+      applyResourceFilters();
     }
 
     function downloadResourceFile(title, format) {
-      showToast(`Đang tải file [${title}.${format.toLowerCase()}] (0 đồng)...`, 'success');
+      showToast(`Đang tải học liệu [${title}] định dạng .${(format || 'docx').toLowerCase()} (0 đồng)...`, 'success');
+      try {
+        const dummyContent = `HỌC LIỆU SỐ TRƯỜNG TIỂU HỌC TRUNG NHỨT - UBND PHƯỜNG TRUNG NHỨT\nTên tài liệu: ${title}\nĐịnh dạng: ${format}\nNgày tải: ${new Date().toLocaleString('vi-VN')}\nKho học liệu dùng chung phục vụ giáo viên thực hiện Chương trình GDPT 2018.`;
+        const blob = new Blob(['\ufeff' + dummyContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const cleanName = title.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1EA0-\u1EF9]/g, '_').substring(0, 40);
+        a.download = `${cleanName}.${(format || 'docx').toLowerCase()}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        console.warn('Download error', e);
+      }
+    }
+
+    // Modal Control: Đóng Góp Học Liệu (Contribute Resource Modal)
+    function openContributeModal() {
+      const modal = document.getElementById('contributeModal');
+      if (!modal) {
+        console.error('contributeModal element not found');
+        return;
+      }
+      
+      // Auto fill author from current user or default
+      const authorInput = document.getElementById('resFormAuthor');
+      if (authorInput && !authorInput.value) {
+        if (AppState.currentUser && AppState.currentUser.name) {
+          authorInput.value = `${AppState.currentUser.name} (Trường TH Trung Nhứt)`;
+        } else {
+          authorInput.value = 'Nguyễn Thị Mai (GV Trường TH Trung Nhứt)';
+        }
+      }
+
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeContributeModal() {
+      const modal = document.getElementById('contributeModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function onResourceTypeChange(val) {
+      const row = document.getElementById('resFormDifficultyRow');
+      if (row) {
+        if (val === 'TT27') {
+          row.classList.remove('hidden');
+        } else {
+          row.classList.add('hidden');
+        }
+      }
+    }
+
+    function handleResourceFileAttach(event) {
+      const file = event.target.files[0];
+      const label = document.getElementById('resFileAttachedName');
+      if (!label) return;
+      if (file) {
+        label.textContent = `Đã đính kèm: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        label.className = 'text-xs text-emerald-400 font-semibold';
+        
+        // Auto select format based on file extension
+        const ext = file.name.split('.').pop().toUpperCase();
+        const fmtSelect = document.getElementById('resFormFormat');
+        if (fmtSelect) {
+          if (['DOCX', 'DOC'].includes(ext)) fmtSelect.value = 'DOCX';
+          else if (['PPTX', 'PPT'].includes(ext)) fmtSelect.value = 'PPTX';
+          else if (ext === 'PDF') fmtSelect.value = 'PDF';
+          else if (['XLSX', 'XLS'].includes(ext)) fmtSelect.value = 'XLSX';
+          else if (ext === 'MP4') fmtSelect.value = 'MP4';
+        }
+      } else {
+        label.textContent = 'Chưa chọn tệp (hoặc dùng link Google Drive ở trên)';
+        label.className = 'text-xs text-slate-400 italic';
+      }
+    }
+
+    function insertSampleDriveLink() {
+      const driveInput = document.getElementById('resFormDriveLink');
+      if (driveInput) {
+        driveInput.value = 'https://drive.google.com/drive/folders/synchroedu-trung-nhut-resources';
+        showToast('Đã nạp đường dẫn mẫu Google Drive!');
+      }
+    }
+
+    function fillSampleResource(sampleType) {
+      const titleInput = document.getElementById('resFormTitle');
+      const subSelect = document.getElementById('resFormSubject');
+      const gradeSelect = document.getElementById('resFormGrade');
+      const typeSelect = document.getElementById('resFormType');
+      const yccdInput = document.getElementById('resFormYccd');
+      const driveInput = document.getElementById('resFormDriveLink');
+      const formatSelect = document.getElementById('resFormFormat');
+      const clusterCheck = document.getElementById('resFormClusterShared');
+
+      if (sampleType === 'toan') {
+        titleInput.value = 'Bài 24: Bảng nhân 7 (Tiết 1) - Toán Lớp 2 Kết Nối Tri Thức';
+        subSelect.value = 'Toán';
+        gradeSelect.value = '2';
+        typeSelect.value = 'CANVA';
+        onResourceTypeChange('CANVA');
+        yccdInput.value = 'Học sinh hình thành bảng nhân 7, tự giác thực hành que tính và giải quyết vấn đề toán học thực tiễn.';
+        driveInput.value = 'https://www.canva.com/design/sample-math-bang-nhan-7/view';
+        formatSelect.value = 'CANVA';
+        clusterCheck.checked = true;
+      } else if (sampleType === 'stem') {
+        titleInput.value = 'Chuyên đề STEM Buổi 2: Thiết kế thước đo vạn năng từ vật liệu tái chế';
+        subSelect.value = 'Dạy học Buổi 2 (STEM)';
+        gradeSelect.value = '2';
+        typeSelect.value = 'STEM';
+        onResourceTypeChange('STEM');
+        yccdInput.value = 'Vận dụng đơn vị đo độ dài cm, dm để tạo thước đo tái chế, rèn luyện tư duy kỹ thuật và tính kiên trì.';
+        driveInput.value = 'https://drive.google.com/file/d/sample-stem-thuoc-do-van-nang/view';
+        formatSelect.value = 'DOCX';
+        clusterCheck.checked = true;
+      } else if (sampleType === 'tt27') {
+        titleInput.value = 'Đề kiểm tra giữa Học kỳ 1 môn Toán 2 (Ma trận 3 mức độ TT 27)';
+        subSelect.value = 'Toán';
+        gradeSelect.value = '2';
+        typeSelect.value = 'TT27';
+        onResourceTypeChange('TT27');
+        yccdInput.value = 'Đánh giá học sinh theo 3 mức độ: Mức 1 (Biết tính nhẩm), Mức 2 (Tính có nhớ), Mức 3 (Giải toán có lời văn 2 phép tính).';
+        driveInput.value = 'https://drive.google.com/file/d/sample-de-kt-toan2-tt27/view';
+        formatSelect.value = 'DOCX';
+        clusterCheck.checked = false;
+      }
+      showToast('Đã điền sẵn dữ liệu mẫu thực tế!', 'info');
+    }
+
+    function submitContributeResource() {
+      const title = (document.getElementById('resFormTitle')?.value || '').trim();
+      const subject = document.getElementById('resFormSubject')?.value || 'Toán';
+      const grade = parseInt(document.getElementById('resFormGrade')?.value || '2');
+      const type = document.getElementById('resFormType')?.value || 'CANVA';
+      const yccd = (document.getElementById('resFormYccd')?.value || '').trim();
+      let driveLink = (document.getElementById('resFormDriveLink')?.value || '').trim();
+      const format = document.getElementById('resFormFormat')?.value || 'DOCX';
+      const author = (document.getElementById('resFormAuthor')?.value || '').trim() || 'Giáo viên Trường TH Trung Nhứt';
+      const cluster = document.getElementById('resFormClusterShared') ? document.getElementById('resFormClusterShared').checked : true;
+
+      if (!title || !yccd) {
+        showToast('Vui lòng điền đầy đủ Tên tài liệu và Yêu cầu cần đạt (YCCĐ)!', 'error');
+        return;
+      }
+
+      if (!driveLink) {
+        driveLink = 'https://drive.google.com/drive/folders/synchroedu-trung-nhut-resources';
+      }
+
+      const fileInput = document.getElementById('resFormFileInput');
+      let fileName = '';
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        fileName = fileInput.files[0].name;
+      } else {
+        const cleanTitle = title.replace(/[^a-zA-Z0-9\u00C0-\u024F\u1EA0-\u1EF9]/g, '_').substring(0, 30);
+        fileName = `${cleanTitle}.${format.toLowerCase()}`;
+      }
+
+      const newResource = {
+        id: Date.now(),
+        title: title,
+        subject: subject,
+        grade: grade,
+        type: type,
+        yccd: yccd,
+        author: author,
+        school: 'Trường Tiểu học Trung Nhứt',
+        rating: '5.0',
+        cluster: cluster,
+        format: format,
+        driveLink: driveLink,
+        fileName: fileName,
+        createdAt: new Date().toLocaleDateString('vi-VN')
+      };
+
+      mockResources.unshift(newResource);
+      try {
+        localStorage.setItem('synchroedu_resource_hub', JSON.stringify(mockResources));
+      } catch (e) {
+        console.warn('Could not save resource to localStorage', e);
+      }
+
+      // Reset form
+      const form = document.getElementById('contributeResourceForm');
+      if (form) form.reset();
+      const fileLabel = document.getElementById('resFileAttachedName');
+      if (fileLabel) {
+        fileLabel.textContent = 'Chưa chọn tệp (hoặc dùng link Google Drive ở trên)';
+        fileLabel.className = 'text-xs text-slate-400 italic';
+      }
+
+      closeContributeModal();
+      applyResourceFilters();
+      showToast(`Đã đóng góp học liệu "${title}" vào Kho dùng chung thành công!`, 'success');
     }
 
     // Horizontal Stream (Khối 2 at 5 branches)

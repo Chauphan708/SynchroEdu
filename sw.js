@@ -1,5 +1,5 @@
 // Service Worker - SynchroEdu
-const CACHE_NAME = 'synchroedu-v2026-09-12';
+const CACHE_NAME = 'synchroedu-v2026-09-12-resource-hub';
 const ASSETS_TO_CACHE = [
   './manifest.json'
 ];

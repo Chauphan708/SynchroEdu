@@ -173,8 +173,22 @@ assert(htmlContent.includes('UBND PHƯỜNG TRUNG NHỨT - TRƯỜNG TIỂU HỌ
 assert(!/Phòng\s+Giáo\s+dục\s+và\s+Đào\s+tạo/i.test(htmlContent), 'Đã xóa bỏ hoàn toàn cụm từ "Phòng Giáo dục và Đào tạo" trong index.html');
 assert(!/Phòng\s+GD&ĐT/i.test(htmlContent), 'Đã xóa bỏ hoàn toàn cụm từ viết tắt "Phòng GD&ĐT" trong index.html');
 
-// 9. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
-console.log('\n9. Kiểm tra máy chủ HTTP cục bộ:');
+// 9. Kiểm tra Tính năng Kho Học Liệu Số & Đóng Góp Học Liệu (Resource Hub):
+console.log('\n9. Kiểm tra Tính năng Kho Học Liệu Số & Đóng Góp Học Liệu (Resource Hub):');
+assert(htmlContent.includes('id="btnOpenContributeModal"') && htmlContent.includes('openContributeModal()'), 'Nút "+ Đóng Góp Học Liệu" tồn tại và liên kết hàm openContributeModal()');
+assert(htmlContent.includes('id="contributeModal"'), 'Modal Đóng Góp Học Liệu (contributeModal) tồn tại');
+assert(htmlContent.includes('id="contributeResourceForm"'), 'Biểu mẫu đóng góp học liệu (contributeResourceForm) tồn tại');
+assert(htmlContent.includes('id="resFormTitle"') && htmlContent.includes('id="resFormSubject"') && htmlContent.includes('id="resFormGrade"'), 'Các trường bắt buộc: Tên tài liệu, Môn học, Khối lớp tồn tại');
+assert(htmlContent.includes('id="resFormType"') && htmlContent.includes('id="resFormYccd"') && htmlContent.includes('id="resFormDriveLink"'), 'Các trường: Loại học liệu, YCCĐ, Link Drive/Canva tồn tại');
+assert(htmlContent.includes('id="resFormDifficultyRow"'), 'Phân loại mức độ đánh giá theo Thông tư 27 tồn tại');
+assert(htmlContent.includes('function openContributeModal()') && htmlContent.includes('function closeContributeModal()'), 'Hàm đóng/mở modal đóng góp học liệu hoạt động');
+assert(htmlContent.includes('function submitContributeResource()'), 'Hàm xử lý lưu và đóng góp học liệu hoạt động');
+assert(htmlContent.includes('function fillSampleResource'), 'Hàm nạp nhanh dữ liệu mẫu học liệu hoạt động');
+assert(htmlContent.includes('function handleResourceFileAttach'), 'Hàm xử lý đính kèm tệp từ máy tính hoạt động');
+assert(htmlContent.includes('synchroedu_resource_hub'), 'Cơ chế lưu trữ LocalStorage cho kho học liệu số hoạt động');
+
+// 10. Kiểm tra chạy thử máy chủ và phản hồi HTTP 200
+console.log('\n10. Kiểm tra máy chủ HTTP cục bộ:');
 
 async function testHttpServer() {
   const testPort = process.env.TEST_PORT || 3099;
